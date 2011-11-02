@@ -1,5 +1,6 @@
-package edu.berkeley.cs160;
+package edu.berkeley.cs160.teamk;
 
+import edu.berkeley.cs160.R;
 import android.app.Activity;
 import android.os.Bundle;
 
