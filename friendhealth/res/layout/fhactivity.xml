@@ -13,9 +13,11 @@
 		android:id="@+id/activityGallery"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content" />
+
 	<ImageView
 		android:id="@+id/img_fhAct"
 		android:layout_width="320px"
 		android:layout_height="250px"
 		android:scaleType="fitXY" />
+
 </LinearLayout>

@@ -9,6 +9,7 @@
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" android:debuggable="true">
+        
         <activity
             android:label="@string/app_name"
             android:name=".FHActivitySelector" >
@@ -27,6 +28,18 @@
         		<category android:name="android.intent.category.DEFAULT" />
         	</intent-filter>
         </activity>
+        
+        <activity 
+            android:label="Log In"
+            android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="edu.berkeley.cs160.teamk.LoginActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
     </application>
-
+    
+	<uses-permission android:name="android.permission.INTERNET"/>
+        
 </manifest>
