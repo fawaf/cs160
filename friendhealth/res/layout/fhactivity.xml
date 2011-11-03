@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent" >
+	<TextView
+		android:id="@+id/activityTitle"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="Replace with Activity Title!" />
+	<Gallery
+		android:id="@+id/activityGallery"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" />
+	<ImageView
+		android:id="@+id/img_fhAct"
+		android:layout_width="320px"
+		android:layout_height="250px"
+		android:scaleType="fitXY" />
+</LinearLayout>

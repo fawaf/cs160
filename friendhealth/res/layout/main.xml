@@ -8,12 +8,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="123dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-    </LinearLayout>
-
+        
+    <Button android:id="@+id/btn_fHActivity"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:text = "fH Activity"/>
 </LinearLayout>
