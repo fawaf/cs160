@@ -13,4 +13,15 @@
     	android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
     	android:text = "fH Activity"/>
+
+    <SeekBar
+        android:id="@+id/seekBar1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>
