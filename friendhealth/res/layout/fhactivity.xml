@@ -1,22 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent" >
 	<TextView
-		android:id="@+id/activityTitle"
-		android:layout_width="fill_parent"
+		android:id="@+id/txt_ActTitle"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_centerHorizontal="true"
 		android:text="Replace with Activity Title!" />
 	<Gallery
 		android:id="@+id/activityGallery"
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
-	<ImageView
-		android:id="@+id/img_fhAct"
-		android:layout_width="320px"
-		android:layout_height="250px"
-		android:scaleType="fitXY" />
-	<Button android:layout_width="wrap_content" android:id="@+id/button1" android:text="Button" android:layout_height="wrap_content"></Button>
-</LinearLayout>
+		android:layout_height="wrap_content" 
+		android:layout_below="@+id/txt_ActTitle" />
+	<Button android:id="@+id/btn_ActHelp"
+		android:layout_height="wrap_content"
+		android:layout_width="110dp"
+		android:text="Help"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true" />
+	<Button android:id="@+id/btn_ActInvite"
+		android:layout_height="wrap_content"
+		android:layout_width="110dp"
+		android:text="Invite Others to Activity"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true" />
+	<Button android:id="@+id/btn_ActReject"
+		android:layout_height="wrap_content"
+		android:layout_width="110dp"
+		android:text="Reject Activity"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentLeft="true" />
+	<Button android:id="@+id/btn_ActTakePicture"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:text="Take Picture"
+		android:layout_above="@+id/btn_ActInvite"
+		android:layout_alignParentLeft="true" />
+	<ImageView android:id="@+id/img_fhAct"
+		android:scaleType="fitXY"
+		android:layout_width="match_parent"
+		android:layout_above="@+id/btn_ActTakePicture"
+		android:layout_alignParentLeft="true"
+		android:layout_height="240dp" />
+</RelativeLayout>

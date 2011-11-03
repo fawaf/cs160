@@ -22,8 +22,12 @@ public class FHActivitySelector extends Activity {
         //---event handler for the fH Activity button---
         fH_button.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
-        		startActivity(new Intent(
-        				"edu.berkeley.cs160.teamk.FHActivity"));
+        		Intent i = new Intent("edu.berkeley.cs160.teamk.FHActivity");
+        		Bundle extras = new Bundle();
+        		extras.putString("name", "Eat an Apple");
+        		extras.putInt("score", 10);
+        		i.putExtras(extras);
+        		startActivity(i);
         	}
         });
     }

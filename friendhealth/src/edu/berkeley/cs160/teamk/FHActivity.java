@@ -5,6 +5,9 @@ package edu.berkeley.cs160.teamk;
 import android.app.Activity;
 import android.os.Bundle;
 
+import android.widget.Button;
+import android.widget.TextView;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.view.View;
@@ -17,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 public class FHActivity extends Activity{
+	Button btn_picture, btn_reject, btn_invite, btn_help;
+	
 	//---the images to display---
 	Integer[] imageIDs = {
 			R.drawable.pic1,
@@ -33,6 +38,17 @@ public class FHActivity extends Activity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fhactivity);
+		
+		String name = "";
+		int score = 0;
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			name = extras.getString("name");
+			score = extras.getInt("score");
+			
+			TextView txt_ActTitle = (TextView) findViewById(R.id.txt_ActTitle);
+			txt_ActTitle.setText(name + " (+" + score + " points)");
+		}
 		
 		Gallery gallery = (Gallery) findViewById(R.id.activityGallery);
 		
