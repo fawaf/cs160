@@ -17,7 +17,7 @@ public class BallyhooActivity extends Activity {
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.ballyhooactivity);
+        setContentView(R.layout.ballyhooactivity);
         
         String name = "";
 		int score = 0;
@@ -29,7 +29,7 @@ public class BallyhooActivity extends Activity {
 			TextView txt_ActivityName = (TextView) findViewById(R.id.txt_ActivityName);
 			txt_ActivityName.setText(name + " (+" + score + " points)");
 		}
-		setContentView(R.layout.ballyhooactivity);
+		//setContentView(R.layout.ballyhooactivity);
 		
 		EditText edt_Message = (EditText) findViewById(R.id.edt_Message);
 		String message = edt_Message.getText().toString();

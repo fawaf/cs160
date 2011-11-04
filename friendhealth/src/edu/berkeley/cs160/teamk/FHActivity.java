@@ -98,6 +98,18 @@ public class FHActivity extends Activity{
 						CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 			}
 		});
+		
+		//---btn_invite---
+		btn_invite = (Button) findViewById(R.id.btn_ActInvite);
+		// Handle click of button.
+		btn_invite.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				Intent intent = new Intent(
+						"edu.berkeley.cs160.teamk.BallyhooActivity");
+				intent.putExtras(getIntent().getExtras());
+				startActivity(intent);
+			}
+		});
 	}
 	
 	@Override
