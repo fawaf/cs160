@@ -3,5 +3,7 @@
 
     <string name="hello">You are using friendHealth!</string>
     <string name="app_name">friendHealth</string>
+    <string name="invite">Invite</string>
+    <string name="default_message">I\'m going to Place Holder</string>
 
 </resources>

@@ -38,6 +38,15 @@
             </intent-filter>
         </activity>
         
+        <activity 
+            android:label="Invite Others"
+            android:name=".BallyhooActivity">
+            <intent-filter>
+                <action android:name="edu.berkeley.cs160.teamk.BallyhooActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
     </application>
     
 	<uses-permission android:name="android.permission.INTERNET"/>

@@ -9,7 +9,8 @@ import com.facebook.android.Facebook.*;
 
 public class LoginActivity extends Activity {
 
-    Facebook facebook = new Facebook("177765768977545");
+    public static final String APP_ID = "177765768977545";
+
     String FILENAME = "AndroidSSO_data";
     private SharedPreferences mPrefs;
     
@@ -17,6 +18,7 @@ public class LoginActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loginactivity);
+        Utility.facebook = new Facebook(APP_ID);
 
         /*
          * Get existing access_token if any
@@ -25,23 +27,23 @@ public class LoginActivity extends Activity {
         String access_token = mPrefs.getString("access_token", null);
         long expires = mPrefs.getLong("access_expires", 0);
         if(access_token != null) {
-            facebook.setAccessToken(access_token);
+            Utility.facebook.setAccessToken(access_token);
         }
         if(expires != 0) {
-            facebook.setAccessExpires(expires);
+            Utility.facebook.setAccessExpires(expires);
         }
         
         /*
          * Only call authorize if the access_token has expired.
          */
-        if(!facebook.isSessionValid()) {
+        if(!Utility.facebook.isSessionValid()) {
 
-            facebook.authorize(this, new String[] { "email", "user_photos" }, new DialogListener() {
+            Utility.facebook.authorize(this, new String[] { "email", "user_photos", "read_stream", "publish_stream" }, new DialogListener() {
                 @Override
                 public void onComplete(Bundle values) {
                     SharedPreferences.Editor editor = mPrefs.edit();
-                    editor.putString("access_token", facebook.getAccessToken());
-                    editor.putLong("access_expires", facebook.getAccessExpires());
+                    editor.putString("access_token", Utility.facebook.getAccessToken());
+                    editor.putLong("access_expires", Utility.facebook.getAccessExpires());
                     editor.commit();
                 }
     
@@ -64,7 +66,7 @@ public class LoginActivity extends Activity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        facebook.authorizeCallback(requestCode, resultCode, data);
+        Utility.facebook.authorizeCallback(requestCode, resultCode, data);
         
         finish();
     }
