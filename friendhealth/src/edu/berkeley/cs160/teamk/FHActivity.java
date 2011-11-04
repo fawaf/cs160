@@ -38,6 +38,7 @@ public class FHActivity extends Activity{
 	Button btn_picture, btn_reject, btn_invite, btn_help;
 	
 	String act_name = "";
+	String img_filename = "";
 	int score = 0;
 	
 	//---the images to display---
@@ -89,9 +90,14 @@ public class FHActivity extends Activity{
 		// Handle click of button.
 		btn_picture.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
+				Log.d("friendHealth", "Taking Image from Activity");
+				
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 				Uri fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE, act_name);
+				img_filename = fileUri.toString();
 				intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+				
+				Log.d("friendHealth", "Image name: " + img_filename);
 				
 				// start the image capture Intent.
 				startActivityForResult(intent, 
@@ -116,8 +122,18 @@ public class FHActivity extends Activity{
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
-				String fileName = act_name + " picture taken.";
-				Toast.makeText(this, fileName, Toast.LENGTH_SHORT).show();
+				Log.d("friendHealth", act_name + " image taken.");
+				
+				Intent intent = new Intent(
+						"edu.berkeley.cs160.teamk.ActivitySubmission");
+				Bundle extras = new Bundle();
+				extras.putString("name", act_name);
+				extras.putInt("score", score);
+				extras.putString("filename", img_filename);
+				intent.putExtras(extras);
+				
+				Log.d("friendHealth", "Starting submission activity");
+				startActivity(intent);
 			}
 		}
 	}
@@ -164,7 +180,7 @@ public class FHActivity extends Activity{
 	}
 	
 	private Uri getOutputMediaFileUri(int type, String name) {
-		String app_name = this.getString(R.string.app_name);
+		String app_name = "friendHealth";
 		
 		File mediaStorageDir;
 		
@@ -198,12 +214,15 @@ public class FHActivity extends Activity{
 				Log.d(app_name, "failed to create directory");
 				return null;
 			}
+			else {
+				Log.d(app_name, "directory created");
+			}
 		}
 		
 		// Create a media file name.
 		String timeStamp 
 			= new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-		String fileName = name + "_" + timeStamp;
+		String fileName = name.replace(" ", "_") + "_" + timeStamp;
 		
 		File mediaFile;
 		if (type == MEDIA_TYPE_IMAGE) {
@@ -224,6 +243,10 @@ public class FHActivity extends Activity{
 			return null;
 		}
 		
-		return Uri.fromFile(mediaFile);
+		
+		Uri file = Uri.fromFile(mediaFile);
+		Log.d(app_name, "file name " + file.toString());
+		
+		return file;
 	}
 }

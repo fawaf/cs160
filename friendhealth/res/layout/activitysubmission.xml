@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical" >
+
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="This text should not appear" />
+		
+	<ImageView android:id="@+id/img_submit"
+		android:scaleType="fitXY"
+		android:layout_width="320dp"
+		android:layout_height="240dp" />
+		
+</LinearLayout>

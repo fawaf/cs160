@@ -47,6 +47,15 @@
             </intent-filter>
         </activity>
         
+        <activity
+        	android:label="Submit Accomplishment to Facebook"
+        	android:name=".ActivitySubmission">
+        	<intent-filter>
+        		<action android:name="edu.berkeley.cs160.teamk.ActivitySubmission" />
+        		<category android:name="android.intent.category.DEFAULT" />
+        	</intent-filter>
+        </activity>
+        
     </application>
     
 	<uses-permission android:name="android.permission.INTERNET"/>
