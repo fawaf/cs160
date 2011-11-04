@@ -7,13 +7,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.facebook.android.*;
-import com.facebook.android.Facebook.*;
 
 public class BallyhooActivity extends Activity {
+	Button fH_button;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,19 +32,33 @@ public class BallyhooActivity extends Activity {
 			TextView txt_ActivityName = (TextView) findViewById(R.id.txt_ActivityName);
 			txt_ActivityName.setText(name + " (+" + score + " points)");
 		}
-		//setContentView(R.layout.ballyhooactivity);
 		
-		EditText edt_Message = (EditText) findViewById(R.id.edt_Message);
-		String message = edt_Message.getText().toString();
-		SharedPreferences mPref = getSharedPreferences("LoginActivity", MODE_PRIVATE);
-		
-		try {
-			Bundle bundle = new Bundle();
-			bundle.putString(message, "test update");
-			bundle.putString(Facebook.TOKEN, mPref.getString("access_token", null));
-			String response = Utility.facebook.request("me/feed", bundle, "POST");
-		} catch (MalformedURLException e) {
-		} catch (IOException e) {
-		}
+		//---get the fH Activity button---
+		fH_button = (Button) findViewById(R.id.btn_Invite);
+        
+        //---event handler for the fH Activity button---
+        fH_button.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View view) {
+        		try {
+        			EditText edt_Message = (EditText) findViewById(R.id.edt_Message);
+        			String message = edt_Message.getText().toString();
+        			SharedPreferences mPref = getSharedPreferences("LoginActivity", MODE_PRIVATE);
+        			Bundle bundle = new Bundle();
+        			bundle.putString("message", message);
+        			bundle.putString(Facebook.TOKEN, mPref.getString("access_token", null));
+        			String response = Utility.facebook.request("me/feed", bundle, "POST");
+        			
+        			
+        			
+        			Intent intent = new Intent("edu.berkeley.cs160.teamk.FHActivity");
+        			Bundle extras = getIntent().getExtras();
+        			extras.putString("invite_response", response);
+        			intent.putExtras(extras);
+        			startActivity(intent);
+        		} catch (MalformedURLException e) {
+        		} catch (IOException e) {
+        		}
+        	}
+        });
 	}
 }
