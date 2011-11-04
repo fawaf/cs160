@@ -16,12 +16,16 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content" 
 		android:layout_below="@+id/txt_ActTitle" />
-	<Button android:id="@+id/btn_ActHelp"
-		android:layout_height="wrap_content"
-		android:layout_width="110dp"
-		android:text="Help"
-		android:layout_alignParentBottom="true"
-		android:layout_alignParentRight="true" />
+
+	<Button
+	    android:id="@+id/btn_ActHelp"
+	    android:layout_width="110dp"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+	    android:layout_alignParentRight="true"
+	    android:layout_below="@+id/btn_ActTakePicture"
+	    android:text="Help" />
+
 	<Button android:id="@+id/btn_ActInvite"
 		android:layout_height="wrap_content"
 		android:layout_width="110dp"

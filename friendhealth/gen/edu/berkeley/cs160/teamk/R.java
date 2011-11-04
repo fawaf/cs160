@@ -28,10 +28,9 @@ public final class R {
         public static final int btn_ActInvite=0x7f050003;
         public static final int btn_ActReject=0x7f050004;
         public static final int btn_ActTakePicture=0x7f050005;
-        public static final int btn_fHActivity=0x7f050009;
+        public static final int btn_fHActivity=0x7f050008;
         public static final int img_fhAct=0x7f050006;
-        public static final int seekBar1=0x7f050008;
-        public static final int spinner1=0x7f050007;
+        public static final int textView1=0x7f050007;
         public static final int txt_ActTitle=0x7f050000;
     }
     public static final class layout {
