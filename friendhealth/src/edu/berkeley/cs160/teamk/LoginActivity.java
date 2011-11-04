@@ -55,6 +55,9 @@ public class LoginActivity extends Activity {
                 public void onCancel() {}
             });
         }
+        else {
+        	finish();
+        }
     }
 
     @Override
