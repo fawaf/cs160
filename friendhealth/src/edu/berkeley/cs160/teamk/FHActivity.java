@@ -63,7 +63,7 @@ public class FHActivity extends Activity{
 		if (extras != null) {
 			act_name = extras.getString("name");
 			score = extras.getInt("score");
-			response = extras.getString("invite_response");
+			response = extras.getString("response");
 	
 			if(response != null){
 				Toast.makeText(getBaseContext(), response, Toast.LENGTH_LONG).show();
@@ -144,6 +144,7 @@ public class FHActivity extends Activity{
 				startActivity(intent);
 			}
 		}
+		finish();
 	}
 	
 	public class ImageAdapter extends BaseAdapter {

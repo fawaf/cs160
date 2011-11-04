@@ -56,7 +56,7 @@ public class BallyhooActivity extends Activity {
         			
         			Intent intent = new Intent("edu.berkeley.cs160.teamk.FHActivity");
         			Bundle extras = getIntent().getExtras();
-        			extras.putString("invite_response", response);
+        			extras.putString("response", response);
         			intent.putExtras(extras);
         			startActivity(intent);
         		} catch (MalformedURLException e) {

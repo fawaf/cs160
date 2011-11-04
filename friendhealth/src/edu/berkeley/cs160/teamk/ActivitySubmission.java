@@ -1,6 +1,7 @@
 package edu.berkeley.cs160.teamk;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
@@ -10,6 +11,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
@@ -24,6 +26,7 @@ public class ActivitySubmission extends Activity {
 	String img_filename = "";
 	int score = 0;
 	Button fH_button;
+	Bundle bundle = new Bundle();
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,16 @@ public class ActivitySubmission extends Activity {
 					= BitmapFactory.decodeFile(shortname);
 			Log.d("friendHealth", "Displaying image");
 			imageView.setImageBitmap(myBitmap);
-		
+			
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			myBitmap.compress(CompressFormat.JPEG, 100, bos);
+			
+			SharedPreferences mPref = getSharedPreferences("LoginActivity", MODE_PRIVATE);
+			bundle.putByteArray("picture", bos.toByteArray());
+			bundle.putString("message", "Photo for " + act_name);
+			bundle.putString(Facebook.TOKEN, mPref.getString("access_token", null));
+			Log.d("friendHealthAS", "access_tokenAS: " + mPref.getString("access_token", null));
+			
 			//---get the Submit button---
 			fH_button = (Button) findViewById(R.id.btn_Submit);
 	        
@@ -57,22 +69,17 @@ public class ActivitySubmission extends Activity {
 	        fH_button.setOnClickListener(new View.OnClickListener() {
 	        	public void onClick(View view) {
 	        		try {
-	        			SharedPreferences mPref = getSharedPreferences("LoginActivity", MODE_PRIVATE);
-	        			Bundle bundle = new Bundle();
-	        			bundle.putString("message", "Photo for " + act_name);
-	        			bundle.putString(Facebook.TOKEN, mPref.getString("access_token", null));
-	        			bundle.putString("image", img_filename);
 	        			String response = Utility.facebook.request("me/photos", bundle, "POST");
 	        			
-	        			if(response.indexOf("OAuthException") > -1){
-	        				response = "Submission Failed";
-	        			}else{
+	        			if (response.indexOf("OAuthException") > -1) {
+	        				//response = "Submission Failed";
+	        			} else {
 	        				response = "Submission Successful";
 	        			}
 	        			
 	        			Intent intent = new Intent("edu.berkeley.cs160.teamk.FHActivity");
 	        			Bundle extras = getIntent().getExtras();
-	        			extras.putString("submit_response", response);
+	        			extras.putString("response", response);
 	        			intent.putExtras(extras);
 	        			startActivity(intent);
 	        		} catch (MalformedURLException e) {

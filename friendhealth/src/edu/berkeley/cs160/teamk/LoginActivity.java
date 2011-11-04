@@ -45,6 +45,7 @@ public class LoginActivity extends Activity {
                     editor.putString("access_token", Utility.facebook.getAccessToken());
                     editor.putLong("access_expires", Utility.facebook.getAccessExpires());
                     editor.commit();
+                    finish();
                 }
     
                 @Override
@@ -56,9 +57,8 @@ public class LoginActivity extends Activity {
                 @Override
                 public void onCancel() {}
             });
-        }
-        else {
-        	finish();
+        } else {
+            finish();
         }
     }
 
