@@ -38,6 +38,7 @@ public class FHActivity extends Activity{
 	Button btn_picture, btn_reject, btn_invite, btn_help;
 	
 	String act_name = "";
+	String response = "";
 	int score = 0;
 	
 	//---the images to display---
@@ -61,6 +62,11 @@ public class FHActivity extends Activity{
 		if (extras != null) {
 			act_name = extras.getString("name");
 			score = extras.getInt("score");
+			response = extras.getString("invite_response");
+	
+			if(response != null){
+				Toast.makeText(getBaseContext(), response, Toast.LENGTH_LONG).show();
+			}
 			
 			TextView txt_ActTitle = (TextView) findViewById(R.id.txt_ActTitle);
 			txt_ActTitle.setText(act_name + " (+" + score + " points)");

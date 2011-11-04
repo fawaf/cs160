@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,9 +45,16 @@ public class BallyhooActivity extends Activity {
         			SharedPreferences mPref = getSharedPreferences("LoginActivity", MODE_PRIVATE);
         			Bundle bundle = new Bundle();
         			bundle.putString("message", message);
-        			bundle.putString(Facebook.TOKEN, mPref.getString("access_token", "aelkgjalwekgj"));
-        			Log.d("fh",""+mPref.getString("access_token", "aelkgjalwekgj"));
-        			/*String response =*/ Utility.facebook.request("me/feed", bundle, "POST");
+        			bundle.putString(Facebook.TOKEN, mPref.getString("access_token", null));
+        			String response = Utility.facebook.request("me/feed", bundle, "POST");
+        			
+        			
+        			
+        			Intent intent = new Intent("edu.berkeley.cs160.teamk.FHActivity");
+        			Bundle extras = getIntent().getExtras();
+        			extras.putString("invite_response", response);
+        			intent.putExtras(extras);
+        			startActivity(intent);
         		} catch (MalformedURLException e) {
         		} catch (IOException e) {
         		}
