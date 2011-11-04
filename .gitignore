@@ -1,3 +1,6 @@
 friendhealth/gen/
 friendhealth/bin/
 friendhealth/.classpath
+com_facebook_android/bin/classes/
+com_facebook_android/gen/
+facebook-android-sdk/
