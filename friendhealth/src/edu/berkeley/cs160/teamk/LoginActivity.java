@@ -38,7 +38,7 @@ public class LoginActivity extends Activity {
          */
         if(!Utility.facebook.isSessionValid()) {
 
-            Utility.facebook.authorize(this, new String[] { "email", "user_photos", "read_stream", "publish_stream" }, new DialogListener() {
+            Utility.facebook.authorize(this, new String[] { "user_photos", "read_stream", "publish_stream" }, new DialogListener() {
                 @Override
                 public void onComplete(Bundle values) {
                     SharedPreferences.Editor editor = mPrefs.edit();

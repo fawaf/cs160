@@ -48,7 +48,11 @@ public class BallyhooActivity extends Activity {
         			bundle.putString(Facebook.TOKEN, mPref.getString("access_token", null));
         			String response = Utility.facebook.request("me/feed", bundle, "POST");
         			
-        			
+        			if(response.indexOf("OAuthException") > -1){
+        				response = "Invitation Failed";
+        			}else{
+        				response = "Invitation Successful";
+        			}
         			
         			Intent intent = new Intent("edu.berkeley.cs160.teamk.FHActivity");
         			Bundle extras = getIntent().getExtras();
