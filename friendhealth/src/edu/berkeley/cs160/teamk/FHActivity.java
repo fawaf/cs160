@@ -2,6 +2,7 @@ package edu.berkeley.cs160.teamk;
 // Core code copied from Beginning Android Application Development
 // by Wei-Meng Lee.
 
+
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,8 +21,24 @@ import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import android.content.Intent;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.net.Uri;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
 public class FHActivity extends Activity{
+	public static final int MEDIA_TYPE_IMAGE = 1;
+	public static final int MEDIA_TYPE_VIDEO = 2;
+	public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+	
 	Button btn_picture, btn_reject, btn_invite, btn_help;
+	
+	String act_name = "";
+	int score = 0;
 	
 	//---the images to display---
 	Integer[] imageIDs = {
@@ -39,18 +57,17 @@ public class FHActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fhactivity);
 		
-		String name = "";
-		int score = 0;
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-			name = extras.getString("name");
+			act_name = extras.getString("name");
 			score = extras.getInt("score");
 			
 			TextView txt_ActTitle = (TextView) findViewById(R.id.txt_ActTitle);
-			txt_ActTitle.setText(name + " (+" + score + " points)");
+			txt_ActTitle.setText(act_name + " (+" + score + " points)");
 		}
 		
 		Gallery gallery = (Gallery) findViewById(R.id.activityGallery);
+		
 		
 		gallery.setAdapter(new ImageAdapter(this));
 		gallery.setOnItemClickListener(new OnItemClickListener() {
@@ -66,6 +83,43 @@ public class FHActivity extends Activity{
 				imageView.setImageResource(imageIDs[position]);
 			}
 		});
+		
+		//---btn_picture---
+		btn_picture = (Button) findViewById(R.id.btn_ActTakePicture);
+		// Handle click of button.
+		btn_picture.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				Uri fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE, act_name);
+				intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+				
+				// start the image capture Intent.
+				startActivityForResult(intent, 
+						CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+			}
+		});
+		
+		//---btn_invite---
+		btn_invite = (Button) findViewById(R.id.btn_ActInvite);
+		// Handle click of button.
+		btn_invite.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				Intent intent = new Intent(
+						"edu.berkeley.cs160.teamk.BallyhooActivity");
+				intent.putExtras(getIntent().getExtras());
+				startActivity(intent);
+			}
+		});
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+			if (resultCode == RESULT_OK) {
+				String fileName = act_name + " picture taken.";
+				Toast.makeText(this, fileName, Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 	
 	public class ImageAdapter extends BaseAdapter {
@@ -107,5 +161,69 @@ public class FHActivity extends Activity{
 			imageView.setBackgroundResource(itemBackground);
 			return imageView;
 		}
+	}
+	
+	private Uri getOutputMediaFileUri(int type, String name) {
+		String app_name = this.getString(R.string.app_name);
+		
+		File mediaStorageDir;
+		
+		String ext_state = Environment.getExternalStorageState();
+		// If no external memory, this is bad.
+		if (!Environment.MEDIA_MOUNTED.equals(ext_state)) {
+			Toast.makeText(this, "No External Memory!",
+					Toast.LENGTH_SHORT).show();
+			Log.d(app_name, "No External Memory");
+			mediaStorageDir = new File(
+					Environment.getExternalStoragePublicDirectory(
+							Environment.DIRECTORY_PICTURES), app_name);
+			/*
+			mediaStorageDir = new File(
+					Environment.getDataDirectory(), app_name);
+					*/
+		}
+		else {
+			mediaStorageDir = new File(
+					Environment.getExternalStoragePublicDirectory(
+							Environment.DIRECTORY_PICTURES), app_name);
+		}
+		// This location works best if you want the created images to be
+		// shared between applications and persist after your app has been
+		// uninstalled.
+		
+		// Create the storage directory if it does not exist.
+		if (!mediaStorageDir.exists()) {
+			boolean success = mediaStorageDir.mkdirs();
+			if (!success) {
+				Log.d(app_name, "failed to create directory");
+				return null;
+			}
+		}
+		
+		// Create a media file name.
+		String timeStamp 
+			= new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		String fileName = name + "_" + timeStamp;
+		
+		File mediaFile;
+		if (type == MEDIA_TYPE_IMAGE) {
+			mediaFile = new File(
+					mediaStorageDir.getPath()
+					+ File.separator
+					+ fileName
+					+ ".jpg");
+		}
+		else if (type == MEDIA_TYPE_VIDEO) {
+			mediaFile = new File(
+					mediaStorageDir.getPath()
+					+ File.separator
+					+ fileName
+					+ ".mp4");
+		}
+		else {
+			return null;
+		}
+		
+		return Uri.fromFile(mediaFile);
 	}
 }
