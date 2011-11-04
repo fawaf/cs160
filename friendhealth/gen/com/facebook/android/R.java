@@ -25,9 +25,9 @@ public final class R {
     public static final class id {
         public static final int activityGallery=0x7f050001;
         public static final int btn_ActHelp=0x7f050002;
-        public static final int btn_ActInvite=0x7f050003;
-        public static final int btn_ActReject=0x7f050004;
-        public static final int btn_ActTakePicture=0x7f050005;
+        public static final int btn_ActInvite=0x7f050004;
+        public static final int btn_ActReject=0x7f050005;
+        public static final int btn_ActTakePicture=0x7f050003;
         public static final int btn_fHActivity=0x7f050008;
         public static final int img_fhAct=0x7f050006;
         public static final int textView1=0x7f050007;
