@@ -35,7 +35,7 @@ public class FHActivitySelector extends Activity {
         //---get the Login button---
         btn_login = (Button) findViewById(R.id.btn_login);
         
-        //---event handler for the fH Activity button---
+        //---event handler for the Login Activity button---
         btn_login.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
         		startActivity(new Intent(
