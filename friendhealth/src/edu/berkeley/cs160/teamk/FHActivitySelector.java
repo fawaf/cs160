@@ -17,7 +17,11 @@ public class FHActivitySelector extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-      //---get the fH Activity button---
+        //---Immediately try to log in.---
+        startActivity(new Intent(
+				"edu.berkeley.cs160.teamk.LoginActivity"));
+        
+        //---get the fH Activity button---
         fH_button = (Button) findViewById(R.id.btn_fHActivity);
         
         //---event handler for the fH Activity button---
@@ -29,17 +33,6 @@ public class FHActivitySelector extends Activity {
         		extras.putInt("score", 10);
         		i.putExtras(extras);
         		startActivity(i);
-        	}
-        });
-        
-        //---get the Login button---
-        btn_login = (Button) findViewById(R.id.btn_login);
-        
-        //---event handler for the Login Activity button---
-        btn_login.setOnClickListener(new View.OnClickListener() {
-        	public void onClick(View view) {
-        		startActivity(new Intent(
-        				"edu.berkeley.cs160.teamk.LoginActivity"));
         	}
         });
     }
