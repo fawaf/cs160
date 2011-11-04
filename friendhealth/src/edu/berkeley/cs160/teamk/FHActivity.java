@@ -134,7 +134,9 @@ public class FHActivity extends Activity{
 						"edu.berkeley.cs160.teamk.ActivitySubmission");
 				Bundle extras = new Bundle();
 				extras.putString("name", act_name);
+				Log.d("friendHealthfh", "score: " + score);
 				extras.putInt("score", score);
+				Log.d("friendHealthfh", "img_filename: " + img_filename);
 				extras.putString("filename", img_filename);
 				intent.putExtras(extras);
 				

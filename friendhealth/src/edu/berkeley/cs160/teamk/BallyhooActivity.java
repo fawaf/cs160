@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,10 +32,10 @@ public class BallyhooActivity extends Activity {
 			txt_ActivityName.setText(name + " (+" + score + " points)");
 		}
 		
-		//---get the fH Activity button---
+		//---get the Invite button---
 		fH_button = (Button) findViewById(R.id.btn_Invite);
         
-        //---event handler for the fH Activity button---
+        //---event handler for the Invite button---
         fH_button.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
         		try {
@@ -52,6 +51,7 @@ public class BallyhooActivity extends Activity {
         				response = "Invitation Failed";
         			}else{
         				response = "Invitation Successful";
+        				setResult(RESULT_OK);
         			}
         			
         			Intent intent = new Intent("edu.berkeley.cs160.teamk.FHActivity");
