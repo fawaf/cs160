@@ -24,7 +24,6 @@ public class FHActivitySelector extends Activity {
     public static final String APP_ID = "177765768977545";
 
     String FILENAME = "AndroidSSO_data";
-    private SharedPreferences mPrefs;
 	
     /** Called when the activity is first created. */
     @Override
@@ -38,13 +37,13 @@ public class FHActivitySelector extends Activity {
         //startActivity(new Intent(
 		//		"edu.berkeley.cs160.teamk.LoginActivity"));
         
-		Utility.facebook = new Facebook(APP_ID);
+        Utility.facebook = new Facebook(APP_ID);
 		/*
          * Get existing access_token if any
          */
-        mPrefs = getPreferences(MODE_PRIVATE);
-        String access_token = mPrefs.getString("access_token", null);
-        long expires = mPrefs.getLong("access_expires", 0);
+        Utility.mPrefs = getPreferences(MODE_PRIVATE);
+        String access_token = Utility.mPrefs.getString("access_token", null);
+        long expires = Utility.mPrefs.getLong("access_expires", 0);
         if(access_token != null) {
             Utility.facebook.setAccessToken(access_token);
         }
@@ -60,7 +59,7 @@ public class FHActivitySelector extends Activity {
             Utility.facebook.authorize(this, new String[] { "user_photos", "read_stream", "publish_stream" }, new DialogListener() {
                 @Override
                 public void onComplete(Bundle values) {
-                    SharedPreferences.Editor editor = mPrefs.edit();
+                    SharedPreferences.Editor editor = Utility.mPrefs.edit();
                     editor.putString("access_token", Utility.facebook.getAccessToken());
                     editor.putLong("access_expires", Utility.facebook.getAccessExpires());
                     editor.commit();
@@ -77,9 +76,9 @@ public class FHActivitySelector extends Activity {
             });
         } else {
         }
-
         
         Log.d("friendHealth", "Logged in");
+        
         
         //---get the fH Activity button---
         fH_button = (Button) findViewById(R.id.btn_fHActivity);
@@ -102,8 +101,7 @@ public class FHActivitySelector extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
 
         Utility.facebook.authorizeCallback(requestCode, resultCode, data);
-        
-        finish();
+
     }
 
 }
