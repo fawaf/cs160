@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import android.content.Context;
-//import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.util.Log;
 import android.view.View;
@@ -29,12 +28,6 @@ import android.net.Uri;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-/*import com.facebook.android.DialogError;
-import com.facebook.android.Facebook;
-import com.facebook.android.FacebookError;
-import com.facebook.android.Facebook.DialogListener;*/
-
 
 public class FHActivity extends Activity{
 	public static final int MEDIA_TYPE_IMAGE = 1;

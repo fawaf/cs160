@@ -34,10 +34,6 @@ public class FHActivitySelector extends Activity {
         
         Log.d("friendHealth", "Starting...");
         
-        //---Immediately try to log in.---
-        //startActivity(new Intent(
-		//		"edu.berkeley.cs160.teamk.LoginActivity"));
-        
 		Utility.facebook = new Facebook(APP_ID);
 		/*
          * Get existing access_token if any

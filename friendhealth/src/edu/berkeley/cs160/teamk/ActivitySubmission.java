@@ -17,6 +17,7 @@ import android.os.Bundle;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.util.Log;
 
@@ -57,8 +58,14 @@ public class ActivitySubmission extends Activity {
 			myBitmap.compress(CompressFormat.JPEG, 100, bos);
 			
 			SharedPreferences mPref = getSharedPreferences("LoginActivity", MODE_PRIVATE);
+			EditText edt_Caption = (EditText) findViewById(R.id.edt_Caption);
+			String caption = edt_Caption.getText().toString();
 			bundle.putByteArray("picture", bos.toByteArray());
-			bundle.putString("message", "Photo for " + act_name);
+			if (caption.equals("")) {
+				bundle.putString("message", "Photo for " + act_name);
+			} else {
+				bundle.putString("message", caption);
+			}
 			bundle.putString(Facebook.TOKEN, mPref.getString("access_token", null));
 			Log.d("friendHealthAS", "access_tokenAS: " + mPref.getString("access_token", null));
 			
@@ -72,7 +79,7 @@ public class ActivitySubmission extends Activity {
 	        			String response = Utility.facebook.request("me/photos", bundle, "POST");
 	        			
 	        			if (response.indexOf("OAuthException") > -1) {
-	        				//response = "Submission Failed";
+	        				response = "Submission Failed";
 	        			} else {
 	        				response = "Submission Successful";
 	        			}
