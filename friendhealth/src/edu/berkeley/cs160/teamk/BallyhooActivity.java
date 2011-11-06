@@ -16,13 +16,16 @@ import com.facebook.android.*;
 
 public class BallyhooActivity extends Activity {
 	Button fH_button;
+	String name = "";
+	int score = 0;
+	String origVal = "";
+	EditText edt_Message;
+	String message;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ballyhooactivity);
         
-        String name = "";
-		int score = 0;
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			name = extras.getString("name");
@@ -32,6 +35,21 @@ public class BallyhooActivity extends Activity {
 			txt_ActivityName.setText(name + " (+" + score + " points)");
 		}
 		
+		origVal = "I am going to perform the activity: " + name;
+		
+		edt_Message = (EditText) findViewById(R.id.edt_Message);
+		edt_Message.setText(origVal);
+		edt_Message.setOnClickListener(new View.OnClickListener() {
+			String message = edt_Message.getText().toString();
+
+			@Override
+			public void onClick(View v) {
+					if(message.equals(origVal)) {
+						edt_Message.setText("");
+					}
+				}
+			});
+
 		//---get the Invite button---
 		fH_button = (Button) findViewById(R.id.btn_Invite);
         
@@ -40,8 +58,12 @@ public class BallyhooActivity extends Activity {
         	public void onClick(View view) {
         		try {
         			EditText edt_Message = (EditText) findViewById(R.id.edt_Message);
-        			String message = edt_Message.getText().toString();
-        			SharedPreferences mPref = getSharedPreferences("LoginActivity", MODE_PRIVATE);
+        			message = edt_Message.getText().toString();
+        			if (message.equals("")) {
+        				message = origVal;
+        			}
+        			
+        			SharedPreferences mPref = getPreferences(MODE_PRIVATE);
         			Bundle bundle = new Bundle();
         			bundle.putString("message", message);
         			bundle.putString(Facebook.TOKEN, mPref.getString("access_token", null));
@@ -65,4 +87,4 @@ public class BallyhooActivity extends Activity {
         	}
         });
 	}
-}
+	}

@@ -27,6 +27,8 @@ public class ActivitySubmission extends Activity {
 	String img_filename = "";
 	int score = 0;
 	Button fH_button;
+	String origVal = "";
+	EditText edt_Caption;
 	Bundle bundle = new Bundle();
 	
 	@Override
@@ -61,6 +63,21 @@ public class ActivitySubmission extends Activity {
 			bundle.putString(Facebook.TOKEN, mPref.getString("access_token", null));
 			Log.d("friendHealthAS", "access_tokenAS: " + mPref.getString("access_token", null));
 			
+			origVal = "Photo for " + act_name;
+			
+			edt_Caption = (EditText) findViewById(R.id.edt_Caption);
+			edt_Caption.setText(origVal);
+			edt_Caption.setOnClickListener(new View.OnClickListener() {
+				String message = edt_Caption.getText().toString();
+
+				@Override
+				public void onClick(View v) {
+						if(message.equals(origVal)) {
+							edt_Caption.setText("");
+						}
+					}
+				});
+			
 			//---get the Submit button---
 			fH_button = (Button) findViewById(R.id.btn_Submit);
 	        
@@ -68,7 +85,7 @@ public class ActivitySubmission extends Activity {
 	        fH_button.setOnClickListener(new View.OnClickListener() {
 	        	public void onClick(View view) {
 	        		try {
-	        			EditText edt_Caption = (EditText) findViewById(R.id.edt_Caption);
+	        			edt_Caption = (EditText) findViewById(R.id.edt_Caption);
 	        			String caption = edt_Caption.getText().toString();
 	        			if (caption.equals("")) {
 	        				bundle.putString("message", "Photo for " + act_name);
