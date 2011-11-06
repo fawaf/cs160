@@ -56,16 +56,8 @@ public class ActivitySubmission extends Activity {
 			
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			myBitmap.compress(CompressFormat.JPEG, 100, bos);
-			
-			SharedPreferences mPref = getSharedPreferences("LoginActivity", MODE_PRIVATE);
-			EditText edt_Caption = (EditText) findViewById(R.id.edt_Caption);
-			String caption = edt_Caption.getText().toString();
 			bundle.putByteArray("picture", bos.toByteArray());
-			if (caption.equals("")) {
-				bundle.putString("message", "Photo for " + act_name);
-			} else {
-				bundle.putString("message", caption);
-			}
+			SharedPreferences mPref = getSharedPreferences("LoginActivity", MODE_PRIVATE);
 			bundle.putString(Facebook.TOKEN, mPref.getString("access_token", null));
 			Log.d("friendHealthAS", "access_tokenAS: " + mPref.getString("access_token", null));
 			
@@ -76,6 +68,13 @@ public class ActivitySubmission extends Activity {
 	        fH_button.setOnClickListener(new View.OnClickListener() {
 	        	public void onClick(View view) {
 	        		try {
+	        			EditText edt_Caption = (EditText) findViewById(R.id.edt_Caption);
+	        			String caption = edt_Caption.getText().toString();
+	        			if (caption.equals("")) {
+	        				bundle.putString("message", "Photo for " + act_name);
+	        			} else {
+	        				bundle.putString("message", caption);
+	        			}
 	        			String response = Utility.facebook.request("me/photos", bundle, "POST");
 	        			
 	        			if (response.indexOf("OAuthException") > -1) {
