@@ -81,32 +81,59 @@
         android:text="act2"
         android:textSize="15pt"
         android:textStyle="bold" />
-
+
     <ImageButton
-        android:id="@+id/reject3"
+        android:id="@+id/reject1"
+        android:layout_width="70dp"
+        android:layout_height="61dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/btn_activity1"
+        android:layout_toLeftOf="@+id/btn_activity1"
+        android:background="@drawable/reject2" />
+
+    <ImageButton
+        android:id="@+id/camera1"
         android:layout_width="70dp"
         android:layout_height="65dp"
         android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/newTask"
-        android:layout_alignTop="@+id/btn_activity3"
-        android:background="@drawable/reject" />
-
+        android:layout_alignRight="@+id/reject1"
+        android:layout_below="@+id/reject1"
+        android:background="@drawable/camera" />
+
     <ImageButton
         android:id="@+id/reject2"
         android:layout_width="70dp"
-        android:layout_height="65dp"
+        android:layout_height="61dp"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/btn_activity2"
         android:layout_toLeftOf="@+id/btn_activity2"
-        android:background="@drawable/reject" />
-
+        android:background="@drawable/reject2" />
+
     <ImageButton
-        android:id="@+id/reject1"
+        android:id="@+id/camera2"
         android:layout_width="70dp"
         android:layout_height="65dp"
         android:layout_alignParentLeft="true"
         android:layout_alignRight="@+id/reject2"
-        android:layout_alignTop="@+id/btn_activity1"
-        android:background="@drawable/reject" />
+        android:layout_below="@+id/reject2"
+        android:background="@drawable/camera" />
+
+    <ImageButton
+        android:id="@+id/reject3"
+        android:layout_width="70dp"
+        android:layout_height="61dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/btn_activity3"
+        android:layout_toLeftOf="@+id/btn_activity3"
+        android:background="@drawable/reject2" />
+
+    <ImageButton
+        android:id="@+id/camera3"
+        android:layout_width="70dp"
+        android:layout_height="65dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/reject3"
+        android:layout_toLeftOf="@+id/btn_activity3"
+        android:background="@drawable/camera" />
 
 </RelativeLayout>    
