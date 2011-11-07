@@ -34,6 +34,8 @@ public class FHActivity extends Activity{
 	public static final int MEDIA_TYPE_VIDEO = 2;
 	public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	
+	private static String prefName = "LoginActivity";
+	
 	Button btn_picture, btn_reject, btn_invite, btn_help;
 	
 	String act_name = "";
