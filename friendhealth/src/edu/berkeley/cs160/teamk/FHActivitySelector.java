@@ -105,8 +105,11 @@ public class FHActivitySelector extends Activity {
         Log.d("friendHealth", "Database created");
         
         final String name1 = act1.name;
+        act1_button.setText(name1);
         final String name2 = act2.name;
+        act2_button.setText(name2);
         final String name3 = act3.name;
+        act3_button.setText(name3);
         
         final int score1 = act1.points;
         final int score2 = act2.points;
@@ -170,6 +173,7 @@ public class FHActivitySelector extends Activity {
 			}
 		});
 		*/
+		
         
         
         
