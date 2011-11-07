@@ -3,3 +3,4 @@ friendhealth/bin/
 friendhealth/.classpath
 com_facebook_android/
 facebook-android-sdk/
+.DS_Store
