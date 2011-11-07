@@ -9,8 +9,7 @@ public class Database {
 	int count = 0;
 	Random randomGenerator = new Random();
 	
-	public Database()
-	{	
+	public Database() {	
 		tasks[0] = new Task("Eat an Apple", 2, "Go eat an apple dude", false);
 		tasks[1] = new Task("Go Swimming", 72, "The pool is open now, you should go get wet", false);
 		tasks[2] = new Task("Do some Gardening", 33, "Your plants need some TLC", false);
@@ -20,23 +19,17 @@ public class Database {
 		tasks[6] = new Task("Gym Time", 20, "Go to gym and do some exercise", false);
 	}
 	
-	public Task getTask()
-	{	
+	public Task getTask() {	
 		Task result = tasks[count];
-		if (count == MAXCOUNT)
-		{
+		if (count == MAXCOUNT) {
 			count = 0;
-		}
-		else
-		{
+		} else {
 			count++;
 		}
 		return result;
 	}
 	
-	public Task generateTask()
-	{
-		
+	public Task generateTask() {
 		return tasks[randomGenerator.nextInt(MAXCOUNT)-1];
 	}
 

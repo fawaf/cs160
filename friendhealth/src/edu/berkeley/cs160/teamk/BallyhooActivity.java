@@ -76,6 +76,7 @@ public class BallyhooActivity extends Activity {
         				Log.d("friendHealthBA", "Response: " + response);
         				response = "Invitation Failed";
         			}else{
+        				Log.d("friendHealthBA", "Response: " + response);
         				response = "Invitation Successful";
         				setResult(RESULT_OK);
         			}
