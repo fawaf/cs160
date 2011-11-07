@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.util.Log;
 import android.view.View;
@@ -58,21 +59,33 @@ public class FHActivity extends Activity{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.fhactivity);		
+		setContentView(R.layout.fhactivity);
+		
+		act_name = Utility.mPrefs.getString("act_name", "");
+		score = Utility.mPrefs.getInt("act_score", 0);
+		response = Utility.mPrefs.getString("act_response", "");
+		img_filename = Utility.mPrefs.getString("act_img_filename", "");
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			act_name = extras.getString("name");
 			score = extras.getInt("score");
 			response = extras.getString("response");
+			
+			SharedPreferences.Editor editor = Utility.mPrefs.edit();
+			editor.putString("act_name", act_name);
+			editor.putInt("act_score", score);
+			editor.putString("act_response", response);
+			editor.commit();
 	
 			if(response != null){
 				Toast.makeText(getBaseContext(), response, Toast.LENGTH_LONG).show();
 			}
 			
-			TextView txt_ActTitle = (TextView) findViewById(R.id.txt_ActTitle);
-			txt_ActTitle.setText(act_name + " (+" + score + " points)");
 		}
+		TextView txt_ActTitle = (TextView) findViewById(R.id.txt_ActTitle);
+		txt_ActTitle.setText(act_name + " (+" + score + " points)");
+			
 		
 		Gallery gallery = (Gallery) findViewById(R.id.activityGallery);
 		
@@ -103,6 +116,10 @@ public class FHActivity extends Activity{
 				Uri fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE, act_name);
 				img_filename = fileUri.toString();
 				intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+				
+				SharedPreferences.Editor editor = Utility.mPrefs.edit();
+				editor.putString("act_img_filename", img_filename);
+				editor.commit();
 				
 				Log.d("friendHealth", "Image name: " + img_filename);
 				

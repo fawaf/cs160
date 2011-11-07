@@ -55,6 +55,7 @@ public class ActivitySubmission extends Activity {
 					= BitmapFactory.decodeFile(shortname);
 			Log.d("friendHealth", "Displaying image");
 			imageView.setImageBitmap(myBitmap);
+			Log.d("friendHealth", "Image displayed");
 			
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			myBitmap.compress(CompressFormat.JPEG, 100, bos);
