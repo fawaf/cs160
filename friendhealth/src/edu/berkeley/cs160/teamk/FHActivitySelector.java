@@ -88,9 +88,7 @@ public class FHActivitySelector extends Activity {
         
         Log.d("friendHealth", "Logged in inited.");
         
-        //---get the fH Activity button---
-        fH_button = (Button) findViewById(R.id.btn_fHActivity);
-        
+        //---Find Activity Buttons---
         Log.d("friendHealth", "Init button fH_Act");
         act1_button = (Button) findViewById(R.id.btn_activity1);
         act2_button = (Button) findViewById(R.id.btn_activity2);
@@ -116,25 +114,10 @@ public class FHActivitySelector extends Activity {
         final int score3 = act3.points;
         
         Log.d("friendHealth", "Set up variables, and setting listeners.");
-        //---event handler for the fH Activity button---
-        fH_button.setOnClickListener(new View.OnClickListener()
-        {
-        	public void onClick(View view) {
-        		Intent i = new Intent("edu.berkeley.cs160.teamk.FHActivity");
-        		Bundle extras = new Bundle();
-        		extras.putString("name", "Eat an Apple");
-        		extras.putInt("score", 10);
-        		i.putExtras(extras);
-        		startActivity(i);
-        	}	
-        });
-        Log.d(app_name, "fH_button connected");
         
         act1_button.setOnClickListener(new View.OnClickListener()
         {
         	public void onClick(View view) {
-        		Log.d(app_name, "Printing name1 and score1");
-        		Log.d(app_name, "Activity: " + name1 + " " + score1);
         		Intent i = new Intent("edu.berkeley.cs160.teamk.FHActivity");
         		Bundle extras = new Bundle();
         		extras.putString("name", name1);
