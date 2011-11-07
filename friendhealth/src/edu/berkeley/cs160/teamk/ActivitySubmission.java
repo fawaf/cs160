@@ -57,7 +57,7 @@ public class ActivitySubmission extends Activity {
 			imageView.setImageBitmap(myBitmap);
 			
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			myBitmap.compress(CompressFormat.JPEG, 100, bos);
+			myBitmap.compress(CompressFormat.JPEG, 1000, bos);
 			bundle.putByteArray("picture", bos.toByteArray());
 			SharedPreferences mPref = getSharedPreferences("LoginActivity", MODE_PRIVATE);
 			bundle.putString(Facebook.TOKEN, mPref.getString("access_token", null));

@@ -45,6 +45,7 @@ public class FHActivitySelector extends Activity {
          */
         Utility.mPrefs = getPreferences(MODE_PRIVATE);
         String access_token = Utility.mPrefs.getString("access_token", null);
+        Log.d("friendHealthFHACTSEL", "AccessToken: " + access_token);
         long expires = Utility.mPrefs.getLong("access_expires", 0);
         if (access_token != null)
         {
