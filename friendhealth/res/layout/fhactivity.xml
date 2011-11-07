@@ -10,7 +10,7 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
 		android:layout_centerHorizontal="true"
-		android:text="Replace with Activity Title!" />
+		android:text="Replace with Activity Title!" android:textSize="15pt"/>
 	<Gallery
 		android:id="@+id/activityGallery"
 		android:layout_width="fill_parent"
@@ -32,12 +32,16 @@
 		android:text="Invite Others to Activity"
 		android:layout_alignParentBottom="true"
 		android:layout_centerHorizontal="true" />
-	<Button android:id="@+id/btn_ActReject"
-		android:layout_height="wrap_content"
-		android:layout_width="110dp"
-		android:text="Reject Activity"
-		android:layout_alignParentBottom="true"
-		android:layout_alignParentLeft="true" />
+
+	<Button
+	    android:id="@+id/btn_ActReject"
+	    android:layout_width="110dp"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+	    android:layout_alignParentLeft="true"
+	    android:layout_below="@+id/btn_ActTakePicture"
+	    android:text="Reject Activity" />
+
 	<Button android:id="@+id/btn_ActTakePicture"
 		android:layout_height="wrap_content"
 		android:layout_width="match_parent"
