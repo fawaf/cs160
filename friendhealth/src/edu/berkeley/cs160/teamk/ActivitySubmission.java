@@ -9,7 +9,6 @@ import com.facebook.android.Facebook;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -60,9 +59,9 @@ public class ActivitySubmission extends Activity {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			myBitmap.compress(CompressFormat.JPEG, 50, bos);
 			bundle.putByteArray("picture", bos.toByteArray());
-			SharedPreferences mPref = getSharedPreferences("LoginActivity", MODE_PRIVATE);
-			bundle.putString(Facebook.TOKEN, mPref.getString("access_token", null));
-			Log.d("friendHealthAS", "access_token: " + mPref.getString("access_token", null));
+			Utility.mPrefs = getSharedPreferences("FHActivitySelector", MODE_PRIVATE);
+			bundle.putString(Facebook.TOKEN, Utility.mPrefs.getString("access_token", null));
+			Log.d("friendHealthAS", "access_token: " + Utility.mPrefs.getString("access_token", null));
 			
 			origVal = "Photo for " + act_name;
 			
@@ -96,8 +95,10 @@ public class ActivitySubmission extends Activity {
 	        			String response = Utility.facebook.request("me/photos", bundle, "POST");
 	        			
 	        			if (response.indexOf("OAuthException") > -1) {
+	        				Log.d("friendHealthBA", "Response: " + response);
 	        				response = "Submission Failed";
 	        			} else {
+	        				Log.d("friendHealthBA", "Response: " + response);
 	        				response = "Submission Successful";
 	        			}
 	        			

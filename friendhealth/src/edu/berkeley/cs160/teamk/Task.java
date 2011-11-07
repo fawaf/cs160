@@ -7,7 +7,7 @@ public class Task {
 	String description = "";
 	boolean isFlagged = false;
 	
-	public Task(String name, int points, String description, boolean isFlagged){
+	public Task(String name, int points, String description, boolean isFlagged) {
 		this.name = name;
 		this.points = points;
 		this.description = description;

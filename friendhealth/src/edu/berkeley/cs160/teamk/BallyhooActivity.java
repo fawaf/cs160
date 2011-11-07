@@ -65,7 +65,7 @@ public class BallyhooActivity extends Activity {
         			
         			Log.d("friendHealthBA", "Edit message: " + message);
         			
-        			Utility.mPrefs = getSharedPreferences("LoginActivity", MODE_PRIVATE);
+        			Utility.mPrefs = getSharedPreferences("FHActivitySelector", MODE_PRIVATE);
         			Bundle bundle = new Bundle();
         			bundle.putString("message", message);
         			bundle.putString(Facebook.TOKEN, Utility.mPrefs.getString("access_token", null));
@@ -76,6 +76,7 @@ public class BallyhooActivity extends Activity {
         				Log.d("friendHealthBA", "Response: " + response);
         				response = "Invitation Failed";
         			}else{
+        				Log.d("friendHealthBA", "Response: " + response);
         				response = "Invitation Successful";
         				setResult(RESULT_OK);
         			}

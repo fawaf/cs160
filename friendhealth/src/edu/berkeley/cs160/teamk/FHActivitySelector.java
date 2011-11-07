@@ -31,8 +31,7 @@ public class FHActivitySelector extends Activity {
 	
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState) 
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
@@ -46,20 +45,17 @@ public class FHActivitySelector extends Activity {
         String access_token = Utility.mPrefs.getString("access_token", null);
         Log.d("friendHealthFHASA", "AccessToken: " + access_token);
         long expires = Utility.mPrefs.getLong("access_expires", 0);
-        if (access_token != null)
-        {
+        if (access_token != null) {
             Utility.facebook.setAccessToken(access_token);
         }
-        if (expires != 0) 
-        {
+        if (expires != 0) {
             Utility.facebook.setAccessExpires(expires);
         }
         
         /*
          * Only call authorize if the access_token has expired.
          */
-        if(!Utility.facebook.isSessionValid()) 
-        {
+        if(!Utility.facebook.isSessionValid()) {
 
             Utility.facebook.authorize(this, new String[] { "user_photos", "read_stream", "publish_stream" }, new DialogListener() {
                 @Override
@@ -80,8 +76,7 @@ public class FHActivitySelector extends Activity {
                 public void onCancel() {}
             });
         }
-        else 
-        {
+        else {
         }
 
         
@@ -117,8 +112,7 @@ public class FHActivitySelector extends Activity {
         
         Log.d("friendHealthFHAS", "Set up variables, and setting listeners");
         
-        act1_button.setOnClickListener(new View.OnClickListener()
-        {
+        act1_button.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
         		Intent i = new Intent("edu.berkeley.cs160.teamk.FHActivity");
         		Bundle extras = new Bundle();
@@ -129,8 +123,7 @@ public class FHActivitySelector extends Activity {
         	}	
         });
         
-        act2_button.setOnClickListener(new View.OnClickListener()
-        {
+        act2_button.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
         		Intent i = new Intent("edu.berkeley.cs160.teamk.FHActivity");
         		Bundle extras = new Bundle();
@@ -141,8 +134,7 @@ public class FHActivitySelector extends Activity {
         	}	
         });
         
-        act3_button.setOnClickListener(new View.OnClickListener()
-        {
+        act3_button.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
         		Intent i = new Intent("edu.berkeley.cs160.teamk.FHActivity");
         		Bundle extras = new Bundle();
@@ -153,31 +145,7 @@ public class FHActivitySelector extends Activity {
         	}	
         });
         
-        Log.d("friendHealthFHASA", "buttons connected");
-        
-        /*
-        newTask.setOnClickListener(new View.OnClickListener() 
-        {
-			public void onClick(View v) {
-		        Task act1 = data.generateTask();
-		        Task act2 = data.generateTask();
-		        Task act3 = data.generateTask();
-		        
-		        final String name1 = act1.name;
-		        final String name2 = act2.name;
-		        final String name3 = act3.name;
-		        
-		        final int score1 = act1.points;
-		        final int score2 = act2.points;
-		        final int score3 = act3.points;
-			}
-		});
-		*/
-		
-        
-        
-        
-        
+        Log.d("friendHealthFHASA", "buttons connected");       
         
     }
 
