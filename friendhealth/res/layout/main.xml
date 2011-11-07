@@ -1,16 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello" />
-        
-    <Button android:id="@+id/btn_fHActivity"
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:text = "fH Activity"/>
-</LinearLayout>
+
+    <Button
+        android:id="@+id/btn_fHActivity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="19dp"
+        android:text="fH Activity" />
+
+    <Button
+        android:id="@+id/btn_activity1"
+        android:layout_width="250dp"
+        android:layout_height="75dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="false"
+        android:layout_below="@+id/btn_fHActivity"
+        android:textStyle="bold" android:textSize="15pt" android:text="act1" />
+
+    <Button
+        android:id="@+id/btn_activity2"
+        android:layout_width="250dp"
+        android:layout_height="75dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="act2"
+        android:textSize="15pt"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_activity3"
+        android:layout_width="250dp"
+        android:layout_height="75dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/btn_activity2"
+        android:layout_marginTop="46dp"
+        android:text="act3"
+        android:textSize="15pt"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/reject1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btn_activity1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/btn_activity1"
+        android:layout_toLeftOf="@+id/btn_activity1"
+        android:text="Reject Task" />
+
+    <Button
+        android:id="@+id/reject2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btn_activity2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/btn_activity2"
+        android:layout_toLeftOf="@+id/btn_activity2"
+        android:text="Reject Task" />
+
+    <Button
+        android:id="@+id/reject3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btn_activity3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/btn_activity3"
+        android:layout_toLeftOf="@+id/btn_activity3"
+        android:text="Reject Task" />
+
+    <Button
+        android:id="@+id/newTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_toLeftOf="@+id/btn_activity3"
+        android:text="New Tasks" />
+
+
+    <Button
+        android:id="@+id/calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/newTask"
+        android:layout_alignLeft="@+id/btn_activity3"
+        android:layout_alignTop="@+id/newTask"
+        android:text="Calendar" />
+
+
+
+
+    <Button
+        android:id="@+id/leaderboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/calendar"
+        android:layout_alignTop="@+id/calendar"
+        android:layout_toRightOf="@+id/calendar"
+        android:text="Leaderboard" />
+
+
+
+    <Button
+        android:id="@+id/as_help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/leaderboard"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/leaderboard"
+        android:layout_toRightOf="@+id/leaderboard"
+        android:text="Help" />
+
+</RelativeLayout>    
