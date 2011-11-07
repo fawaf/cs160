@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
 
     <TextView
         android:id="@+id/textView1"
@@ -24,7 +24,6 @@
         android:layout_width="127dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/newTask"
-        android:layout_below="@+id/btn_activity3"
         android:layout_toRightOf="@+id/newTask"
         android:text="Calendar" />
 
@@ -33,7 +32,6 @@
         android:layout_width="127dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/calendar"
-        android:layout_below="@+id/btn_activity3"
         android:layout_toRightOf="@+id/calendar"
         android:text="Scores" />
 
@@ -43,97 +41,86 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/leaderboard"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/btn_activity3"
         android:text="Help" />
 
     <Button
-        android:id="@+id/btn_activity3"
-        android:layout_width="300dp"
-        android:layout_height="135dp"
-        android:layout_above="@+id/newTask"
-        android:layout_alignLeft="@+id/calendar"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="21dp"
-        android:text="act3"
-        android:textSize="15pt"
-        android:textStyle="bold" />
-
-    <Button
         android:id="@+id/btn_activity1"
-        android:layout_width="300dp"
-        android:layout_height="135dp"
-        android:layout_alignLeft="@+id/btn_activity2"
+        android:layout_width="350dp"
+        android:layout_height="85dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/textView1"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="22dp"
         android:text="act1"
         android:textSize="15pt"
         android:textStyle="bold" />
 
     <Button
         android:id="@+id/btn_activity2"
-        android:layout_width="300dp"
-        android:layout_height="135dp"
+        android:layout_width="350dp"
+        android:layout_height="85dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/btn_activity1"
-        android:layout_marginTop="49dp"
-        android:layout_toRightOf="@+id/newTask"
+        android:layout_marginTop="53dp"
         android:text="act2"
+        android:textSize="15pt"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_activity3"
+        android:layout_width="350dp"
+        android:layout_height="85dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/btn_activity2"
+        android:layout_marginTop="40dp"
+        android:text="act3"
         android:textSize="15pt"
         android:textStyle="bold" />
 
     <ImageButton
         android:id="@+id/reject1"
-        android:layout_width="70dp"
-        android:layout_height="61dp"
+        android:layout_width="175dp"
+        android:layout_height="70dp"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/btn_activity1"
-        android:layout_toLeftOf="@+id/btn_activity1"
         android:background="@drawable/reject2" />
 
     <ImageButton
         android:id="@+id/camera1"
-        android:layout_width="70dp"
-        android:layout_height="65dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/reject1"
-        android:layout_below="@+id/reject1"
-        android:background="@drawable/camera" />
+        android:layout_width="175dp"
+        android:layout_height="70dp"
+        android:layout_alignRight="@+id/leaderboard"
+        android:layout_alignTop="@+id/reject1"
+        android:background="@drawable/camera3" />
 
     <ImageButton
         android:id="@+id/reject2"
-        android:layout_width="70dp"
-        android:layout_height="61dp"
-        android:layout_alignParentLeft="true"
+        android:layout_width="175dp"
+        android:layout_height="70dp"
         android:layout_alignTop="@+id/btn_activity2"
-        android:layout_toLeftOf="@+id/btn_activity2"
-        android:background="@drawable/reject2" />
+        android:background="@drawable/reject" />
 
     <ImageButton
         android:id="@+id/camera2"
-        android:layout_width="70dp"
-        android:layout_height="65dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/reject2"
-        android:layout_below="@+id/reject2"
-        android:background="@drawable/camera" />
-
-    <ImageButton
-        android:id="@+id/reject3"
-        android:layout_width="70dp"
-        android:layout_height="61dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/btn_activity3"
-        android:layout_toLeftOf="@+id/btn_activity3"
-        android:background="@drawable/reject2" />
-
+        android:layout_width="175dp"
+        android:layout_height="70dp"
+        android:layout_alignLeft="@+id/camera1"
+        android:layout_alignTop="@+id/reject2"
+        android:background="@drawable/camera3" />
+
     <ImageButton
         android:id="@+id/camera3"
-        android:layout_width="70dp"
-        android:layout_height="65dp"
+        android:layout_width="75pt"
+        android:layout_height="70dp"
+        android:layout_alignLeft="@+id/camera2"
+        android:layout_alignTop="@+id/btn_activity3"
+        android:background="@drawable/camera3" />
+
+    <ImageButton
+        android:id="@+id/reject3"
+        android:layout_width="175dp"
+        android:layout_height="70dp"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/reject3"
-        android:layout_toLeftOf="@+id/btn_activity3"
-        android:background="@drawable/camera" />
+        android:layout_alignTop="@+id/camera3"
+        android:background="@drawable/reject2" />
 
 </RelativeLayout>    
