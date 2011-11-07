@@ -35,8 +35,6 @@ public class FHActivity extends Activity{
 	public static final int MEDIA_TYPE_VIDEO = 2;
 	public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	
-	private static String prefName = "LoginActivity";
-	
 	Button btn_picture, btn_reject, btn_invite, btn_help;
 	
 	String act_name = "";
@@ -110,7 +108,7 @@ public class FHActivity extends Activity{
 		// Handle click of button.
 		btn_picture.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				Log.d("friendHealth", "Taking Image from Activity");
+				Log.d("friendHealthFHA", "Taking Image from Activity");
 				
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 				Uri fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE, act_name);
@@ -121,7 +119,7 @@ public class FHActivity extends Activity{
 				editor.putString("act_img_filename", img_filename);
 				editor.commit();
 				
-				Log.d("friendHealth", "Image name: " + img_filename);
+				Log.d("friendHealthFHA", "Image name: " + img_filename);
 				
 				// start the image capture Intent.
 				startActivityForResult(intent, 
@@ -146,19 +144,19 @@ public class FHActivity extends Activity{
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
-				Log.d("friendHealth", act_name + " image taken.");
+				Log.d("friendHealthFHA", act_name + " image taken.");
 				
 				Intent intent = new Intent(
 						"edu.berkeley.cs160.teamk.ActivitySubmission");
 				Bundle extras = new Bundle();
 				extras.putString("name", act_name);
-				Log.d("friendHealthfh", "score: " + score);
+				Log.d("friendHealthFHA", "score: " + score);
 				extras.putInt("score", score);
-				Log.d("friendHealthfh", "img_filename: " + img_filename);
+				Log.d("friendHealthFHA", "img_filename: " + img_filename);
 				extras.putString("filename", img_filename);
 				intent.putExtras(extras);
 				
-				Log.d("friendHealth", "Starting submission activity");
+				Log.d("friendHealthFHA", "Starting submission activity");
 				startActivity(intent);
 			}
 		}
@@ -207,7 +205,6 @@ public class FHActivity extends Activity{
 	}
 	
 	private Uri getOutputMediaFileUri(int type, String name) {
-		String app_name = "friendHealth";
 		
 		File mediaStorageDir;
 		
@@ -216,19 +213,15 @@ public class FHActivity extends Activity{
 		if (!Environment.MEDIA_MOUNTED.equals(ext_state)) {
 			Toast.makeText(this, "No External Memory!",
 					Toast.LENGTH_SHORT).show();
-			Log.d(app_name, "No External Memory");
+			Log.d("friendHealthFHA", "No External Memory");
 			mediaStorageDir = new File(
 					Environment.getExternalStoragePublicDirectory(
-							Environment.DIRECTORY_PICTURES), app_name);
-			/*
-			mediaStorageDir = new File(
-					Environment.getDataDirectory(), app_name);
-					*/
+							Environment.DIRECTORY_PICTURES), Utility.app_name);
 		}
 		else {
 			mediaStorageDir = new File(
 					Environment.getExternalStoragePublicDirectory(
-							Environment.DIRECTORY_PICTURES), app_name);
+							Environment.DIRECTORY_PICTURES), Utility.app_name);
 		}
 		// This location works best if you want the created images to be
 		// shared between applications and persist after your app has been
@@ -238,11 +231,11 @@ public class FHActivity extends Activity{
 		if (!mediaStorageDir.exists()) {
 			boolean success = mediaStorageDir.mkdirs();
 			if (!success) {
-				Log.d(app_name, "failed to create directory");
+				Log.d("friendHealthFHA", "failed to create directory");
 				return null;
 			}
 			else {
-				Log.d(app_name, "directory created");
+				Log.d("friendHealthFHA", "directory created");
 			}
 		}
 		
@@ -272,7 +265,7 @@ public class FHActivity extends Activity{
 		
 		
 		Uri file = Uri.fromFile(mediaFile);
-		Log.d(app_name, "file name " + file.toString());
+		Log.d("friendHealthFHA", "file name " + file.toString());
 		
 		return file;
 	}

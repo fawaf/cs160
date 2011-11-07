@@ -36,7 +36,7 @@ public class ActivitySubmission extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activitysubmission);
 		
-		Log.d("friendHealth", "ActivitySubmission drawn");
+		Log.d("friendHealthAS", "ActivitySubmission drawn");
 		
 		//---display the image taken---
 		ImageView imageView = (ImageView) findViewById(R.id.img_submit);
@@ -47,15 +47,15 @@ public class ActivitySubmission extends Activity {
 			img_filename = extras.getString("filename");
 			score = extras.getInt("score");
 			
-			Log.d("friendHealth", "Full name " + img_filename);
+			Log.d("friendHealthAS", "Full name " + img_filename);
 			String shortname = img_filename.substring(11);
-			Log.d("friendHealth", "Display " + shortname);
+			Log.d("friendHealthAS", "Display " + shortname);
 			
 			Bitmap myBitmap 
 					= BitmapFactory.decodeFile(shortname);
-			Log.d("friendHealth", "Displaying image");
+			Log.d("friendHealthAS", "Displaying image");
 			imageView.setImageBitmap(myBitmap);
-			Log.d("friendHealth", "Image displayed");
+			Log.d("friendHealthAS", "Image displayed");
 			
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			myBitmap.compress(CompressFormat.JPEG, 100, bos);

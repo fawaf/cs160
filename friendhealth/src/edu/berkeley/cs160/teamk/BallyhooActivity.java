@@ -5,8 +5,8 @@ import java.net.MalformedURLException;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,13 +63,17 @@ public class BallyhooActivity extends Activity {
         				message = origVal;
         			}
         			
-        			SharedPreferences mPref = getPreferences(MODE_PRIVATE);
+        			Log.d("friendHealthBA", "Edit message: " + message);
+        			
+        			Utility.mPrefs = getSharedPreferences("LoginActivity", MODE_PRIVATE);
         			Bundle bundle = new Bundle();
         			bundle.putString("message", message);
-        			bundle.putString(Facebook.TOKEN, mPref.getString("access_token", null));
+        			bundle.putString(Facebook.TOKEN, Utility.mPrefs.getString("access_token", null));
+        			Log.d("friendHealthBA", "Access_token: " + Utility.mPrefs.getString("access_token", null));
         			String response = Utility.facebook.request("me/feed", bundle, "POST");
         			
         			if(response.indexOf("OAuthException") > -1){
+        				Log.d("friendHealthBA", "Response: " + response);
         				response = "Invitation Failed";
         			}else{
         				response = "Invitation Successful";
