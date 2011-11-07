@@ -58,11 +58,11 @@ public class ActivitySubmission extends Activity {
 			Log.d("friendHealthAS", "Image displayed");
 			
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			myBitmap.compress(CompressFormat.JPEG, 100, bos);
+			myBitmap.compress(CompressFormat.JPEG, 50, bos);
 			bundle.putByteArray("picture", bos.toByteArray());
 			SharedPreferences mPref = getSharedPreferences("LoginActivity", MODE_PRIVATE);
 			bundle.putString(Facebook.TOKEN, mPref.getString("access_token", null));
-			Log.d("friendHealthAS", "access_tokenAS: " + mPref.getString("access_token", null));
+			Log.d("friendHealthAS", "access_token: " + mPref.getString("access_token", null));
 			
 			origVal = "Photo for " + act_name;
 			

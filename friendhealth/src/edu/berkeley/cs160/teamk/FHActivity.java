@@ -265,7 +265,7 @@ public class FHActivity extends Activity{
 		
 		
 		Uri file = Uri.fromFile(mediaFile);
-		Log.d("friendHealthFHA", "file name " + file.toString());
+		Log.d("friendHealthFHA", "File name " + file.toString());
 		
 		return file;
 	}

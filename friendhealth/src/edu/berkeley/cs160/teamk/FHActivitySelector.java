@@ -36,7 +36,7 @@ public class FHActivitySelector extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        Log.d("friendHealthFHASA", "Starting Activity Selector...");
+        Log.d("friendHealthFHASA", "Starting Activity Selector");
         
 		Utility.facebook = new Facebook(APP_ID);
 		/*
@@ -85,7 +85,7 @@ public class FHActivitySelector extends Activity {
         }
 
         
-        Log.d("friendHealthFHAS", "Logged in inited.");
+        Log.d("friendHealthFHAS", "Logged in");
         
         //---Find Activity Buttons---
         Log.d("friendHealthFHAS", "Init button fH_Act");
@@ -98,7 +98,7 @@ public class FHActivitySelector extends Activity {
         
         Log.d("friendHealthFHAS", "Creating Database");
         Database data = new Database();
-        Log.d("friendHealthFHAS", "init data");
+        Log.d("friendHealthFHAS", "Database created");
         Task act1 = data.getTask();
         Task act2 = data.getTask();
         Task act3 = data.getTask();
@@ -112,7 +112,7 @@ public class FHActivitySelector extends Activity {
         final int score2 = act2.points;
         final int score3 = act3.points;
         
-        Log.d("friendHealthFHAS", "Set up variables, and setting listeners.");
+        Log.d("friendHealthFHAS", "Set up variables, and setting listeners");
         
         act1_button.setOnClickListener(new View.OnClickListener()
         {
