@@ -26,7 +26,6 @@ public class FHActivitySelector extends Activity {
 	Button newTask;
 	
     public static final String APP_ID = "177765768977545";
-    private static String app_name = "friendHealth";
 
     String FILENAME = "AndroidSSO_data";
 	
@@ -37,7 +36,7 @@ public class FHActivitySelector extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        Log.d("friendHealth", "Starting Activity Selector...");
+        Log.d("friendHealthFHASA", "Starting Activity Selector...");
         
 		Utility.facebook = new Facebook(APP_ID);
 		/*
@@ -45,7 +44,7 @@ public class FHActivitySelector extends Activity {
          */
         Utility.mPrefs = getPreferences(MODE_PRIVATE);
         String access_token = Utility.mPrefs.getString("access_token", null);
-        Log.d("friendHealthFHACTSEL", "AccessToken: " + access_token);
+        Log.d("friendHealthFHASA", "AccessToken: " + access_token);
         long expires = Utility.mPrefs.getLong("access_expires", 0);
         if (access_token != null)
         {
@@ -86,24 +85,24 @@ public class FHActivitySelector extends Activity {
         }
 
         
-        Log.d("friendHealth", "Logged in inited.");
+        Log.d("friendHealthFHAS", "Logged in inited.");
         
         //---Find Activity Buttons---
-        Log.d("friendHealth", "Init button fH_Act");
+        Log.d("friendHealthFHAS", "Init button fH_Act");
         act1_button = (Button) findViewById(R.id.btn_activity1);
         act2_button = (Button) findViewById(R.id.btn_activity2);
         act3_button = (Button) findViewById(R.id.btn_activity3);
-        Log.d("friendHealth", "Initializing newTask Button");
+        Log.d("friendHealthFHAS", "Initializing newTask Button");
         newTask = (Button) findViewById(R.id.newTask);
         
         
-        Log.d("friendHealth", "Creating Database");
+        Log.d("friendHealthFHAS", "Creating Database");
         Database data = new Database();
-        Log.d("friendHealth", "init data");
+        Log.d("friendHealthFHAS", "init data");
         Task act1 = data.getTask();
         Task act2 = data.getTask();
         Task act3 = data.getTask();
-        Log.d("friendHealth", "Database created");
+        Log.d("friendHealthFHAS", "Database created");
         
         final String name1 = act1.name;
         final String name2 = act2.name;
@@ -113,7 +112,7 @@ public class FHActivitySelector extends Activity {
         final int score2 = act2.points;
         final int score3 = act3.points;
         
-        Log.d("friendHealth", "Set up variables, and setting listeners.");
+        Log.d("friendHealthFHAS", "Set up variables, and setting listeners.");
         
         act1_button.setOnClickListener(new View.OnClickListener()
         {
@@ -151,7 +150,7 @@ public class FHActivitySelector extends Activity {
         	}	
         });
         
-        Log.d(app_name, "buttons connected");
+        Log.d("friendHealthFHASA", "buttons connected");
         
         /*
         newTask.setOnClickListener(new View.OnClickListener() 

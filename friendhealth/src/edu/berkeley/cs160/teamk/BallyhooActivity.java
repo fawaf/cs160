@@ -5,7 +5,6 @@ import java.net.MalformedURLException;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -74,6 +73,7 @@ public class BallyhooActivity extends Activity {
         			String response = Utility.facebook.request("me/feed", bundle, "POST");
         			
         			if(response.indexOf("OAuthException") > -1){
+        				Log.d("friendHealthBA", "Response: " + response);
         				response = "Invitation Failed";
         			}else{
         				response = "Invitation Successful";
