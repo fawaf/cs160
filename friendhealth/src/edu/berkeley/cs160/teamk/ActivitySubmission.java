@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.util.Log;
 
 
@@ -50,12 +51,25 @@ public class ActivitySubmission extends Activity {
 			String shortname = img_filename.substring(11);
 			Log.d("friendHealthAS", "Display " + shortname);
 			
-			Bitmap myBitmap 
-					= BitmapFactory.decodeFile(shortname);
+
+			Bitmap myBitmap = null;
+			try {
+				BitmapFactory.Options options = new BitmapFactory.Options();
+				options.inSampleSize = 8;
+				myBitmap = BitmapFactory.decodeFile(shortname, options);
+			}
+			catch (OutOfMemoryError e) {
+				Log.d("friendHealth", e.toString());
+				Toast.makeText(getBaseContext(),
+						"OutOfMemoryError: " + e.toString(),
+						Toast.LENGTH_LONG).show();
+				return;
+			}
+			
 			Log.d("friendHealthAS", "Displaying image");
 			imageView.setImageBitmap(myBitmap);
 			Log.d("friendHealthAS", "Image displayed");
-			
+
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			myBitmap.compress(CompressFormat.JPEG, 50, bos);
 			bundle.putByteArray("picture", bos.toByteArray());
@@ -64,7 +78,7 @@ public class ActivitySubmission extends Activity {
 			Log.d("friendHealthAS", "access_token: " + Utility.mPrefs.getString("access_token", null));
 			
 			origVal = "Photo for " + act_name;
-			
+				
 			edt_Caption = (EditText) findViewById(R.id.edt_Caption);
 			edt_Caption.setText(origVal);
 			edt_Caption.setOnClickListener(new View.OnClickListener() {

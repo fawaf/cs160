@@ -1,9 +1,15 @@
 package edu.berkeley.cs160.teamk;
 
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.FacebookError;
+import com.facebook.android.AsyncFacebookRunner.RequestListener;
 import com.facebook.android.Facebook.DialogListener;
 
 import android.app.Activity;
@@ -15,6 +21,10 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
+import android.view.Menu;
+import android.view.MenuItem;
 
 import android.util.Log;
 
@@ -31,7 +41,11 @@ public class FHActivitySelector extends Activity {
 	ImageButton camera1;
 	
 	
-    public static final String APP_ID = "177765768977545";
+	String name1, name2, name3;
+	int score1, score2, score3;
+	
+	public static final int RC_ACTIVITY = 1001;
+	public static final int RC_NEWTASK = 1002;
 
     String FILENAME = "AndroidSSO_data";
 	
@@ -45,11 +59,11 @@ public class FHActivitySelector extends Activity {
         
         Log.d("friendHealthFHASA", "Starting Activity Selector");
         
-		Utility.facebook = new Facebook(APP_ID);
+		Utility.facebook = new Facebook(Utility.APP_ID);
 		/*
          * Get existing access_token if any
          */
-        Utility.mPrefs = getPreferences(MODE_PRIVATE);
+        Utility.mPrefs = getSharedPreferences("FHActivitySelector", MODE_PRIVATE);
         String access_token = Utility.mPrefs.getString("access_token", null);
         Log.d("friendHealthFHASA", "AccessToken: " + access_token);
         long expires = Utility.mPrefs.getLong("access_expires", 0);
@@ -64,6 +78,7 @@ public class FHActivitySelector extends Activity {
          * Only call authorize if the access_token has expired.
          */
         if(!Utility.facebook.isSessionValid()) {
+        	Log.d("friendHealthFHASA", "Session Not Valid");
 
             Utility.facebook.authorize(this, new String[] { "user_photos", "read_stream", "publish_stream" }, new DialogListener() {
                 @Override
@@ -85,9 +100,26 @@ public class FHActivitySelector extends Activity {
             });
         }
         else {
+        	Log.d("friendHealthFHASA", "Session Valid");
+			AsyncFacebookRunner mAsyncRunner = new AsyncFacebookRunner(Utility.facebook);
+			mAsyncRunner.logout(getBaseContext(), new LogoutRequestListener());
+			Log.d("friendHealthFHASA", "Access Token: " + Utility.facebook.getAccessToken());
+			Log.d("friendHealthFHASA", "Access Expires: " + Utility.facebook.getAccessExpires());
+			Utility.facebook = new Facebook(Utility.APP_ID);
+			Utility.facebook.setAccessToken(null);
+			Utility.facebook.setAccessExpires(0);
+			Utility.mPrefs = getSharedPreferences("NOTHING", MODE_PRIVATE);
+			SharedPreferences.Editor editor = Utility.mPrefs.edit();
+			editor.clear();
+			editor.remove("access_token");
+			editor.remove("access_expires");
+            editor.putString("access_token", "NONE");
+            editor.putLong("access_expires", 0);
+            boolean result = editor.commit();
+            Log.d("friendHealthFHASA", "result is: " + result);
         }
 
-        
+        Log.d("friendHealthFHAS", "After Facebook Login: " + Utility.mPrefs.getString("access_token", "NO TOKEN"));
         Log.d("friendHealthFHAS", "Logged in");
         
         //---Find Activity Buttons---
@@ -109,35 +141,20 @@ public class FHActivitySelector extends Activity {
         Task act1 = data.getTask();
         Task act2 = data.getTask();
         Task act3 = data.getTask();
-        Log.d("friendHealthFHAS", "Database created");
         
-        final String name1 = act1.name;
-        final String name2 = act2.name;
-        final String name3 = act3.name;
+        name1 = act1.name;
+        name2 = act2.name;
+        name3 = act3.name;
         
-        final int score1 = act1.points;
-        final int score2 = act2.points;
-        final int score3 = act3.points;
+        score1 = act1.points;
+        score2 = act2.points;
+        score3 = act3.points;
         
         act1_button.setText(name1 + " (" + score1 + "pts)");
         act2_button.setText(name2 + " (" + score2 + "pts)");
         act3_button.setText(name3 + " (" + score3 + "pts)");
         
         Log.d("friendHealthFHAS", "Set up variables, and setting listeners");
-        
-        /*
-        newTask.setOnClickListener(new View.OnClickListener() {
-        	public void onClick(View view) {
-        		clickSound.start();
-        		//Intent i = new Intent("edu.berkeley.cs160.teamk.FHActivitySelector");
-        		//Bundle extras = new Bundle();
-        		//extras.putString("name", name1);
-        		//extras.putInt("score", score1);
-        		//i.putExtras(extras);
-        		//tartActivity(i);
-        	}	
-        });*/
-        
         
         act1_button.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
@@ -147,7 +164,7 @@ public class FHActivitySelector extends Activity {
         		extras.putString("name", name1);
         		extras.putInt("score", score1);
         		i.putExtras(extras);
-        		startActivity(i);
+        		startActivityForResult(i, RC_ACTIVITY);
         	}	
         });
         
@@ -161,7 +178,7 @@ public class FHActivitySelector extends Activity {
         		extras.putString("name", name2);
         		extras.putInt("score", score2);
         		i.putExtras(extras);
-        		startActivity(i);
+        		startActivityForResult(i, RC_ACTIVITY);
         	}	
         });
         
@@ -173,7 +190,7 @@ public class FHActivitySelector extends Activity {
         		extras.putString("name", name3);
         		extras.putInt("score", score3);
         		i.putExtras(extras);
-        		startActivity(i);
+        		startActivityForResult(i, RC_ACTIVITY);
         	}	
         });
         
@@ -188,13 +205,14 @@ public class FHActivitySelector extends Activity {
 			}
 		});
         
+        
         rejectT2.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 		        rj.start();
 				Task act2 = data.getTask();
 		        final String name2 = act2.name;
 		        final int score2 = act2.points;
-		        act1_button.setText(name2 + " (" + score2 + "pts)");
+		        act2_button.setText(name2 + " (" + score2 + "pts)");
 			}
 		});
         
@@ -204,7 +222,7 @@ public class FHActivitySelector extends Activity {
 				Task act3 = data.getTask();
 		        final String name3 = act3.name;
 		        final int score3 = act3.points;
-		        act1_button.setText(name3 + " (" + score3 + "pts)");
+		        act3_button.setText(name3 + " (" + score3 + "pts)");
 			}
 		});
         
@@ -237,19 +255,156 @@ public class FHActivitySelector extends Activity {
 			}
 		});
         
-		
+		*/
         Log.d("friendHealthFHASA", "buttons connected");       
-        */
+        
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        Utility.facebook.authorizeCallback(requestCode, resultCode, data);
-        
+        switch(requestCode) {
+        case RC_ACTIVITY:
+        	if (resultCode == RESULT_OK) {
+        		Bundle extras = data.getExtras();
+        		if (extras != null) {
+        			String result = extras.getString("result");
+        			if (result.equals("completed")) {
+        				Toast.makeText(this,
+        						"Activity completed",
+        						Toast.LENGTH_SHORT).show();
+        			}
+        			else if (result.equals("rejected")) {
+        				Toast.makeText(this, 
+        						"Activity rejected",
+        						Toast.LENGTH_SHORT).show();
+        			}
+        			else if (result.equals("rejected_tooHard")) {
+        				Toast.makeText(this,
+        						"Activity rejected as too difficult",
+        						Toast.LENGTH_SHORT).show();
+        			}
+        			else if (result.equals("flagged")) {
+        				Toast.makeText(this,
+        						"Activity flagged",
+        						Toast.LENGTH_SHORT).show();
+        			}
+        			else {
+        				Toast.makeText(this,
+        						"UNKNOWN RESULT",
+        						Toast.LENGTH_SHORT).show();
+        			}
+        		}
+        	}
+        	return;
+        case RC_NEWTASK:
+        	if (resultCode == RESULT_OK) {
+        		Bundle extras = data.getExtras();
+        		if (extras != null) {
+        			String taskname = extras.getString("name");
+        			Toast.makeText(this,
+        					"Add activity: " + taskname,
+        					Toast.LENGTH_SHORT).show();
+        		}
+        	}
+        	return;
+        default:
+        	Log.d("friendHealth", "Default Activity " + requestCode);
+        	Utility.facebook.authorizeCallback(requestCode, resultCode, data);
+        }
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	super.onCreateOptionsMenu(menu);
+    	CreateMenu(menu);
+    	return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	return MenuChoice(item);
     }
 
+    private class LogoutRequestListener implements RequestListener {
+		 
+		@Override
+		public void onComplete(String response, Object state) {
+			Log.d("friendHealthBA", "LOGGED OUT");
+		}
+ 
+		@Override
+		public void onIOException(IOException e, Object state) {
+			// TODO Auto-generated method stub
+ 
+		}
+ 
+		@Override
+		public void onFileNotFoundException(FileNotFoundException e,
+				Object state) {
+			// TODO Auto-generated method stub
+ 
+		}
+ 
+		@Override
+		public void onMalformedURLException(MalformedURLException e,
+				Object state) {
+			// TODO Auto-generated method stub
+ 
+		}
+ 
+		@Override
+		public void onFacebookError(FacebookError e, Object state) {
+			// TODO Auto-generated method stub
+ 
+		}
+ 
+	}
+
+    private void CreateMenu(Menu menu) {
+    	MenuItem mnu1 = menu.add(0, 0, 0, "Add Task");
+    	{
+    		mnu1.setAlphabeticShortcut('a');
+    	}
+    	MenuItem mnu2 = menu.add(0, 1, 1, "Add Habit");
+    	{
+    		mnu2.setAlphabeticShortcut('b');
+    	}
+    	MenuItem mnu3 = menu.add(0, 2, 2, "Log Out");
+    	{
+    		mnu3.setAlphabeticShortcut('c');
+    	}
+    	MenuItem mnu4 = menu.add(0, 3, 3, "Settings");
+    	{
+    		mnu4.setAlphabeticShortcut('d');
+    	}
+    	MenuItem mnu5 = menu.add(0, 4, 4, "Tutorials");
+    	{
+    		mnu5.setAlphabeticShortcut('e');
+    	}
+    }
+    
+    private boolean MenuChoice(MenuItem item) {
+    	switch(item.getItemId()) {
+    	case 0:
+    		Intent i = new Intent("edu.berkeley.cs160.teamk.AddTask");
+    		startActivityForResult(i, RC_NEWTASK);
+    		return true;
+    	case 1:
+    		Toast.makeText(this, "Add Habit", Toast.LENGTH_SHORT).show();
+    		return true;
+    	case 2:
+    		Toast.makeText(this, "Log Out", Toast.LENGTH_SHORT).show();
+    		return true;
+    	case 3:
+    		Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+    		return true;
+    	case 4:
+    		Toast.makeText(this, "Tutorials", Toast.LENGTH_SHORT).show();
+    		return true;
+    	}
+    	return false;
+    }
 }
 
 

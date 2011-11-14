@@ -34,6 +34,8 @@ public class FHActivity extends Activity{
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;
 	public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+	public static final int RC_ACTIVITYSUBMISSION = 101;
+	public static final int RC_INVITE = 102;
 	
 	Button btn_picture, btn_reject, btn_invite, btn_help;
 	
@@ -135,7 +137,7 @@ public class FHActivity extends Activity{
 				Intent intent = new Intent(
 						"edu.berkeley.cs160.teamk.BallyhooActivity");
 				intent.putExtras(getIntent().getExtras());
-				startActivity(intent);
+				startActivityForResult(intent, RC_INVITE);
 			}
 		});
 	}
@@ -160,7 +162,22 @@ public class FHActivity extends Activity{
 				startActivity(intent);
 			}
 		}
-		finish();
+		else if (requestCode == RC_INVITE) {
+			if (resultCode == RESULT_OK) {
+				Log.d("friendHealth", "Setting Invite Background Color");
+				btn_invite.setBackgroundColor(0xFF00FF00);
+			}
+		}
+		else if (requestCode == RC_ACTIVITYSUBMISSION) {
+			if (resultCode == RESULT_OK) {
+				Intent output = new Intent();
+				Bundle extras = new Bundle();
+				extras.putString("result", "completed");
+				output.putExtras(extras);
+				setResult(RESULT_OK, data);
+				finish();
+			}
+		}
 	}
 	
 	public class ImageAdapter extends BaseAdapter {

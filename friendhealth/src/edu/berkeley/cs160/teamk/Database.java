@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Database {
 	
-	final int MAXCOUNT = 21;
+	final int MAXCOUNT = 22;
 	Task[] tasks = new Task[MAXCOUNT];
 	int count = 0;
 	Random randomGenerator = new Random();
