@@ -1,10 +1,12 @@
 package edu.berkeley.cs160.teamk;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.facebook.android.*;
+import com.facebook.android.AsyncFacebookRunner.RequestListener;
 
 public class BallyhooActivity extends Activity {
 	Button fH_button;
@@ -75,9 +78,24 @@ public class BallyhooActivity extends Activity {
         			if(response.indexOf("OAuthException") > -1){
         				Log.d("friendHealthBA", "Response: " + response);
         				response = "Invitation Failed";
-        			}else{
+        			} else {
         				Log.d("friendHealthBA", "Response: " + response);
         				response = "Invitation Successful";
+        				AsyncFacebookRunner mAsyncRunner = new AsyncFacebookRunner(Utility.facebook);
+        				mAsyncRunner.logout(getBaseContext(), new LogoutRequestListener());
+        				Log.d("friendHealthBA", "Access Token: " + Utility.facebook.getAccessToken());
+        				Log.d("friendHealthBA", "Access Expires: " + Utility.facebook.getAccessExpires());
+        				Utility.facebook = new Facebook(Utility.APP_ID);
+        				Utility.mPrefs = getSharedPreferences("NOTHING", MODE_PRIVATE);
+        				SharedPreferences.Editor editor = Utility.mPrefs.edit();
+        				editor.clear();
+        				editor.remove("access_token");
+        				editor.remove("access_expires");
+                        editor.putString("access_token", "NONE");
+                        editor.putLong("access_expires", 0);
+                        editor.apply();
+                        boolean result = editor.commit();
+                        Log.d("friendHealthBA", "result is: " + result);
         				setResult(RESULT_OK);
         			}
         			
@@ -92,4 +110,39 @@ public class BallyhooActivity extends Activity {
         	}
         });
 	}
+	
+	private class LogoutRequestListener implements RequestListener {
+		 
+		@Override
+		public void onComplete(String response, Object state) {
+			Log.d("friendHealthBA", "LOGGED OUT");
+		}
+ 
+		@Override
+		public void onIOException(IOException e, Object state) {
+			// TODO Auto-generated method stub
+ 
+		}
+ 
+		@Override
+		public void onFileNotFoundException(FileNotFoundException e,
+				Object state) {
+			// TODO Auto-generated method stub
+ 
+		}
+ 
+		@Override
+		public void onMalformedURLException(MalformedURLException e,
+				Object state) {
+			// TODO Auto-generated method stub
+ 
+		}
+ 
+		@Override
+		public void onFacebookError(FacebookError e, Object state) {
+			// TODO Auto-generated method stub
+ 
+		}
+ 
 	}
+}

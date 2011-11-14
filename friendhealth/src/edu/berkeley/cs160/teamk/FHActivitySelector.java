@@ -1,9 +1,15 @@
 package edu.berkeley.cs160.teamk;
 
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.FacebookError;
+import com.facebook.android.AsyncFacebookRunner.RequestListener;
 import com.facebook.android.Facebook.DialogListener;
 
 import android.app.Activity;
@@ -24,8 +30,6 @@ public class FHActivitySelector extends Activity {
 	Button act3_button;
 	Button btn_login;
 	Button newTask;
-	
-    public static final String APP_ID = "177765768977545";
 
     String FILENAME = "AndroidSSO_data";
 	
@@ -37,11 +41,11 @@ public class FHActivitySelector extends Activity {
         
         Log.d("friendHealthFHASA", "Starting Activity Selector");
         
-		Utility.facebook = new Facebook(APP_ID);
+		Utility.facebook = new Facebook(Utility.APP_ID);
 		/*
          * Get existing access_token if any
          */
-        Utility.mPrefs = getPreferences(MODE_PRIVATE);
+        Utility.mPrefs = getSharedPreferences("FHActivitySelector", MODE_PRIVATE);
         String access_token = Utility.mPrefs.getString("access_token", null);
         Log.d("friendHealthFHASA", "AccessToken: " + access_token);
         long expires = Utility.mPrefs.getLong("access_expires", 0);
@@ -56,6 +60,7 @@ public class FHActivitySelector extends Activity {
          * Only call authorize if the access_token has expired.
          */
         if(!Utility.facebook.isSessionValid()) {
+        	Log.d("friendHealthFHASA", "Session Not Valid");
 
             Utility.facebook.authorize(this, new String[] { "user_photos", "read_stream", "publish_stream" }, new DialogListener() {
                 @Override
@@ -77,9 +82,27 @@ public class FHActivitySelector extends Activity {
             });
         }
         else {
+        	Log.d("friendHealthFHASA", "Session Valid");
+			AsyncFacebookRunner mAsyncRunner = new AsyncFacebookRunner(Utility.facebook);
+			mAsyncRunner.logout(getBaseContext(), new LogoutRequestListener());
+			Log.d("friendHealthFHASA", "Access Token: " + Utility.facebook.getAccessToken());
+			Log.d("friendHealthFHASA", "Access Expires: " + Utility.facebook.getAccessExpires());
+			Utility.facebook = new Facebook(Utility.APP_ID);
+			Utility.facebook.setAccessToken(null);
+			Utility.facebook.setAccessExpires(0);
+			Utility.mPrefs = getSharedPreferences("NOTHING", MODE_PRIVATE);
+			SharedPreferences.Editor editor = Utility.mPrefs.edit();
+			editor.clear();
+			editor.remove("access_token");
+			editor.remove("access_expires");
+            editor.putString("access_token", "NONE");
+            editor.putLong("access_expires", 0);
+            editor.apply();
+            boolean result = editor.commit();
+            Log.d("friendHealthFHASA", "result is: " + result);
         }
 
-        
+        Log.d("friendHealthFHAS", "After Facebook Login: " + Utility.mPrefs.getString("access_token", "NO TOKEN"));
         Log.d("friendHealthFHAS", "Logged in");
         
         //---Find Activity Buttons---
@@ -157,4 +180,38 @@ public class FHActivitySelector extends Activity {
         
     }
 
+    private class LogoutRequestListener implements RequestListener {
+		 
+		@Override
+		public void onComplete(String response, Object state) {
+			Log.d("friendHealthBA", "LOGGED OUT");
+		}
+ 
+		@Override
+		public void onIOException(IOException e, Object state) {
+			// TODO Auto-generated method stub
+ 
+		}
+ 
+		@Override
+		public void onFileNotFoundException(FileNotFoundException e,
+				Object state) {
+			// TODO Auto-generated method stub
+ 
+		}
+ 
+		@Override
+		public void onMalformedURLException(MalformedURLException e,
+				Object state) {
+			// TODO Auto-generated method stub
+ 
+		}
+ 
+		@Override
+		public void onFacebookError(FacebookError e, Object state) {
+			// TODO Auto-generated method stub
+ 
+		}
+ 
+	}
 }
