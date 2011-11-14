@@ -12,115 +12,114 @@
 
     <Button
         android:id="@+id/newTask"
-        android:layout_width="127dp"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="16dp"
-        android:text="New Tasks" />
+        android:text="New Tasks"
+        android:textSize="15pt" />
 
     <Button
         android:id="@+id/calendar"
-        android:layout_width="127dp"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/newTask"
         android:layout_toRightOf="@+id/newTask"
-        android:text="Calendar" />
+        android:text="Calendar"
+        android:textSize="15pt" />
 
     <Button
         android:id="@+id/leaderboard"
-        android:layout_width="127dp"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/calendar"
         android:layout_toRightOf="@+id/calendar"
-        android:text="Scores" />
+        android:text="Scores"
+        android:textSize="15pt" />
 
     <Button
         android:id="@+id/as_help"
-        android:layout_width="127dp"
+        android:layout_width="173dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/leaderboard"
         android:layout_alignParentRight="true"
-        android:text="Help" />
+        android:text="Help"
+        android:textSize="15pt" />
+
+    <ImageButton
+        android:id="@+id/camera3"
+        android:layout_width="165dp"
+        android:layout_height="70dp"
+        android:background="@drawable/camera3" android:layout_alignLeft="@+id/camera2" android:layout_alignTop="@+id/btn_activity3"/>
 
     <Button
         android:id="@+id/btn_activity1"
-        android:layout_width="350dp"
-        android:layout_height="85dp"
-        android:layout_alignParentRight="true"
+        android:layout_width="345dp"
+        android:layout_height="105dp"
+        android:layout_alignLeft="@+id/calendar"
         android:layout_below="@+id/textView1"
-        android:layout_marginTop="22dp"
         android:text="act1"
         android:textSize="15pt"
         android:textStyle="bold" />
 
     <Button
         android:id="@+id/btn_activity2"
-        android:layout_width="350dp"
-        android:layout_height="85dp"
-        android:layout_alignParentRight="true"
+        android:layout_width="345dp"
+        android:layout_height="105dp"
+        android:layout_alignLeft="@+id/btn_activity1"
         android:layout_below="@+id/btn_activity1"
-        android:layout_marginTop="53dp"
         android:text="act2"
         android:textSize="15pt"
         android:textStyle="bold" />
 
     <Button
         android:id="@+id/btn_activity3"
-        android:layout_width="350dp"
-        android:layout_height="85dp"
-        android:layout_alignParentRight="true"
+        android:layout_width="345dp"
+        android:layout_height="105dp"
+        android:layout_alignLeft="@+id/btn_activity2"
         android:layout_below="@+id/btn_activity2"
-        android:layout_marginTop="40dp"
         android:text="act3"
         android:textSize="15pt"
         android:textStyle="bold" />
 
     <ImageButton
+        android:id="@+id/camera2"
+        android:layout_width="165dp"
+        android:layout_height="70dp"
+        android:layout_alignTop="@+id/btn_activity2"
+        android:layout_toRightOf="@+id/btn_activity2"
+        android:background="@drawable/camera3" />
+
+    <ImageButton
         android:id="@+id/reject1"
-        android:layout_width="175dp"
+        android:layout_width="170dp"
         android:layout_height="70dp"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/btn_activity1"
-        android:background="@drawable/reject2" />
+        android:background="@drawable/reject" />
 
     <ImageButton
         android:id="@+id/camera1"
-        android:layout_width="175dp"
+        android:layout_width="165dp"
         android:layout_height="70dp"
-        android:layout_alignRight="@+id/leaderboard"
-        android:layout_alignTop="@+id/reject1"
+        android:layout_alignLeft="@+id/camera2"
+        android:layout_alignTop="@+id/btn_activity1"
         android:background="@drawable/camera3" />
 
     <ImageButton
         android:id="@+id/reject2"
-        android:layout_width="175dp"
+        android:layout_width="170dp"
         android:layout_height="70dp"
+        android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/btn_activity2"
         android:background="@drawable/reject" />
 
     <ImageButton
-        android:id="@+id/camera2"
-        android:layout_width="175dp"
-        android:layout_height="70dp"
-        android:layout_alignLeft="@+id/camera1"
-        android:layout_alignTop="@+id/reject2"
-        android:background="@drawable/camera3" />
-
-    <ImageButton
-        android:id="@+id/camera3"
-        android:layout_width="75pt"
-        android:layout_height="70dp"
-        android:layout_alignLeft="@+id/camera2"
-        android:layout_alignTop="@+id/btn_activity3"
-        android:background="@drawable/camera3" />
-
-    <ImageButton
         android:id="@+id/reject3"
-        android:layout_width="175dp"
+        android:layout_width="170dp"
         android:layout_height="70dp"
         android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/camera3"
-        android:background="@drawable/reject2" />
+        android:background="@drawable/reject" android:layout_alignTop="@+id/btn_activity3"/>
 
 </RelativeLayout>    

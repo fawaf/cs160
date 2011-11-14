@@ -56,6 +56,15 @@
         	</intent-filter>
         </activity>
         
+        <activity
+            android:label="Add Activity to friendHealth"
+            android:name=".AddTask">
+        	<intent-filter>
+        	    <action android:name="edu.berkeley.cs160.teamk.AddTask" />
+        	    <category android:name="android.intent.category.DEFAULT" />
+        	</intent-filter>
+        </activity>
+        
     </application>
     
 	<uses-permission android:name="android.permission.INTERNET"/>
