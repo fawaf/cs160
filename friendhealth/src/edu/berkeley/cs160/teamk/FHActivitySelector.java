@@ -29,6 +29,12 @@ public class FHActivitySelector extends Activity {
 	Button btn_login;
 	Button newTask;
 	
+	String name1, name2, name3;
+	int score1, score2, score3;
+	
+	public static final int RC_ACTIVITY = 1001;
+	public static final int RC_NEWTASK = 1002;
+	
     public static final String APP_ID = "177765768977545";
 
     String FILENAME = "AndroidSSO_data";
@@ -103,19 +109,19 @@ public class FHActivitySelector extends Activity {
         Task act3 = data.getTask();
         Log.d("friendHealthFHAS", "Database created");
         
-        final String name1 = act1.name;
+        name1 = act1.name;
         act1_button.setText(name1);
-        final String name2 = act2.name;
+        name2 = act2.name;
         act2_button.setText(name2);
-        final String name3 = act3.name;
+        name3 = act3.name;
         act3_button.setText(name3);
         
-        final int score1 = act1.points;
-        final int score2 = act2.points;
-        final int score3 = act3.points;
+        score1 = act1.points;
+        score2 = act2.points;
+        score3 = act3.points;
         
         Log.d("friendHealthFHAS", "Set up variables, and setting listeners");
-        
+    
         act1_button.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
         		Intent i = new Intent("edu.berkeley.cs160.teamk.FHActivity");
@@ -123,7 +129,7 @@ public class FHActivitySelector extends Activity {
         		extras.putString("name", name1);
         		extras.putInt("score", score1);
         		i.putExtras(extras);
-        		startActivity(i);
+        		startActivityForResult(i, RC_ACTIVITY);
         	}	
         });
         
@@ -134,7 +140,7 @@ public class FHActivitySelector extends Activity {
         		extras.putString("name", name2);
         		extras.putInt("score", score2);
         		i.putExtras(extras);
-        		startActivity(i);
+        		startActivityForResult(i, RC_ACTIVITY);
         	}	
         });
         
@@ -145,7 +151,7 @@ public class FHActivitySelector extends Activity {
         		extras.putString("name", name3);
         		extras.putInt("score", score3);
         		i.putExtras(extras);
-        		startActivity(i);
+        		startActivityForResult(i, RC_ACTIVITY);
         	}	
         });
         
@@ -156,8 +162,54 @@ public class FHActivitySelector extends Activity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        Utility.facebook.authorizeCallback(requestCode, resultCode, data);
+        switch(requestCode) {
+        case RC_ACTIVITY:
+        	if (resultCode == RESULT_OK) {
+        		Bundle extras = data.getExtras();
+        		if (extras != null) {
+        			String result = extras.getString("result");
+        			if (result.equals("completed")) {
+        				Toast.makeText(this,
+        						"Activity completed",
+        						Toast.LENGTH_SHORT).show();
+        			}
+        			else if (result.equals("rejected")) {
+        				Toast.makeText(this, 
+        						"Activity rejected",
+        						Toast.LENGTH_SHORT).show();
+        			}
+        			else if (result.equals("rejected_tooHard")) {
+        				Toast.makeText(this,
+        						"Activity rejected as too difficult",
+        						Toast.LENGTH_SHORT).show();
+        			}
+        			else if (result.equals("flagged")) {
+        				Toast.makeText(this,
+        						"Activity flagged",
+        						Toast.LENGTH_SHORT).show();
+        			}
+        			else {
+        				Toast.makeText(this,
+        						"UNKNOWN RESULT",
+        						Toast.LENGTH_SHORT).show();
+        			}
+        		}
+        	}
+        	return;
+        case RC_NEWTASK:
+        	if (resultCode == RESULT_OK) {
+        		Bundle extras = data.getExtras();
+        		if (extras != null) {
+        			String taskname = extras.getString("name");
+        			Toast.makeText(this,
+        					"Add activity: " + taskname,
+        					Toast.LENGTH_SHORT).show();
+        		}
+        	}
+        	return;
+        default:
+        	Utility.facebook.authorizeCallback(requestCode, resultCode, data);
+        }
     }
     
     @Override
@@ -198,7 +250,8 @@ public class FHActivitySelector extends Activity {
     private boolean MenuChoice(MenuItem item) {
     	switch(item.getItemId()) {
     	case 0:
-    		Toast.makeText(this, "Add Task", Toast.LENGTH_SHORT).show();
+    		Intent i = new Intent("edu.berkeley.cs160.teamk.AddTask");
+    		startActivityForResult(i, RC_NEWTASK);
     		return true;
     	case 1:
     		Toast.makeText(this, "Add Habit", Toast.LENGTH_SHORT).show();

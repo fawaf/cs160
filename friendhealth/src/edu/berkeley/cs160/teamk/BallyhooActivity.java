@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -81,11 +80,15 @@ public class BallyhooActivity extends Activity {
         				setResult(RESULT_OK);
         			}
         			
+        			setResult(RESULT_OK);
+        			finish();
+        			/*
         			Intent intent = new Intent("edu.berkeley.cs160.teamk.FHActivity");
         			Bundle extras = getIntent().getExtras();
         			extras.putString("response", response);
         			intent.putExtras(extras);
         			startActivity(intent);
+        			*/
         		} catch (MalformedURLException e) {
         		} catch (IOException e) {
         		}
