@@ -9,5 +9,7 @@ public class Utility {
 	public static SharedPreferences mPrefs;
 	public static final String app_name = "friendHealth";
 	public static final String APP_ID = "177765768977545";
+	public static final int RC_ACTIVITY = 1001;
+	public static final int RC_NEWTASK = 1002;
 	
 }

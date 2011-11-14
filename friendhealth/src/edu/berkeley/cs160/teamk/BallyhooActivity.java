@@ -8,6 +8,8 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -92,6 +94,7 @@ public class BallyhooActivity extends Activity {
         				editor.remove("access_expires");
                         editor.putString("access_token", "NONE");
                         editor.putLong("access_expires", 0);
+                        editor.clear();
                         boolean result = editor.commit();
                         Log.d("friendHealthBA", "result is: " + result);
         				setResult(RESULT_OK);
@@ -112,6 +115,18 @@ public class BallyhooActivity extends Activity {
         	}
         });
 	}
+	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	super.onCreateOptionsMenu(menu);
+    	OptionsMenu.BACreateMenu(menu);
+    	return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	return OptionsMenu.BAMenuChoice(this, item);
+    }
 	
 	private class LogoutRequestListener implements RequestListener {
 		 
