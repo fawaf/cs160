@@ -174,8 +174,8 @@ public class FHActivitySelector extends Activity {
 			public void onClick(View v) {
 		        rj.start();
 				Task act1 = data.getTask();
-		        final String name1 = act1.name;
-		        final int score1 = act1.points;
+		        name1 = act1.name;
+		        score1 = act1.points;
 		        act1_button.setText(name1 + " (" + score1 + "pts)");
 			}
 		});
@@ -185,8 +185,8 @@ public class FHActivitySelector extends Activity {
 			public void onClick(View v) {
 		        rj.start();
 				Task act2 = data.getTask();
-		        final String name2 = act2.name;
-		        final int score2 = act2.points;
+		        name2 = act2.name;
+		        score2 = act2.points;
 		        act2_button.setText(name2 + " (" + score2 + "pts)");
 			}
 		});
@@ -195,8 +195,8 @@ public class FHActivitySelector extends Activity {
 			public void onClick(View v) {
 		        rj.start();
 				Task act3 = data.getTask();
-		        final String name3 = act3.name;
-		        final int score3 = act3.points;
+		        name3 = act3.name;
+		        score3 = act3.points;
 		        act3_button.setText(name3 + " (" + score3 + "pts)");
 			}
 		});
