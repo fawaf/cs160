@@ -65,6 +65,15 @@
         	</intent-filter>
         </activity>
         
+        <activity
+        	android:label="Settings"
+        	android:name=".Settings">
+        	<intent-filter>
+        		<action android:name="edu.berkeley.cs160.teamk.Settings" />
+        		<category android:name="android.intent.category.DEFAULT" />
+        	</intent-filter>
+        </activity>
+        
     </application>
     
 	<uses-permission android:name="android.permission.INTERNET"/>

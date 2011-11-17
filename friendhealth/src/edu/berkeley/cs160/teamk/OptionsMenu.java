@@ -81,10 +81,11 @@ public class OptionsMenu extends Activity {
     }
     
     protected static boolean BAMenuChoice(Context context, MenuItem item) {
+    	Intent intent;
     	switch(item.getItemId()) {
     	case 0:
-    		Intent i = new Intent("edu.berkeley.cs160.teamk.AddTask");
-    		((Activity) context).startActivityForResult(i, Utility.RC_NEWTASK);
+    		intent = new Intent("edu.berkeley.cs160.teamk.AddTask");
+    		((Activity) context).startActivityForResult(intent, Utility.RC_NEWTASK);
     		return true;
     	case 1:
     		Toast.makeText(context, "Add Habit", Toast.LENGTH_SHORT).show();
@@ -93,7 +94,8 @@ public class OptionsMenu extends Activity {
     		Toast.makeText(context, "Log Out", Toast.LENGTH_SHORT).show();
     		return true;
     	case 3:
-    		Toast.makeText(context, "Settings", Toast.LENGTH_SHORT).show();
+    		intent = new Intent("edu.berkeley.cs160.teamk.Settings");
+    		((Activity) context).startActivity(intent);
     		return true;
     	case 4:
     		Toast.makeText(context, "Tutorials", Toast.LENGTH_SHORT).show();

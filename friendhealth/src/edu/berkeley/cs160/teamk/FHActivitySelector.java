@@ -198,7 +198,8 @@ public class FHActivitySelector extends Activity {
         
         rejectT1.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-		        rj.start();
+				if (Utility.mPrefs.getBoolean("toggle_sound", true))
+					rj.start();
 				Task act1 = data.getTask();
 		        name1 = act1.name;
 		        score1 = act1.points;
@@ -209,7 +210,8 @@ public class FHActivitySelector extends Activity {
         
         rejectT2.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-		        rj.start();
+				if (Utility.mPrefs.getBoolean("toggle_sound", true))
+					rj.start();
 				Task act2 = data.getTask();
 		        name2 = act2.name;
 		        score2 = act2.points;
@@ -219,7 +221,8 @@ public class FHActivitySelector extends Activity {
         
         rejectT3.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-		        rj.start();
+				if (Utility.mPrefs.getBoolean("toggle_sound", true))
+					rj.start();
 				Task act3 = data.getTask();
 		        name3 = act3.name;
 		        score3 = act3.points;
