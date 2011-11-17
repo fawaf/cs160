@@ -14,6 +14,8 @@ import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -59,7 +61,7 @@ public class ActivitySubmission extends Activity {
 				myBitmap = BitmapFactory.decodeFile(shortname, options);
 			}
 			catch (OutOfMemoryError e) {
-				Log.d("friendHealth", e.toString());
+				Log.d("friendHealthAS", e.toString());
 				Toast.makeText(getBaseContext(),
 						"OutOfMemoryError: " + e.toString(),
 						Toast.LENGTH_LONG).show();
@@ -128,4 +130,16 @@ public class ActivitySubmission extends Activity {
 	        });
 		}
 	}
+	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	super.onCreateOptionsMenu(menu);
+    	OptionsMenu.CreateMenu(menu);
+    	return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	return OptionsMenu.MenuChoice(this, item);
+    }
 }

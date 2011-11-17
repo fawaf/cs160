@@ -19,10 +19,10 @@ public class Settings extends Activity {
 		// ToggleButton.
 		ToggleButton toggle_sound =
 				(ToggleButton) findViewById(R.id.toggleSound);
+		toggle_sound.setChecked(
+				Utility.mPrefs.getBoolean("toggle_sound", true));
 		toggle_sound.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Utility.mPrefs = getSharedPreferences(
-						"FHActivitySelector", MODE_PRIVATE);
 				SharedPreferences.Editor editor = Utility.mPrefs.edit();
 				editor.putBoolean("toggle_sound",
 						((ToggleButton) v).isChecked());
@@ -31,6 +31,7 @@ public class Settings extends Activity {
 						? "Sound Toggled ON"
 						: "Sound Toggled OFF",
 						Toast.LENGTH_SHORT).show();
+				editor.commit();
 			}
 		});
 	}
