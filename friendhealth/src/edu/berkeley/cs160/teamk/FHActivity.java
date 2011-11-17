@@ -84,7 +84,9 @@ public class FHActivity extends Activity{
 			
 		}
 		TextView txt_ActTitle = (TextView) findViewById(R.id.txt_ActTitle);
-		txt_ActTitle.setText(act_name + " (+" + score + " points)");
+		TextView txt_ActPt = (TextView) findViewById(R.id.txt_ActPt);
+		txt_ActTitle.setText(act_name);
+		txt_ActPt.setText("(+ "+ score + " points)");
 			
 		
 		Gallery gallery = (Gallery) findViewById(R.id.activityGallery);

@@ -57,6 +57,7 @@ public class FHActivitySelector extends Activity {
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.click_sound);
         final MediaPlayer rj = MediaPlayer.create(this, R.raw.reject_sound);
         
+        
         Log.d("friendHealthFHASA", "Starting Activity Selector");
         
 		Utility.facebook = new Facebook(Utility.APP_ID);
@@ -166,6 +167,9 @@ public class FHActivitySelector extends Activity {
         		extras.putInt("score", score1);
         		i.putExtras(extras);
         		startActivityForResult(i, RC_ACTIVITY);
+        		//if (!mp.)
+        			//mp.start();
+        			//Log.d("friendHealthFHAS", "Set up variables, and setting listeners");
         	}	
         });
         
@@ -195,10 +199,30 @@ public class FHActivitySelector extends Activity {
         	}	
         });
         
+        newTask.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mp.start();
+				Task act1 = data.getTask();
+		        name1 = act1.name;
+		        score1 = act1.points;
+		        act1_button.setText(name1 + " (" + score1 + "pts)");
+				Task act2 = data.getTask();
+		        name2 = act2.name;
+		        score2 = act2.points;
+		        act2_button.setText(name2 + " (" + score2 + "pts)");
+				Task act3 = data.getTask();
+		        name3 = act3.name;
+		        score3 = act3.points;
+		        act3_button.setText(name3 + " (" + score3 + "pts)");
+			}
+		});
         
         rejectT1.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-		        rj.start();
+				rj.start();
 				Task act1 = data.getTask();
 		        name1 = act1.name;
 		        score1 = act1.points;
