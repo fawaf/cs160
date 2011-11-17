@@ -164,7 +164,7 @@ public class FHActivity extends Activity{
 		}
 		else if (requestCode == RC_INVITE) {
 			if (resultCode == RESULT_OK) {
-				Log.d("friendHealth", "Setting Invite Background Color");
+				Log.d("friendHealthFHA", "Setting Invite Background Color");
 				btn_invite.setBackgroundColor(0xFF00FF00);
 			}
 		}

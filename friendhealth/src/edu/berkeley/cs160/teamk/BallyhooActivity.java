@@ -119,13 +119,13 @@ public class BallyhooActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
-    	OptionsMenu.BACreateMenu(menu);
+    	OptionsMenu.CreateMenu(menu);
     	return true;
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	return OptionsMenu.BAMenuChoice(this, item);
+    	return OptionsMenu.MenuChoice(this, item);
     }
 	
 	private class LogoutRequestListener implements RequestListener {
