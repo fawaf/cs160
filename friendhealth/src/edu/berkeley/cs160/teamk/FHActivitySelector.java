@@ -1,9 +1,17 @@
 package edu.berkeley.cs160.teamk;
 
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.FacebookError;
+import com.facebook.android.Util;
 import com.facebook.android.Facebook.DialogListener;
 
 import android.app.Activity;
@@ -12,9 +20,13 @@ import android.os.Bundle;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import android.view.Menu;
@@ -71,7 +83,7 @@ public class FHActivitySelector extends Activity {
         if(!Utility.facebook.isSessionValid()) {
         	Log.d("friendHealthFHASAA", "Session Not Valid");
 
-            Utility.facebook.authorize(this, new String[] { "user_photos", "read_stream", "publish_stream" }, new DialogListener() {
+            Utility.facebook.authorize(this, new String[] { "user_photos", "read_stream", "publish_stream"}, new DialogListener() {
                 @Override
                 public void onComplete(Bundle values) {
                     SharedPreferences.Editor editor = Utility.mPrefs.edit();
@@ -93,6 +105,34 @@ public class FHActivitySelector extends Activity {
         else {
         	Log.d("friendHealthFHASA", "Logged in");
         }
+         //-------Getting Facebook Name, then setting text view//
+        try {
+			String jsonUser = Utility.facebook.request("me");
+			JSONObject obj;
+			obj = Util.parseJson(jsonUser);
+			
+			TextView user_name = (TextView) findViewById(R.id.textView1);
+			String facebookName = obj.optString("name");
+			user_name.setText(facebookName);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			Log.d("friendHealthPA", "MalformedURLException");
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			Log.d("friendHealthPA", "IOException");
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			Log.d("friendHealthPA", "JSONException");
+			e.printStackTrace();
+		} catch (FacebookError e) {
+			// TODO Auto-generated catch block
+			Log.d("friendHealthFHASA", "FacebookError: " + e.toString());
+			Log.d("friendHealthFHASA", "Access Token: " + Utility.facebook.getAccessToken());
+			e.printStackTrace();
+		}
+		//----End get facebook name//
 
         Log.d("friendHealthFHASA", "After Facebook Login: " + Utility.mPrefs.getString("access_token", "NO TOKEN"));
         
