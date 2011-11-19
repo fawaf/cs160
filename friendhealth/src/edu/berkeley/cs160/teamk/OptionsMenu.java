@@ -36,9 +36,10 @@ public class OptionsMenu extends Activity {
     }
     
     protected static boolean FHASMenuChoice(Context context, MenuItem item) {
+    	Intent i;
     	switch(item.getItemId()) {
     	case 0:
-    		Intent i = new Intent("edu.berkeley.cs160.teamk.AddTask");
+    		i = new Intent("edu.berkeley.cs160.teamk.AddTask");
     		((Activity) context).startActivityForResult(i, Utility.RC_NEWTASK);
     		return true;
     	case 1:
@@ -60,7 +61,8 @@ public class OptionsMenu extends Activity {
             Log.d("friendHealthFHASA", "SharedPreferences ommit result is: " + result);
     		return true;
     	case 3:
-    		Toast.makeText(context, "Settings", Toast.LENGTH_SHORT).show();
+    		i = new Intent("edu.berkeley.cs160.teamk.Settings");
+    		((Activity) context).startActivity(i);
     		return true;
     	case 4:
     		Toast.makeText(context, "Tutorials", Toast.LENGTH_SHORT).show();
@@ -84,14 +86,17 @@ public class OptionsMenu extends Activity {
     	}
     }
     
+
     protected static boolean MenuChoice(Context context, MenuItem item) {
+    	Intent i;
     	switch(item.getItemId()) {
     	case 0:
-    		Intent i = new Intent("edu.berkeley.cs160.teamk.ProfileActivity");
+    		i = new Intent("edu.berkeley.cs160.teamk.ProfileActivity");
     		((Activity) context).startActivity(i);
     		return true;
     	case 1:
-    		Toast.makeText(context, "Settings", Toast.LENGTH_SHORT).show();
+    		i = new Intent("edu.berkeley.cs160.teamk.Settings");
+    		((Activity) context).startActivity(i);
     		return true;
     	case 2:
     		Toast.makeText(context, "Tutorials", Toast.LENGTH_SHORT).show();

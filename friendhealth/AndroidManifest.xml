@@ -57,11 +57,29 @@
         </activity>
         
         <activity
+        	android:label="Profile"
+        	android:name=".ProfileActivity">
+        	<intent-filter>
+        		<action android:name="edu.berkeley.cs160.teamk.ProfileActivity" />
+        		<category android:name="android.intent.category.DEFAULT" />
+        	</intent-filter>
+        </activity>
+        
+        <activity
             android:label="Add Activity to friendHealth"
             android:name=".AddTask">
         	<intent-filter>
         	    <action android:name="edu.berkeley.cs160.teamk.AddTask" />
         	    <category android:name="android.intent.category.DEFAULT" />
+        	</intent-filter>
+        </activity>
+        
+        <activity
+        	android:label="Settings"
+        	android:name=".Settings">
+        	<intent-filter>
+        		<action android:name="edu.berkeley.cs160.teamk.Settings" />
+        		<category android:name="android.intent.category.DEFAULT" />
         	</intent-filter>
         </activity>
         
