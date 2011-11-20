@@ -153,13 +153,13 @@ public class FHActivitySelector extends Activity {
         
         //------SET BUTTONS' COLOR-------
         act1_button = (Button) findViewById(R.id.btn_activity1);
-        act1_button.getBackground().setColorFilter(Color.rgb(245, 195, 100), PorterDuff.Mode.MULTIPLY);
+        act1_button.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
         
         act2_button = (Button) findViewById(R.id.btn_activity2);
-        act2_button.getBackground().setColorFilter(Color.rgb(245, 195, 100), PorterDuff.Mode.MULTIPLY);
+        act2_button.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
         
         act3_button = (Button) findViewById(R.id.btn_activity3);
-        act3_button.getBackground().setColorFilter(Color.rgb(245, 195, 100), PorterDuff.Mode.MULTIPLY);
+        act3_button.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
         
         newTask = (Button) findViewById(R.id.newTask);
         newTask.getBackground().setColorFilter(Color.rgb(255, 215, 140), PorterDuff.Mode.MULTIPLY);
@@ -168,7 +168,7 @@ public class FHActivitySelector extends Activity {
         calendar.getBackground().setColorFilter(Color.rgb(217, 246, 255), PorterDuff.Mode.MULTIPLY);
         
         scores = (Button) findViewById(R.id.leaderboard);
-        scores.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
+        scores.getBackground().setColorFilter(Color.rgb(198, 235, 152), PorterDuff.Mode.MULTIPLY);
         
         help = (Button) findViewById(R.id.as_help);
         help.getBackground().setColorFilter(Color.rgb(255, 222, 233), PorterDuff.Mode.MULTIPLY);
