@@ -19,6 +19,8 @@ import android.os.Bundle;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -38,6 +40,9 @@ public class FHActivitySelector extends Activity {
 	Button act3_button;
 	Button btn_login;
 	Button newTask;
+	Button calendar;
+	Button scores;
+	Button help;
 	ImageButton rejectT1;
 	ImageButton rejectT2;
 	ImageButton rejectT3;
@@ -144,7 +149,30 @@ public class FHActivitySelector extends Activity {
         rejectT3 = (ImageButton) findViewById(R.id.reject3);
         
         Log.d("friendHealthFHASA", "Initializing newTask Button");
+        
+        
+        //------SET BUTTONS' COLOR-------
+        act1_button = (Button) findViewById(R.id.btn_activity1);
+        act1_button.getBackground().setColorFilter(Color.rgb(250, 220, 175), PorterDuff.Mode.MULTIPLY);
+        
+        act2_button = (Button) findViewById(R.id.btn_activity2);
+        act2_button.getBackground().setColorFilter(Color.rgb(250, 220, 175), PorterDuff.Mode.MULTIPLY);
+        
+        act3_button = (Button) findViewById(R.id.btn_activity3);
+        act3_button.getBackground().setColorFilter(Color.rgb(255, 220, 175), PorterDuff.Mode.MULTIPLY);
+        
         newTask = (Button) findViewById(R.id.newTask);
+        newTask.getBackground().setColorFilter(Color.rgb(255, 215, 140), PorterDuff.Mode.MULTIPLY);
+        
+        calendar = (Button) findViewById(R.id.calendar);
+        calendar.getBackground().setColorFilter(Color.rgb(217, 246, 255), PorterDuff.Mode.MULTIPLY);
+        
+        scores = (Button) findViewById(R.id.leaderboard);
+        scores.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
+        
+        help = (Button) findViewById(R.id.as_help);
+        help.getBackground().setColorFilter(Color.rgb(255, 222, 233), PorterDuff.Mode.MULTIPLY);
+        
         
         
         Log.d("friendHealthFHASA", "Creating Database");
