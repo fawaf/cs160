@@ -25,7 +25,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+//import android.widget.Toast;
 import android.util.Log;
 
 
@@ -55,13 +55,14 @@ public class ActivitySubmission extends Activity {
 			img_filename = extras.getString("filename");
 			score = extras.getInt("score");
 			
-			Log.d("friendHealthAS", "Full name " + img_filename);
+			Log.d("friendHealthAS", "Full name: " + img_filename);
 			String shortname = img_filename.substring(11);
-			Log.d("friendHealthAS", "Display " + shortname);
+			Log.d("friendHealthAS", "Display name: " + shortname);
 			
 
 			Bitmap myBitmap = null;
-			try {
+			myBitmap = BitmapFactory.decodeFile(shortname);
+			/*try {
 				BitmapFactory.Options options = new BitmapFactory.Options();
 				options.inSampleSize = 8;
 				myBitmap = BitmapFactory.decodeFile(shortname, options);
@@ -72,14 +73,14 @@ public class ActivitySubmission extends Activity {
 						"OutOfMemoryError: " + e.toString(),
 						Toast.LENGTH_LONG).show();
 				return;
-			}
+			}*/
 			
 			Log.d("friendHealthAS", "Displaying image");
 			imageView.setImageBitmap(myBitmap);
 			Log.d("friendHealthAS", "Image displayed");
 
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			myBitmap.compress(CompressFormat.JPEG, 50, bos);
+			myBitmap.compress(CompressFormat.JPEG, 75, bos);
 			bundle.putByteArray("picture", bos.toByteArray());
 			Utility.mPrefs = getSharedPreferences("FHActivitySelector", MODE_PRIVATE);
 			bundle.putString(Facebook.TOKEN, Utility.mPrefs.getString("access_token", null));

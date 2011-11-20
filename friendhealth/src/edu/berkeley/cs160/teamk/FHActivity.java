@@ -294,14 +294,14 @@ public class FHActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
     	OptionsMenu om = new OptionsMenu();
-    	om.FHASCreateMenu(menu);
+    	om.CreateMenu(menu);
     	return true;
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	OptionsMenu om = new OptionsMenu();
-    	return om.FHASMenuChoice(this, item);
+    	return om.MenuChoice(this, item);
     }
 
 }
