@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.facebook.android.*;
 
 public class BallyhooActivity extends Activity {
+	
 	Button submit_button;
 	String name = "";
 	int score = 0;
@@ -98,13 +99,15 @@ public class BallyhooActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
-    	OptionsMenu.CreateMenu(menu);
+    	OptionsMenu om = new OptionsMenu();
+    	om.CreateMenu(menu);
     	return true;
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	return OptionsMenu.MenuChoice(this, item);
+    	OptionsMenu om = new OptionsMenu();
+    	return om.MenuChoice(this, item);
     }
 
 }

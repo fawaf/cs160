@@ -25,6 +25,7 @@ import android.util.Log;
 
 
 public class ActivitySubmission extends Activity {
+	
 	String act_name = "";
 	String img_filename = "";
 	int score = 0;
@@ -134,12 +135,15 @@ public class ActivitySubmission extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
-    	OptionsMenu.CreateMenu(menu);
+    	OptionsMenu om = new OptionsMenu();
+    	om.CreateMenu(menu);
     	return true;
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	return OptionsMenu.MenuChoice(this, item);
+    	OptionsMenu om = new OptionsMenu();
+    	return om.MenuChoice(this, item);
     }
+    
 }

@@ -29,7 +29,8 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class FHActivity extends Activity{
+public class FHActivity extends Activity {
+	
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;
 	public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
@@ -289,16 +290,18 @@ public class FHActivity extends Activity{
 		return file;
 	}
 
-	@Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
-    	OptionsMenu.CreateMenu(menu);
+    	OptionsMenu om = new OptionsMenu();
+    	om.FHASCreateMenu(menu);
     	return true;
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	return OptionsMenu.MenuChoice(this, item);
+    	OptionsMenu om = new OptionsMenu();
+    	return om.FHASMenuChoice(this, item);
     }
 
 }

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class AddTask extends Activity {
+	
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,16 +49,18 @@ public class AddTask extends Activity {
 		});
 	}
 	
-	@Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
-    	OptionsMenu.CreateMenu(menu);
+    	OptionsMenu om = new OptionsMenu();
+    	om.FHASCreateMenu(menu);
     	return true;
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	return OptionsMenu.MenuChoice(this, item);
+    	OptionsMenu om = new OptionsMenu();
+    	return om.FHASMenuChoice(this, item);
     }
 
 }

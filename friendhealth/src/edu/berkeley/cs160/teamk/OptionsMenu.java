@@ -1,16 +1,23 @@
 package edu.berkeley.cs160.teamk;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.Toast;
+import android.net.Uri;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class OptionsMenu extends Activity {
+public class OptionsMenu extends Activity {	
 
-	protected static void FHASCreateMenu(Menu menu) {
+	static Context ctxt;
+	
+	protected void FHASCreateMenu(Menu menu) {
     	MenuItem mnu1 = menu.add(0, 0, 0, "Add Task");
     	{
     		mnu1.setAlphabeticShortcut('a');
@@ -33,8 +40,9 @@ public class OptionsMenu extends Activity {
     	}
     }
     
-    protected static boolean FHASMenuChoice(Context context, MenuItem item) {
+    protected boolean FHASMenuChoice(Context context, MenuItem item) {
     	Intent i;
+    	ctxt = context;
     	switch(item.getItemId()) {
     	case 0:
     		i = new Intent("edu.berkeley.cs160.teamk.AddTask");
@@ -52,13 +60,15 @@ public class OptionsMenu extends Activity {
     		((Activity) context).startActivity(i);
     		return true;
     	case 4:
-    		Toast.makeText(context, "Tutorials", Toast.LENGTH_SHORT).show();
+    		Log.d("friendHealthOM", "About to showDialog(0)");
+    		showDialog(0);
+    		Log.d("friendHealthOM", "Finished showDialog");
     		return true;
     	}
     	return false;
     }
     
-    protected static void CreateMenu(Menu menu) {
+    protected void CreateMenu(Menu menu) {
     	MenuItem mnu1 = menu.add(0, 0, 0, "Profile");
     	{
     		mnu1.setAlphabeticShortcut('a');
@@ -78,8 +88,9 @@ public class OptionsMenu extends Activity {
     }
     
 
-    protected static boolean MenuChoice(Context context, MenuItem item) {
+    protected boolean MenuChoice(Context context, MenuItem item) {
     	Intent i;
+    	ctxt = context;
     	switch(item.getItemId()) {
     	case 0:
     		i = new Intent("edu.berkeley.cs160.teamk.ProfileActivity");
@@ -90,7 +101,7 @@ public class OptionsMenu extends Activity {
     		((Activity) context).startActivity(i);
     		return true;
     	case 2:
-    		Toast.makeText(context, "Tutorials", Toast.LENGTH_SHORT).show();
+    		showDialog(0);
     		return true;
     	case 3:
     		i = new Intent("edu.berkeley.cs160.teamk.FHActivitySelector");
@@ -98,6 +109,41 @@ public class OptionsMenu extends Activity {
     		return true;
     	}
     	return false;
+    }
+    
+    protected Dialog onCreateDialog(int id) {
+    	switch (id){
+    	case 0:
+    		Log.d("friendHealthOM", "In Dialog Builder");
+    		AlertDialog.Builder builder = new AlertDialog.Builder(ctxt);
+    		builder.setMessage("Are you sure you want to go to YouTube to view the tutorial?");
+    		builder.setPositiveButton("Yes", new
+    				DialogInterface.OnClickListener(){
+    				public void onClick(DialogInterface dialog,
+    				int whichButton)
+    				{
+    					String video_path = "http://www.youtube.com/watch?v=ICoyNN9akcc";
+    		    		Uri uri = Uri.parse(video_path);
+
+    		    		// With this line the Youtube application, if installed, will launch immediately.
+    		    		// Without it you will be prompted with a list of the application to choose.
+    		    		uri = Uri.parse("vnd.youtube:"  + uri.getQueryParameter("v"));
+
+    		    		Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+    		    		((Activity) ctxt).startActivity(intent);
+    				}
+    		
+    				});
+    		builder.setNegativeButton("No", new
+    				DialogInterface.OnClickListener() {
+    				public void onClick(DialogInterface dialog,
+    				int whichButton){}
+    				
+    		});
+    		builder.create();
+    		builder.show();
+    	}
+    	return null;
     }
     
 }
