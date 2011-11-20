@@ -2,75 +2,92 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/fh_background"
+    android:background="@drawable/new_bg"
     android:orientation="vertical"
     android:scaleType="fitXY" >
 
-    <Button
-        android:id="@+id/btn_ActHelp"
-        android:layout_width="110dp"
-        android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="Help" />
-
-    <Button
-        android:id="@+id/btn_ActInvite"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignTop="@+id/btn_ActHelp"
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="330dp"
+        android:layout_height="260dp"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Invite Others to Activity" />
-
-    <Button
-        android:id="@+id/btn_ActReject"
-        android:layout_width="110dp"
-        android:layout_height="50dp"
-        android:layout_alignBaseline="@+id/btn_ActHelp"
-        android:layout_alignBottom="@+id/btn_ActHelp"
-        android:layout_alignParentBottom="true"
-        android:text="Reject Activity" />
-
-    <Button
-        android:id="@+id/btn_ActTakePicture"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_ActHelp"
-        android:layout_alignParentLeft="true"
-        android:text="Take Picture" />
+        android:layout_marginTop="185dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/frame" />
 
     <Gallery
         android:id="@+id/activityGallery"
-        android:layout_width="fill_parent"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/btn_ActHelp" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp" />
 
     <ImageView
         android:id="@+id/img_fhAct"
-        android:layout_width="fill_parent"
-        android:layout_height="230dp"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="210dp"
+        android:layout_marginTop="225dp"
         android:scaleType="fitXY" />
-
-    <TextView
-        android:id="@+id/txt_ActPt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/activityGallery"
-        android:layout_centerHorizontal="true"
-        android:text="Replace with points!"
-        android:textColor="#7fff00"
-        android:textSize="22pt" />
 
     <TextView
         android:id="@+id/txt_ActTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/txt_ActPt"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:text="Replace with Activity Title!"
+        android:textColor="#ffffdd"
         android:textSize="22pt" />
+
+    <TextView
+        android:id="@+id/txt_ActPt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/txt_ActTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="Replace with points!"
+        android:textColor="#7fff00"
+        android:textSize="18pt" />
+
+    <Button
+        android:id="@+id/btn_ActTakePicture"
+        android:layout_width="wrap_content"
+        android:layout_height="119dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:drawableTop="@drawable/camera_icon"
+        android:text="Take Picture" android:layout_marginLeft="20dp" android:textSize="17dp" android:textStyle="bold" android:textColor="#5050ff"/>
+
+    <Button
+        android:id="@+id/btn_ActReject"
+        android:layout_width="115dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/btn_ActTakePicture"
+        android:drawableTop="@drawable/reject_icon"
+        android:text="Reject" android:textSize="15dp"/>
+
+    <Button
+        android:id="@+id/btn_ActInvite"
+        android:layout_width="115dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/btn_ActReject"
+        android:drawableTop="@drawable/invite_icon"
+        android:text="Tell Friends" android:textSize="15dp"/>
+    
+    <Button
+        android:id="@+id/btn_ActHelp"
+        android:layout_width="115dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/btn_ActInvite"
+        android:drawableTop="@drawable/help_icon"
+        android:text="Help" android:textSize="15dp"/>
+    
+
 
 </RelativeLayout>
