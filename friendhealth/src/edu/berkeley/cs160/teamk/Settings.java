@@ -3,6 +3,8 @@ package edu.berkeley.cs160.teamk;
 import android.app.Activity;
 import android.os.Bundle;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -35,4 +37,16 @@ public class Settings extends Activity {
 			}
 		});
 	}
+	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	super.onCreateOptionsMenu(menu);
+    	OptionsMenu.CreateMenu(menu);
+    	return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	return OptionsMenu.MenuChoice(this, item);
+    }
 }

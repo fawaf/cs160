@@ -12,30 +12,37 @@ import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class ProfileActivity extends Activity {
+	
+	Button logout_button;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.profileactivity);
 		
-		String jsonUser;
 		try {
-			jsonUser = Utility.facebook.request("me");
+			String jsonUser = Utility.facebook.request("me");
 			JSONObject obj;
 			obj = Util.parseJson(jsonUser);
 			String facebookId = obj.optString("id");
 			Log.d("friendHealthPA", "Facebook UID is: " + facebookId);
-			ImageView user_picture;
-		    user_picture=(ImageView)findViewById(R.id.profilePic);
-		    URL img_value = null;
-		    img_value = new URL("http://graph.facebook.com/"+facebookId+"/picture?type=large");
+			ImageView user_picture = (ImageView) findViewById(R.id.profilePic);
+		    URL img_value = new URL("http://graph.facebook.com/" + facebookId + "/picture?type=large");
 		    Bitmap mIcon1 = BitmapFactory.decodeStream(img_value.openConnection().getInputStream());
 			user_picture.setImageBitmap(mIcon1);
 			
@@ -46,21 +53,14 @@ public class ProfileActivity extends Activity {
 			jsonUser = Utility.facebook.request("me/friends");
 			obj = Util.parseJson(jsonUser);
 			JSONArray friends = obj.getJSONArray("data");
-		
-			TextView friend_name1 = (TextView) findViewById(R.id.friendName1);
-			JSONObject friendObj1 = friends.getJSONObject(0);
-			String friendName1 = friendObj1.optString("name");
-			friend_name1.setText(friendName1);
 			
-			TextView friend_name2 = (TextView) findViewById(R.id.friendName2);
-			JSONObject friendObj2 = friends.getJSONObject(2);
-			String friendName2 = friendObj2.optString("name");
-			friend_name2.setText(friendName2);
-			
-			TextView friend_name3 = (TextView) findViewById(R.id.friendName3);
-			JSONObject friendObj3 = friends.getJSONObject(3);
-			String friendName3 = friendObj3.optString("name");
-			friend_name3.setText(friendName3);
+			Spinner s = (Spinner) findViewById(R.id.spinner);
+			String[] friends_array = new String[friends.length()];
+			for (int i = 0; i < friends.length(); i++) {
+				JSONObject friendObj = friends.getJSONObject(i);
+				friends_array[i] = friendObj.optString("name");
+			}
+			s.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, friends_array));
 	
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -81,6 +81,41 @@ public class ProfileActivity extends Activity {
 			e.printStackTrace();
 		}
 
+		//---get the Invite button---
+		logout_button = (Button) findViewById(R.id.btn_logout);
+	    
+	    //---event handler for the Invite button---
+	    logout_button.setOnClickListener(new View.OnClickListener() {
+	    	public void onClick(View view) {
+	    		Log.d("friendHealthFHASA", "Logging out of Facebook");
+				try {
+					Utility.facebook.logout(getBaseContext());
+				} catch (Exception e){
+					Log.d("friendHealthFHASA", e.toString());
+				}
+				Log.d("friendHealthFHASA", "Access Token: " + Utility.facebook.getAccessToken());
+				Log.d("friendHealthFHASA", "Access Expires: " + Utility.facebook.getAccessExpires());
+				Utility.mPrefs = getBaseContext().getSharedPreferences("FHActivitySelector", MODE_PRIVATE);
+				SharedPreferences.Editor editor = Utility.mPrefs.edit();
+				editor.clear();
+	            boolean result = editor.commit();
+	            Log.d("friendHealthFHASA", "SharedPreferences ommit result is: " + result);
+	    		Intent i = new Intent("edu.berkeley.cs160.teamk.FHActivitySelector");
+	    		startActivity(i);
+	    	}
+	    });
 	}
+	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	super.onCreateOptionsMenu(menu);
+    	OptionsMenu.CreateMenu(menu);
+    	return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	return OptionsMenu.MenuChoice(this, item);
+    }
 
 }

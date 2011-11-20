@@ -15,8 +15,11 @@
             android:name=".FHActivitySelector" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter >
+                <action android:name="edu.berkeley.cs160.teamk.FHActivitySelector" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         

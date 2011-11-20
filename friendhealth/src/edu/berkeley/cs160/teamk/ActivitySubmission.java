@@ -28,7 +28,7 @@ public class ActivitySubmission extends Activity {
 	String act_name = "";
 	String img_filename = "";
 	int score = 0;
-	Button fH_button;
+	Button submit_button;
 	String origVal = "";
 	EditText edt_Caption;
 	Bundle bundle = new Bundle();
@@ -95,10 +95,10 @@ public class ActivitySubmission extends Activity {
 				});
 			
 			//---get the Submit button---
-			fH_button = (Button) findViewById(R.id.btn_Submit);
+			submit_button = (Button) findViewById(R.id.btn_Submit);
 	        
 	        //---event handler for the Submit button---
-	        fH_button.setOnClickListener(new View.OnClickListener() {
+	        submit_button.setOnClickListener(new View.OnClickListener() {
 	        	public void onClick(View view) {
 	        		try {
 	        			edt_Caption = (EditText) findViewById(R.id.edt_Caption);
