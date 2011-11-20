@@ -7,23 +7,24 @@
 	<TextView
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="Activity Prompt: i.e. 'Eat an Apple'" />
+		android:text="Activity Prompt: i.e. 'Eat an Apple'" android:textSize="20dp" android:layout_marginLeft="50dp" android:layout_marginRight="15dp" android:layout_marginTop="50dp"/>
 	
 	<EditText android:id="@+id/taskName"
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
+		android:layout_height="wrap_content" android:layout_marginRight="50dp" android:layout_marginLeft="50dp"/>
 		
 	<TextView
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="Tags (optional): i.e. food, exercise, morning" />
+		android:text="Tags (optional): i.e. food, exercise, morning" android:textSize="20dp" android:layout_marginRight="15dp" android:layout_marginLeft="50dp" android:layout_marginTop="50dp"/>
 		
 	<EditText android:id="@+id/taskTags"
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
+		android:layout_height="wrap_content" android:layout_marginLeft="50dp" android:layout_marginRight="50dp"/>
 		
 	<Button android:id="@+id/btn_addTask"
-		android:text="Add Task"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" />
+		android:text="  Add Task"
+		android:drawableLeft="@drawable/add_icon"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:textColor="#0505dd" android:textSize="25dp" android:layout_marginTop="75dp" android:layout_marginLeft="150dp"/>
 </LinearLayout>

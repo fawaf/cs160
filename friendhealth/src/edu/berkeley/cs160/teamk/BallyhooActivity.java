@@ -3,6 +3,9 @@ package edu.berkeley.cs160.teamk;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -83,6 +86,26 @@ public class BallyhooActivity extends Activity {
         				response = "Invitation Successful";
         			}
         			
+        			if (response == "Invitation Successful"){
+        				String jsonUser = Utility.facebook.request("me");
+        				JSONObject obj;
+        				obj = Util.parseJson(jsonUser);
+        				String facebookId = obj.optString("id");
+        				
+        				Utility.mPrefs = getSharedPreferences("FHActivitySelector", MODE_PRIVATE);
+            			Bundle score_bundle = new Bundle();
+            			int val = 4;
+            			score_bundle.putString(Facebook.TOKEN, "177765768977545|daaa19ae5921350a7d943e84d0b5c643");
+            			score_bundle.putInt("score", val);
+            			Log.d("friendHealthBA_SCORE", "Bundle score is: "+ score_bundle.getInt("score"));
+            			Log.d("friendHealthBA", "Access_token: " + Utility.mPrefs.getString("access_token", null));
+            			String score_response = Utility.facebook.request(facebookId+"/scores", score_bundle, "POST");
+            			//JSONObject score_obj = Util.parseJson(score_response);
+            			//String message = score_obj.optString("message");
+            			Log.d("friendHealthAS_Score", score_response);
+            			
+        			}
+        			
         			Intent intent = new Intent();
         			Bundle extras = getIntent().getExtras();
         			extras.putString("response", response);
@@ -91,7 +114,13 @@ public class BallyhooActivity extends Activity {
         			finish();
         		} catch (MalformedURLException e) {
         		} catch (IOException e) {
-        		}
+        		} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (FacebookError e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
         	}
         });
 	}
