@@ -12,4 +12,5 @@ public class Utility {
 	public static final int RC_ACTIVITY = 1001;
 	public static final int RC_NEWTASK = 1002;
 	
+	public static DBAdapter dbAdapter = new DBAdapter();
 }

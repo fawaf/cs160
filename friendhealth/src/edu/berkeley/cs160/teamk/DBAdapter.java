@@ -1,126 +1,159 @@
 package edu.berkeley.cs160.teamk;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import java.util.ArrayList;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.message.BasicNameValuePair;
+
 import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class DBAdapter {
-	public static final String KEY_ROWID = "_id";
-	public static final String KEY_NAME = "name";
-	public static final String KEY_POINTS = "points";
-	private static final String TAG = "DBAdapter";
+	public static final String URL_BASE = 
+			"https://secure.ocf.berkeley.edu/~goodfrie/";
+	public static final String URL_ACT1 = "getRandomActivity.php";
+	public static final String URL_ACT3 = "getRandomActivities.php";
+	public static final String URL_UPDATE = "updateActivity.php";
 	
-	private static final String DATABASE_NAME = "MyDB";
-	private static final String DATABASE_TABLE = "contacts";
-	private static final int DATABASE_VERSION = 1;
+	public Task[] tasks;
 	
-	private static final String DATABASE_CREATE =
-			"create table contacts (_id integer primary key autoincrement, "
-			+ "name text not null, points text not null);";
 	
-	private final Context context;
-	
-	private DatabaseHelper DBHelper;
-	private SQLiteDatabase db;
-	
-	public DBAdapter(Context ctx) {
-		this.context = ctx;
-		DBHelper = new DatabaseHelper(context);
+	public DBAdapter() {
+		setAllRandomActivities();
 	}
 	
 	
-	private static class DatabaseHelper extends SQLiteOpenHelper {
-		DatabaseHelper(Context context) {
-			super(context, DATABASE_NAME, null, DATABASE_VERSION);
+	private Task setNewRandomActivity(int index) {
+		String result = getDatabaseOutput(
+				URL_BASE + URL_ACT1, findIDsReplace());
+		Task[] new_task = parseJSONData(result);
+		tasks[index] = new_task[0];
+		return new_task[0];
+	}
+	
+	
+	public void setAllRandomActivities() {
+		String result = getDatabaseOutput(
+				URL_BASE + URL_ACT3, findIDsReplace());
+		Task[] new_tasks = parseJSONData(result);
+		for (int i = 0 ; i < tasks.length ; ++i) {
+			tasks[i] = new_tasks[i];
+		}
+	}
+	
+	
+	public Task declineActivity(int index) {
+		return setNewRandomActivity(index);
+	}
+	
+	
+	public Task rejectDifficultActivity(int index) {
+		tasks[index].timesDeclined++;
+		updateActivity(index);
+		return setNewRandomActivity(index);
+	}
+	
+	
+	public Task flagActivity(int index) {
+		tasks[index].timesFlagged++;
+		updateActivity(index);
+		return setNewRandomActivity(index);
+	}
+	
+	
+	private ArrayList<NameValuePair> findIDsReplace() {
+		ArrayList<NameValuePair> pairs = 
+				new ArrayList<NameValuePair>();
+		
+		for (int i = 0 ; i < tasks.length ; ++i) {
+			pairs.add(new BasicNameValuePair(
+					"r" + String.valueOf(i),
+					String.valueOf(tasks[i].id)));
 		}
 		
-		@Override
-		public void onCreate(SQLiteDatabase db) {
-			try {
-				db.execSQL(DATABASE_CREATE);
+		return pairs;
+	}
+	
+	
+	private String getDatabaseOutput(
+			String url, ArrayList<NameValuePair> nameValuePairs) {
+		String result = "";
+		
+		// http post
+		InputStream is = null;
+		try {
+			HttpClient httpclient = new DefaultHttpClient();
+			HttpPost httppost = new HttpPost(url);
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			HttpResponse response = httpclient.execute(httppost);
+			HttpEntity entity = response.getEntity();
+			is = entity.getContent();
+		}
+		catch (Exception e) {
+			Log.e("log_tag", "Error in http connection " + e.toString());
+		}
+		
+		// convert response to string
+		try {
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(is, "iso-8859-1"), 8);
+			StringBuilder sb = new StringBuilder();
+			sb.append(reader.readLine() + "\n");
+			String line = "0";
+			while ((line = reader.readLine()) != null) {
+				sb.append(line + "\n");
 			}
-			catch (SQLException e) {
-				e.printStackTrace();
+			is.close();
+			result = sb.toString();
+		}
+		catch (Exception e) {
+			Log.e("log_tag", "Error converting result " + e.toString());
+		}
+		
+		return result;
+	}
+	
+	
+	private Task[] parseJSONData(String result) {
+		Task[] new_tasks = null;
+		try {
+			JSONArray jArray = new JSONArray(result);
+
+			new_tasks = new Task[jArray.length()];
+			for (int i = 0 ; i < jArray.length() ; ++i) {
+				JSONObject json_data = jArray.getJSONObject(i);
+				new_tasks[i] = new Task(
+						json_data.getInt("id"),
+						json_data.getString("name"),
+						json_data.getInt("points"),
+						json_data.getInt("timesFlagged"),
+						json_data.getInt("timesDeclined"),
+						json_data.getInt("timesAccepted"));
 			}
 		}
-		
-		@Override
-		public void onUpgrade(
-				SQLiteDatabase db, int oldVersion, int newVersion) {
-			Log.w(TAG, 
-					"Upgrading database from version " + oldVersion + " to "
-					+ newVersion + ", which will destroy all old data");
-			db.execSQL("DROP TABLE IF EXISTS contacts");
-			onCreate(db);
+		catch (JSONException e) {
+			Log.e("log_tag", "Error parsing data " + e.toString());
 		}
+		return new_tasks;
 	}
 	
 	
-	//---opens the database---
-	public DBAdapter open() throws SQLException {
-		db = DBHelper.getWritableDatabase();
-		return this;
-	}
-	
-	
-	//---closes the database---
-	public void close() {
-		DBHelper.close();
-	}
-	
-	
-	//---insert a contact into the database---
-	public long insertContact(String name, String points) {
-		ContentValues initialValues = new ContentValues();
-		initialValues.put(KEY_NAME, name);
-		initialValues.put(KEY_POINTS, points);
-		return db.insert(DATABASE_TABLE,  null, initialValues);
-	}
-	
-	
-	//---deletes a particular contact---
-	public boolean deleteContact(long rowId) {
-		return db.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
-	}
-	
-	
-	//---retrieves all the contacts---
-	public Cursor getAllContacts() {
-		return db.query(DATABASE_TABLE,
-				new String[] {KEY_ROWID, KEY_NAME, KEY_POINTS},
-				null, null, null, null, null);
-	}
-	
-	
-	//---retrieves a particular contact---
-	public Cursor getContact(long rowId) throws SQLException {
-		Cursor mCursor = db.query(
-				true,
-				DATABASE_TABLE,
-				new String[] {KEY_ROWID, KEY_NAME, KEY_POINTS},
-				KEY_ROWID + "=" + rowId,
-				null, null, null, null, null);
-		if (mCursor != null) {
-			mCursor.moveToFirst();
-		}
+	private void updateActivity(int index) {
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		
-		return mCursor;
-	}
-	
-	
-	//---updates a contact---
-	public boolean updateContact(long rowId, String name, String points) {
-		ContentValues args = new ContentValues();
-		args.put(KEY_NAME, name);
-		args.put(KEY_POINTS, points);
-		return db.update(
-				DATABASE_TABLE,
-				args,
-				KEY_ROWID + "=" + rowId,
-				null) > 0;
-	}
+		pairs.add(new BasicNameValuePair(
 }
