@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/new_bg2"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:scaleType="fitXY" >
 
     <ImageView
@@ -53,41 +53,42 @@
         android:textSize="18pt" />
 
     <Button
+        android:id="@+id/btn_ActHelp"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="11dp"
+        android:drawableTop="@drawable/help_icon"
+        android:text="Help"
+        android:textSize="15dp" android:layout_marginTop="5dp" android:layout_below="@+id/btn_ActInvite" android:layout_alignParentRight="true" android:layout_marginRight="5dp"/>
+
+    <Button
         android:id="@+id/btn_ActTakePicture"
         android:layout_width="wrap_content"
-        android:layout_height="119dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
         android:drawableTop="@drawable/camera_icon"
-        android:text="Take Picture" android:layout_marginLeft="11dp" android:textSize="17dp" android:textStyle="bold" android:textColor="#5050ff" android:layout_marginBottom="11dp"/>
+        android:text="Take Picture"
+        android:textColor="#5050ff"
+        android:textSize="17dp"
+        android:textStyle="bold" android:layout_alignParentRight="true" android:layout_marginRight="5dp"/>
 
     <Button
         android:id="@+id/btn_ActReject"
-        android:layout_width="115dp"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/btn_ActTakePicture"
+        android:layout_below="@+id/btn_ActTakePicture"
         android:drawableTop="@drawable/reject_icon"
-        android:text="Reject" android:textSize="15dp" android:layout_marginBottom="11dp" android:layout_marginLeft="5dp"/>
+        android:text="Reject"
+        android:textSize="15dp" android:layout_marginTop="5dp" android:layout_alignParentRight="true" android:layout_marginRight="5dp"/>
 
     <Button
         android:id="@+id/btn_ActInvite"
-        android:layout_width="115dp"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/btn_ActReject"
+        android:layout_below="@+id/btn_ActReject"
         android:drawableTop="@drawable/invite_icon"
-        android:text="Tell Friends" android:textSize="15dp" android:layout_marginBottom="11dp" android:layout_marginLeft="5dp"/>
-    
-    <Button
-        android:id="@+id/btn_ActHelp"
-        android:layout_width="115dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/btn_ActInvite"
-        android:drawableTop="@drawable/help_icon"
-        android:text="Help" android:textSize="15dp" android:layout_marginBottom="11dp" android:layout_marginLeft="5dp"/>
-    
-
+        android:text="Tell Friends"
+        android:textSize="15dp" android:layout_marginTop="5dp" android:layout_alignParentRight="true" android:layout_marginRight="5dp"/>
 
 </RelativeLayout>
