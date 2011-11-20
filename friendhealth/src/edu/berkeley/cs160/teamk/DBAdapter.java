@@ -3,9 +3,10 @@ package edu.berkeley.cs160.teamk;
 import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.net.Uri;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -15,7 +16,6 @@ import java.io.InputStreamReader;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import org.json.JSONArray;
@@ -29,13 +29,34 @@ public class DBAdapter {
 	public static final String URL_ACT3 = "getRandomActivities.php";
 	public static final String URL_UPDATE = "updateActivity.php";
 	public static final String URL_ADD = "addActivity.php";
+	public static final String URL_GET = "getActivityByID.php";
 	
 	public Task[] tasks;
 	
 	
 	public DBAdapter() {
+		Log.d("DBA", "Initializing empty tasks.");
+		initEmptyTasks(3);
 		setAllRandomActivities();
 	}
+	
+	
+	public DBAdapter(int id1, int id2, int id3) {
+		tasks = new Task[3];
+		tasks[0] = getActivityByID(id1);
+		tasks[1] = getActivityByID(id2);
+		tasks[2] = getActivityByID(id3);
+	}
+	
+	
+	public Task getActivityByID(int id) {
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		pairs.add(new BasicNameValuePair("id", String.valueOf(id)));
+		
+		String result = getDatabaseOutput(URL_BASE + URL_GET, pairs);
+		Task[] task = parseJSONData(result);
+		return task[0];
+	}	
 	
 	
 	private Task setNewRandomActivity(int index) {
@@ -48,6 +69,7 @@ public class DBAdapter {
 	
 	
 	public void setAllRandomActivities() {
+		Log.d("DBA", "setAllRandomActivities()");
 		String result = getDatabaseOutput(
 				URL_BASE + URL_ACT3, findIDsReplace());
 		Task[] new_tasks = parseJSONData(result);
@@ -90,6 +112,10 @@ public class DBAdapter {
 	}
 	
 	
+	public int getID(int index) {
+		return tasks[index].id;
+	}
+	
 	public String getName(int index) {
 		return tasks[index].name;
 	}
@@ -104,12 +130,16 @@ public class DBAdapter {
 	
 	
 	private ArrayList<NameValuePair> findIDsReplace() {
+		Log.d("DBA", "findIDsReplace()");
 		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		
 		for (int i = 0 ; i < tasks.length ; ++i) {
 			pairs.add(new BasicNameValuePair(
-					"r" + String.valueOf(i),
+					"r" + String.valueOf(i + 1),
 					String.valueOf(tasks[i].id)));
+			Log.d("DBA", "	index: " + String.valueOf(i) +
+					", name: " + pairs.get(i).getName() +
+					", value: " + pairs.get(i).getValue());
 		}
 		
 		return pairs;
@@ -118,20 +148,21 @@ public class DBAdapter {
 	
 	private String getDatabaseOutput(
 			String url, ArrayList<NameValuePair> nameValuePairs) {
+		Log.d("DBA", "getDatabaseOutput(" + url + ")");
 		String result = "";
 		
 		// http post
 		InputStream is = null;
 		try {
 			HttpClient httpclient = new DefaultHttpClient();
-			HttpPost httppost = new HttpPost(url);
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-			HttpResponse response = httpclient.execute(httppost);
+			HttpGet httpget = new HttpGet(formatURL(url, nameValuePairs));
+			Log.d("DBA", "httppost: " + httpget.getURI().toString());
+			HttpResponse response = httpclient.execute(httpget);
 			HttpEntity entity = response.getEntity();
 			is = entity.getContent();
 		}
 		catch (Exception e) {
-			Log.e("log_tag", "Error in http connection " + e.toString());
+			Log.e("DBA", "Error in http connection " + e.toString());
 		}
 		
 		// convert response to string
@@ -142,16 +173,34 @@ public class DBAdapter {
 			sb.append(reader.readLine() + "\n");
 			String line = "0";
 			while ((line = reader.readLine()) != null) {
+				Log.d("DBA", "Convert to String: " + line);
 				sb.append(line + "\n");
 			}
 			is.close();
 			result = sb.toString();
 		}
 		catch (Exception e) {
-			Log.e("log_tag", "Error converting result " + e.toString());
+			Log.e("DBA", "Error converting result " + e.toString());
 		}
-		
+
+		Log.d("DBA", "gDO Output: " + result);
 		return result;
+	}
+	
+	
+	private String formatURL(
+			String url, ArrayList<NameValuePair> nameValuePairs) {
+		String url_comb = url + "?";
+		for (int i = 0 ; i < nameValuePairs.size() ; ++i) {
+			String name = nameValuePairs.get(i).getName();
+			String value = nameValuePairs.get(i).getValue();
+			url_comb += name + "=" + Uri.encode(value);
+			if (i + 1 < nameValuePairs.size()) {
+				url_comb += "&";
+			}
+		}
+		Log.d("DBA", url_comb);
+		return url_comb;
 	}
 	
 	
@@ -173,7 +222,7 @@ public class DBAdapter {
 			}
 		}
 		catch (JSONException e) {
-			Log.e("log_tag", "Error parsing data " + e.toString());
+			Log.e("DBA", "Error parsing data " + e.toString());
 		}
 		return new_tasks;
 	}
@@ -197,7 +246,15 @@ public class DBAdapter {
 		
 		String result = getDatabaseOutput(URL_BASE + URL_UPDATE, pairs);
 		if (!result.equals("SUCCESS")) {
-			Log.e("log_tag", "Error Updating: " + result);
+			Log.e("DBA", "Error Updating: " + result);
 		}	
+	}
+	
+	
+	private void initEmptyTasks(int size) {
+		tasks = new Task[size];
+		for (int i = 0 ; i < size ; ++i) {
+			tasks[i] = new Task();
+		}
 	}
 }

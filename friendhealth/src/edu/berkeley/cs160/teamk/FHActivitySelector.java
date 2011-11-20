@@ -169,6 +169,25 @@ public class FHActivitySelector extends Activity {
         help = (Button) findViewById(R.id.as_help);
         help.getBackground().setColorFilter(Color.rgb(255, 222, 233), PorterDuff.Mode.MULTIPLY);
         
+        Log.d("friendHealthFHASA", "Initialzing Activity IDs");
+        int id1 = Utility.mPrefs.getInt("taskID_1", 0);
+        int id2 = Utility.mPrefs.getInt("taskID_2", 0);
+        int id3 = Utility.mPrefs.getInt("taskID_3", 0);
+        
+        Log.d("friendHealthFHASA", "Saved Activity IDs: "
+        		+ id1 + ", " + id2 + ", " + id3);
+        if (id1 == 0 || id2 == 0 || id3 == 0) {
+            Log.d("friendHealthFHASA", "Initializing DBAdapter");
+        	Utility.dbAdapter = new DBAdapter();
+        	SharedPreferences.Editor editor =Utility.mPrefs.edit();
+        	editor.putInt("taskID_1", Utility.dbAdapter.getID(0));
+        	editor.putInt("taskID_2", Utility.dbAdapter.getID(1));
+        	editor.putInt("taskID_3", Utility.dbAdapter.getID(2));
+        	editor.commit();
+        }
+        else {
+        	Utility.dbAdapter = new DBAdapter(id1, id2, id3);
+        }
         act1_button.setText(Utility.dbAdapter.toString(0));
         act2_button.setText(Utility.dbAdapter.toString(1));
         act3_button.setText(Utility.dbAdapter.toString(2));
@@ -253,7 +272,7 @@ public class FHActivitySelector extends Activity {
 					rj.start();
 				}
 				Utility.dbAdapter.declineActivity(1);
-				act1_button.setText(Utility.dbAdapter.toString(1));
+				act2_button.setText(Utility.dbAdapter.toString(1));
 			}
 		});
         
@@ -263,7 +282,7 @@ public class FHActivitySelector extends Activity {
 					rj.start();
 				}
 				Utility.dbAdapter.declineActivity(2);
-				act1_button.setText(Utility.dbAdapter.toString(2));
+				act3_button.setText(Utility.dbAdapter.toString(2));
 			}
 		});
         
