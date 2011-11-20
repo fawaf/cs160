@@ -13,39 +13,38 @@
 
     <Button
         android:id="@+id/newTask"
-        android:layout_width="127dp"
-        android:layout_height="wrap_content"
+        android:layout_width="135dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="16dp"
-        android:text="New Tasks" />
+        android:layout_marginBottom="4dp"
+        android:text="New Tasks" android:textSize="22dp" android:height="40dp"/>
 
     <Button
         android:id="@+id/calendar"
-        android:layout_width="127dp"
+        android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/newTask"
         android:layout_below="@+id/btn_activity3"
         android:layout_toRightOf="@+id/newTask"
-        android:text="Calendar" />
+        android:text="Calendar" android:textSize="20dp" android:height="40dp"/>
 
     <Button
         android:id="@+id/leaderboard"
-        android:layout_width="127dp"
+        android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/calendar"
         android:layout_below="@+id/btn_activity3"
-        android:layout_toRightOf="@+id/calendar"
-        android:text="Scores" />
+        android:text="Scores" android:textSize="20dp" android:height="40dp" android:layout_toRightOf="@id/calendar"/>
 
     <Button
         android:id="@+id/as_help"
-        android:layout_width="127dp"
+        android:layout_width="85dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/leaderboard"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/btn_activity3"
-        android:text="Help" />
+        android:text="Help" android:textSize="20dp" android:height="40dp" android:layout_toRightOf="@id/leaderboard"/>
 
     <Button
         android:id="@+id/btn_activity3"
@@ -54,7 +53,7 @@
         android:layout_above="@+id/newTask"
         android:layout_alignLeft="@+id/calendar"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="21dp"
+        android:layout_marginBottom="32dp"
         android:text="act3"
         android:textSize="15pt"
         android:textStyle="bold" />
@@ -77,7 +76,7 @@
         android:layout_height="135dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/btn_activity1"
-        android:layout_marginTop="49dp"
+        android:layout_marginTop="47dp"
         android:layout_toRightOf="@+id/newTask"
         android:text="act2"
         android:textSize="15pt"
