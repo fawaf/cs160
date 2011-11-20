@@ -394,13 +394,15 @@ public class FHActivitySelector extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
-    	OptionsMenu.FHASCreateMenu(menu);
+    	OptionsMenu om = new OptionsMenu();
+    	om.FHASCreateMenu(menu);
     	return true;
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	return OptionsMenu.FHASMenuChoice(this, item);
+    	OptionsMenu om = new OptionsMenu();
+    	return om.FHASMenuChoice(this, item);
     }
 
 }
