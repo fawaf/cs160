@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import android.content.Intent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 public class AddTask extends Activity {
+	
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,4 +48,19 @@ public class AddTask extends Activity {
 			}
 		});
 	}
+	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	super.onCreateOptionsMenu(menu);
+    	OptionsMenu om = new OptionsMenu();
+    	om.FHASCreateMenu(menu);
+    	return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	OptionsMenu om = new OptionsMenu();
+    	return om.FHASMenuChoice(this, item);
+    }
+
 }

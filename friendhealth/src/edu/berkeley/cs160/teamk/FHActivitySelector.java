@@ -1,9 +1,16 @@
 package edu.berkeley.cs160.teamk;
 
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.FacebookError;
+import com.facebook.android.Util;
 import com.facebook.android.Facebook.DialogListener;
 
 import android.app.Activity;
@@ -12,9 +19,12 @@ import android.os.Bundle;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import android.view.Menu;
@@ -24,11 +34,15 @@ import android.util.Log;
 
 
 public class FHActivitySelector extends Activity {
+	
 	Button act1_button;
 	Button act2_button;
 	Button act3_button;
 	Button btn_login;
 	Button newTask;
+	Button calendar;
+	Button scores;
+	Button help;
 	ImageButton rejectT1;
 	ImageButton rejectT2;
 	ImageButton rejectT3;
@@ -44,11 +58,12 @@ public class FHActivitySelector extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.fhactivityselector);
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.click_sound);
         final MediaPlayer rj = MediaPlayer.create(this, R.raw.reject_sound);
         
-        Log.d("friendHealthFHASAA", "Starting Activity Selector");
+        
+        Log.d("friendHealthFHASA", "Starting Activity Selector");
         
 		Utility.facebook = new Facebook(Utility.APP_ID);
 		/*
@@ -71,7 +86,7 @@ public class FHActivitySelector extends Activity {
         if(!Utility.facebook.isSessionValid()) {
         	Log.d("friendHealthFHASAA", "Session Not Valid");
 
-            Utility.facebook.authorize(this, new String[] { "user_photos", "read_stream", "publish_stream" }, new DialogListener() {
+            Utility.facebook.authorize(this, new String[] { "user_photos", "read_stream", "publish_stream"}, new DialogListener() {
                 @Override
                 public void onComplete(Bundle values) {
                     SharedPreferences.Editor editor = Utility.mPrefs.edit();
@@ -93,6 +108,34 @@ public class FHActivitySelector extends Activity {
         else {
         	Log.d("friendHealthFHASA", "Logged in");
         }
+         //-------Getting Facebook Name, then setting text view//
+        try {
+			String jsonUser = Utility.facebook.request("me");
+			JSONObject obj;
+			obj = Util.parseJson(jsonUser);
+			
+			TextView user_name = (TextView) findViewById(R.id.textView1);
+			String facebookName = obj.optString("name");
+			user_name.setText(facebookName);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			Log.d("friendHealthPA", "MalformedURLException");
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			Log.d("friendHealthPA", "IOException");
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			Log.d("friendHealthPA", "JSONException");
+			e.printStackTrace();
+		} catch (FacebookError e) {
+			// TODO Auto-generated catch block
+			Log.d("friendHealthFHASA", "FacebookError: " + e.toString());
+			Log.d("friendHealthFHASA", "Access Token: " + Utility.facebook.getAccessToken());
+			e.printStackTrace();
+		}
+		//----End get facebook name//
 
         Log.d("friendHealthFHASA", "After Facebook Login: " + Utility.mPrefs.getString("access_token", "NO TOKEN"));
         
@@ -106,7 +149,30 @@ public class FHActivitySelector extends Activity {
         rejectT3 = (ImageButton) findViewById(R.id.reject3);
         
         Log.d("friendHealthFHASA", "Initializing newTask Button");
+        
+        
+        //------SET BUTTONS' COLOR-------
+        act1_button = (Button) findViewById(R.id.btn_activity1);
+        act1_button.getBackground().setColorFilter(Color.rgb(250, 220, 175), PorterDuff.Mode.MULTIPLY);
+        
+        act2_button = (Button) findViewById(R.id.btn_activity2);
+        act2_button.getBackground().setColorFilter(Color.rgb(250, 220, 175), PorterDuff.Mode.MULTIPLY);
+        
+        act3_button = (Button) findViewById(R.id.btn_activity3);
+        act3_button.getBackground().setColorFilter(Color.rgb(255, 220, 175), PorterDuff.Mode.MULTIPLY);
+        
         newTask = (Button) findViewById(R.id.newTask);
+        newTask.getBackground().setColorFilter(Color.rgb(255, 215, 140), PorterDuff.Mode.MULTIPLY);
+        
+        calendar = (Button) findViewById(R.id.calendar);
+        calendar.getBackground().setColorFilter(Color.rgb(217, 246, 255), PorterDuff.Mode.MULTIPLY);
+        
+        scores = (Button) findViewById(R.id.leaderboard);
+        scores.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
+        
+        help = (Button) findViewById(R.id.as_help);
+        help.getBackground().setColorFilter(Color.rgb(255, 222, 233), PorterDuff.Mode.MULTIPLY);
+        
         
         
         Log.d("friendHealthFHASA", "Creating Database");
@@ -140,6 +206,7 @@ public class FHActivitySelector extends Activity {
         		extras.putString("name", name1);
         		extras.putInt("score", score1);
         		i.putExtras(extras);
+
         		startActivityForResult(i, Utility.RC_ACTIVITY);
         		Log.d("friendHealthFHASA", "act1");
         	}
@@ -175,6 +242,28 @@ public class FHActivitySelector extends Activity {
         	}	
         });
         
+        newTask.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (Utility.mPrefs.getBoolean("toggle_sound", true)) {
+					mp.start();
+				}
+				Task act1 = data.getTask();
+		        name1 = act1.name;
+		        score1 = act1.points;
+		        act1_button.setText(name1 + " (" + score1 + "pts)");
+				Task act2 = data.getTask();
+		        name2 = act2.name;
+		        score2 = act2.points;
+		        act2_button.setText(name2 + " (" + score2 + "pts)");
+				Task act3 = data.getTask();
+		        name3 = act3.name;
+		        score3 = act3.points;
+		        act3_button.setText(name3 + " (" + score3 + "pts)");
+			}
+		});
         
         rejectT1.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -304,13 +393,15 @@ public class FHActivitySelector extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
-    	OptionsMenu.FHASCreateMenu(menu);
+    	OptionsMenu om = new OptionsMenu();
+    	om.FHASCreateMenu(menu);
     	return true;
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	return OptionsMenu.FHASMenuChoice(this, item);
+    	OptionsMenu om = new OptionsMenu();
+    	return om.FHASMenuChoice(this, item);
     }
 
 }

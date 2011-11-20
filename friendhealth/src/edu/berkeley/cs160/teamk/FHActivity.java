@@ -1,7 +1,4 @@
 package edu.berkeley.cs160.teamk;
-// Core code copied from Beginning Android Application Development
-// by Wei-Meng Lee.
-
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,6 +10,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -30,7 +29,8 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class FHActivity extends Activity{
+public class FHActivity extends Activity {
+	
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;
 	public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
@@ -38,11 +38,11 @@ public class FHActivity extends Activity{
 	public static final int RC_INVITE = 102;
 	
 	Button btn_picture, btn_reject, btn_invite, btn_help;
-	
 	String act_name = "";
 	String img_filename = "";
 	String response = "";
 	int score = 0;
+	SharedPreferences.Editor editor = Utility.mPrefs.edit();
 	
 	//---the images to display---
 	Integer[] imageIDs = {
@@ -60,31 +60,24 @@ public class FHActivity extends Activity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fhactivity);
-		
+		Bundle extras = getIntent().getExtras();
 		act_name = Utility.mPrefs.getString("act_name", "");
 		score = Utility.mPrefs.getInt("act_score", 0);
-		response = Utility.mPrefs.getString("act_response", "");
 		img_filename = Utility.mPrefs.getString("act_img_filename", "");
 
-		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			act_name = extras.getString("name");
 			score = extras.getInt("score");
-			response = extras.getString("response");
 			
-			SharedPreferences.Editor editor = Utility.mPrefs.edit();
 			editor.putString("act_name", act_name);
 			editor.putInt("act_score", score);
-			editor.putString("act_response", response);
 			editor.commit();
-	
-			if(response != null){
-				Toast.makeText(getBaseContext(), response, Toast.LENGTH_LONG).show();
-			}
 			
 		}
 		TextView txt_ActTitle = (TextView) findViewById(R.id.txt_ActTitle);
-		txt_ActTitle.setText(act_name + " (+" + score + " points)");
+		TextView txt_ActPt = (TextView) findViewById(R.id.txt_ActPt);
+		txt_ActTitle.setText(act_name);
+		txt_ActPt.setText("(+ "+ score + " points)");
 			
 		
 		Gallery gallery = (Gallery) findViewById(R.id.activityGallery);
@@ -164,7 +157,17 @@ public class FHActivity extends Activity{
 		}
 		else if (requestCode == RC_INVITE) {
 			if (resultCode == RESULT_OK) {
-				Log.d("friendHealthFHA", "Setting Invite Background Color");
+				Log.d("friendHealthFHA", "Showing toast and setting invite background color");
+				response = Utility.mPrefs.getString("act_response", "");
+				Bundle extras = data.getExtras();
+				
+				if (extras != null) {
+					response = extras.getString("response");
+					editor.putString("act_response", response);
+					Toast.makeText(this, response,
+							Toast.LENGTH_SHORT).show();
+				}
+				
 				btn_invite.setBackgroundColor(0xFF00FF00);
 			}
 		}
@@ -286,4 +289,19 @@ public class FHActivity extends Activity{
 		
 		return file;
 	}
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	super.onCreateOptionsMenu(menu);
+    	OptionsMenu om = new OptionsMenu();
+    	om.FHASCreateMenu(menu);
+    	return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	OptionsMenu om = new OptionsMenu();
+    	return om.FHASMenuChoice(this, item);
+    }
+
 }

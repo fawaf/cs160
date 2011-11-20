@@ -1,11 +1,10 @@
 package edu.berkeley.cs160.teamk;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,10 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.facebook.android.*;
-import com.facebook.android.AsyncFacebookRunner.RequestListener;
 
 public class BallyhooActivity extends Activity {
-	Button fH_button;
+	
+	Button submit_button;
 	String name = "";
 	int score = 0;
 	String origVal = "";
@@ -55,10 +54,10 @@ public class BallyhooActivity extends Activity {
 			});
 
 		//---get the Invite button---
-		fH_button = (Button) findViewById(R.id.btn_Invite);
+		submit_button = (Button) findViewById(R.id.btn_Invite);
         
         //---event handler for the Invite button---
-        fH_button.setOnClickListener(new View.OnClickListener() {
+        submit_button.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
         		try {
         			EditText edt_Message = (EditText) findViewById(R.id.edt_Message);
@@ -82,33 +81,14 @@ public class BallyhooActivity extends Activity {
         			} else {
         				Log.d("friendHealthBA", "Response: " + response);
         				response = "Invitation Successful";
-        				AsyncFacebookRunner mAsyncRunner = new AsyncFacebookRunner(Utility.facebook);
-        				mAsyncRunner.logout(getBaseContext(), new LogoutRequestListener());
-        				Log.d("friendHealthBA", "Access Token: " + Utility.facebook.getAccessToken());
-        				Log.d("friendHealthBA", "Access Expires: " + Utility.facebook.getAccessExpires());
-        				Utility.facebook = new Facebook(Utility.APP_ID);
-        				Utility.mPrefs = getSharedPreferences("NOTHING", MODE_PRIVATE);
-        				SharedPreferences.Editor editor = Utility.mPrefs.edit();
-        				editor.clear();
-        				editor.remove("access_token");
-        				editor.remove("access_expires");
-                        editor.putString("access_token", "NONE");
-                        editor.putLong("access_expires", 0);
-                        editor.clear();
-                        boolean result = editor.commit();
-                        Log.d("friendHealthBA", "result is: " + result);
-        				setResult(RESULT_OK);
         			}
         			
-        			setResult(RESULT_OK);
-        			finish();
-        			/*
-        			Intent intent = new Intent("edu.berkeley.cs160.teamk.FHActivity");
+        			Intent intent = new Intent();
         			Bundle extras = getIntent().getExtras();
         			extras.putString("response", response);
         			intent.putExtras(extras);
-        			startActivity(intent);
-        			*/
+        			setResult(RESULT_OK, intent);
+        			finish();
         		} catch (MalformedURLException e) {
         		} catch (IOException e) {
         		}
@@ -119,47 +99,15 @@ public class BallyhooActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
-    	OptionsMenu.CreateMenu(menu);
+    	OptionsMenu om = new OptionsMenu();
+    	om.CreateMenu(menu);
     	return true;
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	return OptionsMenu.MenuChoice(this, item);
+    	OptionsMenu om = new OptionsMenu();
+    	return om.MenuChoice(this, item);
     }
-	
-	private class LogoutRequestListener implements RequestListener {
-		 
-		@Override
-		public void onComplete(String response, Object state) {
-			Log.d("friendHealthBA", "LOGGED OUT");
-		}
- 
-		@Override
-		public void onIOException(IOException e, Object state) {
-			// TODO Auto-generated method stub
- 
-		}
- 
-		@Override
-		public void onFileNotFoundException(FileNotFoundException e,
-				Object state) {
-			// TODO Auto-generated method stub
- 
-		}
- 
-		@Override
-		public void onMalformedURLException(MalformedURLException e,
-				Object state) {
-			// TODO Auto-generated method stub
- 
-		}
- 
-		@Override
-		public void onFacebookError(FacebookError e, Object state) {
-			// TODO Auto-generated method stub
- 
-		}
- 
-	}
+
 }

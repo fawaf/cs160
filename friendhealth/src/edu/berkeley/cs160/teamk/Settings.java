@@ -3,6 +3,8 @@ package edu.berkeley.cs160.teamk;
 import android.app.Activity;
 import android.os.Bundle;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -10,6 +12,7 @@ import android.widget.ToggleButton;
 import android.content.SharedPreferences;
 
 public class Settings extends Activity {
+	
 	ToggleButton toggle_sound;
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -35,4 +38,19 @@ public class Settings extends Activity {
 			}
 		});
 	}
+	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	super.onCreateOptionsMenu(menu);
+    	OptionsMenu om = new OptionsMenu();
+    	om.FHASCreateMenu(menu);
+    	return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	OptionsMenu om = new OptionsMenu();
+    	return om.FHASMenuChoice(this, item);
+    }
+
 }

@@ -25,10 +25,11 @@ import android.util.Log;
 
 
 public class ActivitySubmission extends Activity {
+	
 	String act_name = "";
 	String img_filename = "";
 	int score = 0;
-	Button fH_button;
+	Button submit_button;
 	String origVal = "";
 	EditText edt_Caption;
 	Bundle bundle = new Bundle();
@@ -95,10 +96,10 @@ public class ActivitySubmission extends Activity {
 				});
 			
 			//---get the Submit button---
-			fH_button = (Button) findViewById(R.id.btn_Submit);
+			submit_button = (Button) findViewById(R.id.btn_Submit);
 	        
 	        //---event handler for the Submit button---
-	        fH_button.setOnClickListener(new View.OnClickListener() {
+	        submit_button.setOnClickListener(new View.OnClickListener() {
 	        	public void onClick(View view) {
 	        		try {
 	        			edt_Caption = (EditText) findViewById(R.id.edt_Caption);
@@ -134,12 +135,15 @@ public class ActivitySubmission extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
-    	OptionsMenu.CreateMenu(menu);
+    	OptionsMenu om = new OptionsMenu();
+    	om.CreateMenu(menu);
     	return true;
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	return OptionsMenu.MenuChoice(this, item);
+    	OptionsMenu om = new OptionsMenu();
+    	return om.MenuChoice(this, item);
     }
+    
 }
