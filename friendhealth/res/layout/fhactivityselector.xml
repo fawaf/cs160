@@ -117,7 +117,8 @@
         android:layout_alignRight="@+id/reject2"
         android:layout_below="@+id/reject2"
         android:background="@drawable/camera" />
-
+
+
     <ImageButton
         android:id="@+id/reject3"
         android:layout_width="70dp"
@@ -126,7 +127,8 @@
         android:layout_alignTop="@+id/btn_activity3"
         android:layout_toLeftOf="@+id/btn_activity3"
         android:background="@drawable/reject2" />
-
+
+
     <ImageButton
         android:id="@+id/camera3"
         android:layout_width="70dp"

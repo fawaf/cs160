@@ -36,7 +36,7 @@ public class Database {
 	
 	public Task getTask() {	
 		Task result = tasks[count];
-		if (count == MAXCOUNT) {
+		if (count == MAXCOUNT - 1) {
 			count = 0;
 		} else {
 			count++;

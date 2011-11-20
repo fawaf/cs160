@@ -3,7 +3,6 @@ package edu.berkeley.cs160.teamk;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,14 +19,11 @@ import android.os.Bundle;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +34,7 @@ import android.util.Log;
 
 
 public class FHActivitySelector extends Activity {
+	
 	Button act1_button;
 	Button act2_button;
 	Button act3_button;
@@ -61,7 +58,7 @@ public class FHActivitySelector extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.fhactivityselector);
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.click_sound);
         final MediaPlayer rj = MediaPlayer.create(this, R.raw.reject_sound);
         
@@ -250,7 +247,9 @@ public class FHActivitySelector extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				mp.start();
+				if (Utility.mPrefs.getBoolean("toggle_sound", true)) {
+					mp.start();
+				}
 				Task act1 = data.getTask();
 		        name1 = act1.name;
 		        score1 = act1.points;

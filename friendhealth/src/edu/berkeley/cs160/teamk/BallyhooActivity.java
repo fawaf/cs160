@@ -1,11 +1,10 @@
 package edu.berkeley.cs160.teamk;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,10 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.facebook.android.*;
-import com.facebook.android.AsyncFacebookRunner.RequestListener;
 
 public class BallyhooActivity extends Activity {
-	Button fH_button;
+	
+	Button submit_button;
 	String name = "";
 	int score = 0;
 	String origVal = "";
@@ -55,10 +54,10 @@ public class BallyhooActivity extends Activity {
 			});
 
 		//---get the Invite button---
-		fH_button = (Button) findViewById(R.id.btn_Invite);
+		submit_button = (Button) findViewById(R.id.btn_Invite);
         
         //---event handler for the Invite button---
-        fH_button.setOnClickListener(new View.OnClickListener() {
+        submit_button.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View view) {
         		try {
         			EditText edt_Message = (EditText) findViewById(R.id.edt_Message);
@@ -84,15 +83,12 @@ public class BallyhooActivity extends Activity {
         				response = "Invitation Successful";
         			}
         			
-        			setResult(RESULT_OK);
-        			finish();
-        			/*
-        			Intent intent = new Intent("edu.berkeley.cs160.teamk.FHActivity");
+        			Intent intent = new Intent();
         			Bundle extras = getIntent().getExtras();
         			extras.putString("response", response);
         			intent.putExtras(extras);
-        			startActivity(intent);
-        			*/
+        			setResult(RESULT_OK, intent);
+        			finish();
         		} catch (MalformedURLException e) {
         		} catch (IOException e) {
         		}
@@ -113,39 +109,5 @@ public class BallyhooActivity extends Activity {
     	OptionsMenu om = new OptionsMenu();
     	return om.MenuChoice(this, item);
     }
-	
-	private class LogoutRequestListener implements RequestListener {
-		 
-		@Override
-		public void onComplete(String response, Object state) {
-			Log.d("friendHealthBA", "LOGGED OUT");
-		}
- 
-		@Override
-		public void onIOException(IOException e, Object state) {
-			// TODO Auto-generated method stub
- 
-		}
- 
-		@Override
-		public void onFileNotFoundException(FileNotFoundException e,
-				Object state) {
-			// TODO Auto-generated method stub
- 
-		}
- 
-		@Override
-		public void onMalformedURLException(MalformedURLException e,
-				Object state) {
-			// TODO Auto-generated method stub
- 
-		}
- 
-		@Override
-		public void onFacebookError(FacebookError e, Object state) {
-			// TODO Auto-generated method stub
- 
-		}
- 
-	}
+
 }
