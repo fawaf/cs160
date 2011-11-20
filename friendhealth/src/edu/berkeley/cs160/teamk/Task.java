@@ -8,6 +8,7 @@ public class Task {
 	int timesDeclined;
 	int timesAccepted;
 	
+	
 	public Task() {
 		id = -1;
 		name = "";
@@ -17,6 +18,7 @@ public class Task {
 		timesAccepted = 0;
 	}
 	
+	
 	public Task (int id, String name, int points, int tF, int tD, int tA) {
 		this.id = id;
 		this.name = name;
@@ -24,5 +26,10 @@ public class Task {
 		timesFlagged = tF;
 		timesDeclined = tD;
 		timesAccepted = tA;
+	}
+	
+	
+	public String toString() {
+		return (name + " (" + points + " pts)");
 	}
 }

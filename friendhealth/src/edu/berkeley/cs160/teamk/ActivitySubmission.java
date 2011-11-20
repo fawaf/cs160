@@ -58,7 +58,10 @@ public class ActivitySubmission extends Activity {
 			Bitmap myBitmap = null;
 			try {
 				BitmapFactory.Options options = new BitmapFactory.Options();
-				options.inSampleSize = 8;
+				options.inDither = false;
+				options.inPurgeable = true;
+				options.inInputShareable = true;
+				options.inTempStorage = new byte[32 * 1024];
 				myBitmap = BitmapFactory.decodeFile(shortname, options);
 			}
 			catch (OutOfMemoryError e) {

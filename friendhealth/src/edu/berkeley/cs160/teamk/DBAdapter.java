@@ -28,6 +28,7 @@ public class DBAdapter {
 	public static final String URL_ACT1 = "getRandomActivity.php";
 	public static final String URL_ACT3 = "getRandomActivities.php";
 	public static final String URL_UPDATE = "updateActivity.php";
+	public static final String URL_ADD = "addActivity.php";
 	
 	public Task[] tasks;
 	
@@ -75,9 +76,35 @@ public class DBAdapter {
 	}
 	
 	
+	public void addActivity(Task new_task) {
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		pairs.add(new BasicNameValuePair(
+				"name", new_task.name));
+		pairs.add(new BasicNameValuePair(
+				"points", String.valueOf(new_task.points)));
+		
+		String result = getDatabaseOutput(URL_BASE + URL_ADD, pairs);
+		if (!result.equals("SUCCESS")) {
+			Log.e("log_tag", "Error Adding: " + result);
+		}
+	}
+	
+	
+	public String getName(int index) {
+		return tasks[index].name;
+	}
+	
+	public int getPoints(int index) {
+		return tasks[index].points;
+	}
+	
+	public String toString(int index) {
+		return tasks[index].toString();
+	}
+	
+	
 	private ArrayList<NameValuePair> findIDsReplace() {
-		ArrayList<NameValuePair> pairs = 
-				new ArrayList<NameValuePair>();
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		
 		for (int i = 0 ; i < tasks.length ; ++i) {
 			pairs.add(new BasicNameValuePair(
@@ -156,4 +183,21 @@ public class DBAdapter {
 		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		
 		pairs.add(new BasicNameValuePair(
+				"id", String.valueOf(tasks[index].id)));
+		pairs.add(new BasicNameValuePair(
+				"name", tasks[index].name));
+		pairs.add(new BasicNameValuePair(
+				"points", String.valueOf(tasks[index].points)));
+		pairs.add(new BasicNameValuePair(
+				"tF", String.valueOf(tasks[index].timesFlagged)));
+		pairs.add(new BasicNameValuePair(
+				"tD", String.valueOf(tasks[index].timesDeclined)));
+		pairs.add(new BasicNameValuePair(
+				"tA", String.valueOf(tasks[index].timesAccepted)));
+		
+		String result = getDatabaseOutput(URL_BASE + URL_UPDATE, pairs);
+		if (!result.equals("SUCCESS")) {
+			Log.e("log_tag", "Error Updating: " + result);
+		}	
+	}
 }

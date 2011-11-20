@@ -47,10 +47,6 @@ public class FHActivitySelector extends Activity {
 	ImageButton rejectT2;
 	ImageButton rejectT3;
 	ImageButton camera1;
-	
-	
-	String name1, name2, name3;
-	int score1, score2, score3;
 
     String FILENAME = "AndroidSSO_data";
 	
@@ -173,26 +169,9 @@ public class FHActivitySelector extends Activity {
         help = (Button) findViewById(R.id.as_help);
         help.getBackground().setColorFilter(Color.rgb(255, 222, 233), PorterDuff.Mode.MULTIPLY);
         
-        
-        
-        Log.d("friendHealthFHASA", "Creating Database");
-        final Database data = new Database();
-        Log.d("friendHealthFHASA", "Database created");
-        Task act1 = data.getTask();
-        Task act2 = data.getTask();
-        Task act3 = data.getTask();
-        
-        name1 = act1.name;
-        name2 = act2.name;
-        name3 = act3.name;
-        
-        score1 = act1.points;
-        score2 = act2.points;
-        score3 = act3.points;
-        
-        act1_button.setText(name1 + " (" + score1 + "pts)");
-        act2_button.setText(name2 + " (" + score2 + "pts)");
-        act3_button.setText(name3 + " (" + score3 + "pts)");
+        act1_button.setText(Utility.dbAdapter.toString(0));
+        act2_button.setText(Utility.dbAdapter.toString(1));
+        act3_button.setText(Utility.dbAdapter.toString(2));
         
         Log.d("friendHealthFHASA", "Set up variables, and setting listeners");
         
@@ -203,8 +182,8 @@ public class FHActivitySelector extends Activity {
 				}
         		Intent i = new Intent("edu.berkeley.cs160.teamk.FHActivity");
         		Bundle extras = new Bundle();
-        		extras.putString("name", name1);
-        		extras.putInt("score", score1);
+        		extras.putString("name", Utility.dbAdapter.getName(0));
+        		extras.putInt("score", Utility.dbAdapter.getPoints(0));
         		i.putExtras(extras);
 
         		startActivityForResult(i, Utility.RC_ACTIVITY);
@@ -219,8 +198,8 @@ public class FHActivitySelector extends Activity {
 				}
         		Intent i = new Intent("edu.berkeley.cs160.teamk.FHActivity");
         		Bundle extras = new Bundle();
-        		extras.putString("name", name2);
-        		extras.putInt("score", score2);
+        		extras.putString("name", Utility.dbAdapter.getName(1));
+        		extras.putInt("score", Utility.dbAdapter.getPoints(1));
         		i.putExtras(extras);
         		startActivityForResult(i, Utility.RC_ACTIVITY);
         		Log.d("friendHealthFHASA", "act2");
@@ -234,8 +213,8 @@ public class FHActivitySelector extends Activity {
 				}
         		Intent i = new Intent("edu.berkeley.cs160.teamk.FHActivity");
         		Bundle extras = new Bundle();
-        		extras.putString("name", name3);
-        		extras.putInt("score", score3);
+        		extras.putString("name", Utility.dbAdapter.getName(2));
+        		extras.putInt("score", Utility.dbAdapter.getPoints(2));
         		i.putExtras(extras);
         		startActivityForResult(i, Utility.RC_ACTIVITY);
         		Log.d("friendHealthFHASA", "act3");
@@ -250,18 +229,10 @@ public class FHActivitySelector extends Activity {
 				if (Utility.mPrefs.getBoolean("toggle_sound", true)) {
 					mp.start();
 				}
-				Task act1 = data.getTask();
-		        name1 = act1.name;
-		        score1 = act1.points;
-		        act1_button.setText(name1 + " (" + score1 + "pts)");
-				Task act2 = data.getTask();
-		        name2 = act2.name;
-		        score2 = act2.points;
-		        act2_button.setText(name2 + " (" + score2 + "pts)");
-				Task act3 = data.getTask();
-		        name3 = act3.name;
-		        score3 = act3.points;
-		        act3_button.setText(name3 + " (" + score3 + "pts)");
+				Utility.dbAdapter.setAllRandomActivities();
+		        act1_button.setText(Utility.dbAdapter.toString(0));
+		        act2_button.setText(Utility.dbAdapter.toString(1));
+		        act3_button.setText(Utility.dbAdapter.toString(2));
 			}
 		});
         
@@ -270,10 +241,8 @@ public class FHActivitySelector extends Activity {
 				if (Utility.mPrefs.getBoolean("toggle_sound", true)) {
 					rj.start();
 				}
-				Task act1 = data.getTask();
-		        name1 = act1.name;
-		        score1 = act1.points;
-		        act1_button.setText(name1 + " (" + score1 + "pts)");
+				Utility.dbAdapter.declineActivity(0);
+				act1_button.setText(Utility.dbAdapter.toString(0));
 			}
 		});
         
@@ -283,10 +252,8 @@ public class FHActivitySelector extends Activity {
 				if (Utility.mPrefs.getBoolean("toggle_sound", true)) {
 					rj.start();
 				}
-				Task act2 = data.getTask();
-		        name2 = act2.name;
-		        score2 = act2.points;
-		        act2_button.setText(name2 + " (" + score2 + "pts)");
+				Utility.dbAdapter.declineActivity(1);
+				act1_button.setText(Utility.dbAdapter.toString(1));
 			}
 		});
         
@@ -295,10 +262,8 @@ public class FHActivitySelector extends Activity {
 				if (Utility.mPrefs.getBoolean("toggle_sound", true)) {
 					rj.start();
 				}
-				Task act3 = data.getTask();
-		        name3 = act3.name;
-		        score3 = act3.points;
-		        act3_button.setText(name3 + " (" + score3 + "pts)");
+				Utility.dbAdapter.declineActivity(2);
+				act1_button.setText(Utility.dbAdapter.toString(2));
 			}
 		});
         
@@ -377,9 +342,12 @@ public class FHActivitySelector extends Activity {
         	if (resultCode == RESULT_OK) {
         		Bundle extras = data.getExtras();
         		if (extras != null) {
-        			String taskname = extras.getString("name");
+        			Task new_task = new Task();
+        			new_task.name = extras.getString("name");
+        			new_task.points = 1;
+        			Utility.dbAdapter.addActivity(new_task);
         			Toast.makeText(this,
-        					"Add activity: " + taskname,
+        					"Added activity: " + new_task.name,
         					Toast.LENGTH_SHORT).show();
         		}
         	}
