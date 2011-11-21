@@ -1,126 +1,260 @@
 package edu.berkeley.cs160.teamk;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import java.util.ArrayList;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.message.BasicNameValuePair;
+
+import android.net.Uri;
 import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class DBAdapter {
-	public static final String KEY_ROWID = "_id";
-	public static final String KEY_NAME = "name";
-	public static final String KEY_POINTS = "points";
-	private static final String TAG = "DBAdapter";
+	public static final String URL_BASE = 
+			"https://secure.ocf.berkeley.edu/~goodfrie/";
+	public static final String URL_ACT1 = "getRandomActivity.php";
+	public static final String URL_ACT3 = "getRandomActivities.php";
+	public static final String URL_UPDATE = "updateActivity.php";
+	public static final String URL_ADD = "addActivity.php";
+	public static final String URL_GET = "getActivityByID.php";
 	
-	private static final String DATABASE_NAME = "MyDB";
-	private static final String DATABASE_TABLE = "contacts";
-	private static final int DATABASE_VERSION = 1;
+	public Task[] tasks;
 	
-	private static final String DATABASE_CREATE =
-			"create table contacts (_id integer primary key autoincrement, "
-			+ "name text not null, points text not null);";
 	
-	private final Context context;
-	
-	private DatabaseHelper DBHelper;
-	private SQLiteDatabase db;
-	
-	public DBAdapter(Context ctx) {
-		this.context = ctx;
-		DBHelper = new DatabaseHelper(context);
+	public DBAdapter() {
+		Log.d("DBA", "Initializing empty tasks.");
+		initEmptyTasks(3);
+		setAllRandomActivities();
 	}
 	
 	
-	private static class DatabaseHelper extends SQLiteOpenHelper {
-		DatabaseHelper(Context context) {
-			super(context, DATABASE_NAME, null, DATABASE_VERSION);
+	public DBAdapter(int id1, int id2, int id3) {
+		tasks = new Task[3];
+		tasks[0] = getActivityByID(id1);
+		tasks[1] = getActivityByID(id2);
+		tasks[2] = getActivityByID(id3);
+	}
+	
+	
+	public Task getActivityByID(int id) {
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		pairs.add(new BasicNameValuePair("id", String.valueOf(id)));
+		
+		String result = getDatabaseOutput(URL_BASE + URL_GET, pairs);
+		Task[] task = parseJSONData(result);
+		return task[0];
+	}	
+	
+	
+	private Task setNewRandomActivity(int index) {
+		String result = getDatabaseOutput(
+				URL_BASE + URL_ACT1, findIDsReplace());
+		Task[] new_task = parseJSONData(result);
+		tasks[index] = new_task[0];
+		return new_task[0];
+	}
+	
+	
+	public void setAllRandomActivities() {
+		Log.d("DBA", "setAllRandomActivities()");
+		String result = getDatabaseOutput(
+				URL_BASE + URL_ACT3, findIDsReplace());
+		Task[] new_tasks = parseJSONData(result);
+		for (int i = 0 ; i < tasks.length ; ++i) {
+			tasks[i] = new_tasks[i];
+		}
+	}
+	
+	
+	public Task declineActivity(int index) {
+		return setNewRandomActivity(index);
+	}
+	
+	
+	public Task rejectDifficultActivity(int index) {
+		tasks[index].timesDeclined++;
+		updateActivity(index);
+		return setNewRandomActivity(index);
+	}
+	
+	
+	public Task flagActivity(int index) {
+		tasks[index].timesFlagged++;
+		updateActivity(index);
+		return setNewRandomActivity(index);
+	}
+	
+	
+	public void addActivity(Task new_task) {
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		pairs.add(new BasicNameValuePair(
+				"name", new_task.name));
+		pairs.add(new BasicNameValuePair(
+				"points", String.valueOf(new_task.points)));
+		
+		String result = getDatabaseOutput(URL_BASE + URL_ADD, pairs);
+		if (!result.equals("SUCCESS")) {
+			Log.e("log_tag", "Error Adding: " + result);
+		}
+	}
+	
+	
+	public int getID(int index) {
+		return tasks[index].id;
+	}
+	
+	public String getName(int index) {
+		return tasks[index].name;
+	}
+	
+	public int getPoints(int index) {
+		return tasks[index].points;
+	}
+	
+	public String toString(int index) {
+		return tasks[index].toString();
+	}
+	
+	
+	private ArrayList<NameValuePair> findIDsReplace() {
+		Log.d("DBA", "findIDsReplace()");
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		
+		for (int i = 0 ; i < tasks.length ; ++i) {
+			pairs.add(new BasicNameValuePair(
+					"r" + String.valueOf(i + 1),
+					String.valueOf(tasks[i].id)));
+			Log.d("DBA", "	index: " + String.valueOf(i) +
+					", name: " + pairs.get(i).getName() +
+					", value: " + pairs.get(i).getValue());
 		}
 		
-		@Override
-		public void onCreate(SQLiteDatabase db) {
-			try {
-				db.execSQL(DATABASE_CREATE);
+		return pairs;
+	}
+	
+	
+	private String getDatabaseOutput(
+			String url, ArrayList<NameValuePair> nameValuePairs) {
+		Log.d("DBA", "getDatabaseOutput(" + url + ")");
+		String result = "";
+		
+		// http post
+		InputStream is = null;
+		try {
+			HttpClient httpclient = new DefaultHttpClient();
+			HttpGet httpget = new HttpGet(formatURL(url, nameValuePairs));
+			Log.d("DBA", "httppost: " + httpget.getURI().toString());
+			HttpResponse response = httpclient.execute(httpget);
+			HttpEntity entity = response.getEntity();
+			is = entity.getContent();
+		}
+		catch (Exception e) {
+			Log.e("DBA", "Error in http connection " + e.toString());
+		}
+		
+		// convert response to string
+		try {
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(is, "iso-8859-1"), 8);
+			StringBuilder sb = new StringBuilder();
+			sb.append(reader.readLine() + "\n");
+			String line = "0";
+			while ((line = reader.readLine()) != null) {
+				Log.d("DBA", "Convert to String: " + line);
+				sb.append(line + "\n");
 			}
-			catch (SQLException e) {
-				e.printStackTrace();
+			is.close();
+			result = sb.toString();
+		}
+		catch (Exception e) {
+			Log.e("DBA", "Error converting result " + e.toString());
+		}
+
+		Log.d("DBA", "gDO Output: " + result);
+		return result;
+	}
+	
+	
+	private String formatURL(
+			String url, ArrayList<NameValuePair> nameValuePairs) {
+		String url_comb = url + "?";
+		for (int i = 0 ; i < nameValuePairs.size() ; ++i) {
+			String name = nameValuePairs.get(i).getName();
+			String value = nameValuePairs.get(i).getValue();
+			url_comb += name + "=" + Uri.encode(value);
+			if (i + 1 < nameValuePairs.size()) {
+				url_comb += "&";
 			}
 		}
-		
-		@Override
-		public void onUpgrade(
-				SQLiteDatabase db, int oldVersion, int newVersion) {
-			Log.w(TAG, 
-					"Upgrading database from version " + oldVersion + " to "
-					+ newVersion + ", which will destroy all old data");
-			db.execSQL("DROP TABLE IF EXISTS contacts");
-			onCreate(db);
+		Log.d("DBA", url_comb);
+		return url_comb;
+	}
+	
+	
+	private Task[] parseJSONData(String result) {
+		Task[] new_tasks = null;
+		try {
+			JSONArray jArray = new JSONArray(result);
+
+			new_tasks = new Task[jArray.length()];
+			for (int i = 0 ; i < jArray.length() ; ++i) {
+				JSONObject json_data = jArray.getJSONObject(i);
+				new_tasks[i] = new Task(
+						json_data.getInt("id"),
+						json_data.getString("name"),
+						json_data.getInt("points"),
+						json_data.getInt("timesFlagged"),
+						json_data.getInt("timesDeclined"),
+						json_data.getInt("timesAccepted"));
+			}
 		}
-	}
-	
-	
-	//---opens the database---
-	public DBAdapter open() throws SQLException {
-		db = DBHelper.getWritableDatabase();
-		return this;
-	}
-	
-	
-	//---closes the database---
-	public void close() {
-		DBHelper.close();
-	}
-	
-	
-	//---insert a contact into the database---
-	public long insertContact(String name, String points) {
-		ContentValues initialValues = new ContentValues();
-		initialValues.put(KEY_NAME, name);
-		initialValues.put(KEY_POINTS, points);
-		return db.insert(DATABASE_TABLE,  null, initialValues);
-	}
-	
-	
-	//---deletes a particular contact---
-	public boolean deleteContact(long rowId) {
-		return db.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
-	}
-	
-	
-	//---retrieves all the contacts---
-	public Cursor getAllContacts() {
-		return db.query(DATABASE_TABLE,
-				new String[] {KEY_ROWID, KEY_NAME, KEY_POINTS},
-				null, null, null, null, null);
-	}
-	
-	
-	//---retrieves a particular contact---
-	public Cursor getContact(long rowId) throws SQLException {
-		Cursor mCursor = db.query(
-				true,
-				DATABASE_TABLE,
-				new String[] {KEY_ROWID, KEY_NAME, KEY_POINTS},
-				KEY_ROWID + "=" + rowId,
-				null, null, null, null, null);
-		if (mCursor != null) {
-			mCursor.moveToFirst();
+		catch (JSONException e) {
+			Log.e("DBA", "Error parsing data " + e.toString());
 		}
-		
-		return mCursor;
+		return new_tasks;
 	}
 	
 	
-	//---updates a contact---
-	public boolean updateContact(long rowId, String name, String points) {
-		ContentValues args = new ContentValues();
-		args.put(KEY_NAME, name);
-		args.put(KEY_POINTS, points);
-		return db.update(
-				DATABASE_TABLE,
-				args,
-				KEY_ROWID + "=" + rowId,
-				null) > 0;
+	private void updateActivity(int index) {
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		
+		pairs.add(new BasicNameValuePair(
+				"id", String.valueOf(tasks[index].id)));
+		pairs.add(new BasicNameValuePair(
+				"name", tasks[index].name));
+		pairs.add(new BasicNameValuePair(
+				"points", String.valueOf(tasks[index].points)));
+		pairs.add(new BasicNameValuePair(
+				"tF", String.valueOf(tasks[index].timesFlagged)));
+		pairs.add(new BasicNameValuePair(
+				"tD", String.valueOf(tasks[index].timesDeclined)));
+		pairs.add(new BasicNameValuePair(
+				"tA", String.valueOf(tasks[index].timesAccepted)));
+		
+		String result = getDatabaseOutput(URL_BASE + URL_UPDATE, pairs);
+		if (!result.equals("SUCCESS")) {
+			Log.e("DBA", "Error Updating: " + result);
+		}	
+	}
+	
+	
+	private void initEmptyTasks(int size) {
+		tasks = new Task[size];
+		for (int i = 0 ; i < size ; ++i) {
+			tasks[i] = new Task();
+		}
 	}
 }

@@ -5,7 +5,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.facebook.android.Facebook;
+import com.facebook.android.FacebookError;
+import com.facebook.android.Util;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -59,7 +64,10 @@ public class ActivitySubmission extends Activity {
 			myBitmap = BitmapFactory.decodeFile(shortname);
 			/*try {
 				BitmapFactory.Options options = new BitmapFactory.Options();
-				options.inSampleSize = 8;
+				options.inDither = false;
+				options.inPurgeable = true;
+				options.inInputShareable = true;
+				options.inTempStorage = new byte[32 * 1024];
 				myBitmap = BitmapFactory.decodeFile(shortname, options);
 			}
 			catch (OutOfMemoryError e) {
@@ -120,6 +128,24 @@ public class ActivitySubmission extends Activity {
 	        				response = "Submission Successful";
 	        			}
 	        			
+	        			if (response == "Submission Successful"){
+	        				String jsonUser = Utility.facebook.request("me");
+	        				JSONObject obj;
+	        				obj = Util.parseJson(jsonUser);
+	        				String facebookId = obj.optString("id");
+	        				
+	        				Utility.mPrefs = getSharedPreferences("FHActivitySelector", MODE_PRIVATE);
+	            			Bundle bundle = new Bundle();
+	            			bundle.putInt("score", 1);
+	            			bundle.putString(Facebook.TOKEN, Utility.mPrefs.getString("access_token", null));
+	            			Log.d("friendHealthBA", "Access_token: " + Utility.mPrefs.getString("access_token", null));
+	            			String score_response = Utility.facebook.request(facebookId+"/feed", bundle, "POST");
+	            			JSONObject score_obj = Util.parseJson(score_response);
+	            			String message = score_obj.optString("message");
+	            			Log.d("friendHealthAS_Score", message);
+	            			
+	        			}
+	        			
 	        			Intent intent = new Intent("edu.berkeley.cs160.teamk.FHActivity");
 	        			Bundle extras = getIntent().getExtras();
 	        			extras.putString("response", response);
@@ -127,7 +153,13 @@ public class ActivitySubmission extends Activity {
 	        			startActivity(intent);
 	        		} catch (MalformedURLException e) {
 	        		} catch (IOException e) {
-	        		}
+	        		} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (FacebookError e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 	        	}
 	        });
 		}
