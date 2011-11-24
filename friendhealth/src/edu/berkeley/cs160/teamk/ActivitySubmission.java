@@ -13,7 +13,7 @@ import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
 
 import android.app.Activity;
-import android.content.Intent;
+//import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -146,11 +146,8 @@ public class ActivitySubmission extends Activity {
 	            			
 	        			}
 	        			
-	        			Intent intent = new Intent("edu.berkeley.cs160.teamk.FHActivity");
-	        			Bundle extras = getIntent().getExtras();
-	        			extras.putString("response", response);
-	        			intent.putExtras(extras);
-	        			startActivity(intent);
+	        			setResult(RESULT_OK);
+	    				finish();
 	        		} catch (MalformedURLException e) {
 	        		} catch (IOException e) {
 	        		} catch (JSONException e) {

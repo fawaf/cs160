@@ -42,6 +42,7 @@ public class FHActivity extends Activity {
 	String img_filename = "";
 	String response = "";
 	int score = 0;
+	int index = 0;
 	SharedPreferences.Editor editor = Utility.mPrefs.edit();
 	
 	//---the images to display---
@@ -61,16 +62,16 @@ public class FHActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fhactivity);
 		Bundle extras = getIntent().getExtras();
-		act_name = Utility.mPrefs.getString("act_name", "");
-		score = Utility.mPrefs.getInt("act_score", 0);
 		img_filename = Utility.mPrefs.getString("act_img_filename", "");
 
 		if (extras != null) {
 			act_name = extras.getString("name");
 			score = extras.getInt("score");
+			index = extras.getInt("index");
 			
 			editor.putString("act_name", act_name);
 			editor.putInt("act_score", score);
+			editor.putInt("act_index", index);
 			editor.commit();
 			
 		}
@@ -88,13 +89,30 @@ public class FHActivity extends Activity {
 			public void onItemClick(
 					AdapterView<?> parent, View v,
 					int position, long id) {
-				Toast.makeText(getBaseContext(),
+				/*Toast.makeText(getBaseContext(),
 						"pic" + (position + 1) +  " selected",
-						Toast.LENGTH_SHORT).show();
+						Toast.LENGTH_SHORT).show();*/
 				
 				//---display the images selected---
 				ImageView imageView = (ImageView) findViewById(R.id.img_fhAct);
 				imageView.setImageResource(imageIDs[position]);
+			}
+		});
+		
+		//---btn_picture---
+		btn_reject = (Button) findViewById(R.id.btn_ActReject);
+		// Handle click of button.
+		btn_reject.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				Log.d("friendHealthFHA", "Rejecting Activity");
+				
+				Intent data = new Intent();
+				Bundle extras = new Bundle();
+        		extras.putInt("index", index);
+        		extras.putString("result", "rejected");
+        		data.putExtras(extras);
+        		setResult(RESULT_OK, data);
+        		finish();
 			}
 		});
 		
@@ -152,7 +170,7 @@ public class FHActivity extends Activity {
 				intent.putExtras(extras);
 				
 				Log.d("friendHealthFHA", "Starting submission activity");
-				startActivity(intent);
+				startActivityForResult(intent, RC_ACTIVITYSUBMISSION);
 			}
 		}
 		else if (requestCode == RC_INVITE) {
@@ -303,5 +321,4 @@ public class FHActivity extends Activity {
     	OptionsMenu om = new OptionsMenu();
     	return om.MenuChoice(this, item);
     }
-
 }

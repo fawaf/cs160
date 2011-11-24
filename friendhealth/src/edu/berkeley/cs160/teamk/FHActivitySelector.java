@@ -47,6 +47,8 @@ public class FHActivitySelector extends Activity {
 	ImageButton rejectT2;
 	ImageButton rejectT3;
 	ImageButton camera1;
+	ImageButton camera2;
+	ImageButton camera3;
 
     String FILENAME = "AndroidSSO_data";
 	
@@ -67,7 +69,7 @@ public class FHActivitySelector extends Activity {
          */
         Utility.mPrefs = getSharedPreferences("FHActivitySelector", MODE_PRIVATE);
         String access_token = Utility.mPrefs.getString("access_token", null);
-        Log.d("friendHealthFHASAA", "AccessToken: " + access_token);
+        Log.d("friendHealthFHASA", "AccessToken: " + access_token);
         long expires = Utility.mPrefs.getLong("access_expires", 0);
         if (access_token != null) {
             Utility.facebook.setAccessToken(access_token);
@@ -80,7 +82,7 @@ public class FHActivitySelector extends Activity {
          * Only call authorize if the access_token has expired.
          */
         if(!Utility.facebook.isSessionValid()) {
-        	Log.d("friendHealthFHASAA", "Session Not Valid");
+        	Log.d("friendHealthFHASA", "Session Not Valid");
 
             Utility.facebook.authorize(this, new String[] { "user_photos", "read_stream", "publish_stream", "publish_actions"}, new DialogListener() {
                 @Override
@@ -203,6 +205,7 @@ public class FHActivitySelector extends Activity {
         		Bundle extras = new Bundle();
         		extras.putString("name", Utility.dbAdapter.getName(0));
         		extras.putInt("score", Utility.dbAdapter.getPoints(0));
+        		extras.putInt("index", 0);
         		i.putExtras(extras);
 
         		startActivityForResult(i, Utility.RC_ACTIVITY);
@@ -219,6 +222,7 @@ public class FHActivitySelector extends Activity {
         		Bundle extras = new Bundle();
         		extras.putString("name", Utility.dbAdapter.getName(1));
         		extras.putInt("score", Utility.dbAdapter.getPoints(1));
+        		extras.putInt("index", 1);
         		i.putExtras(extras);
         		startActivityForResult(i, Utility.RC_ACTIVITY);
         		Log.d("friendHealthFHASA", "act2");
@@ -234,6 +238,7 @@ public class FHActivitySelector extends Activity {
         		Bundle extras = new Bundle();
         		extras.putString("name", Utility.dbAdapter.getName(2));
         		extras.putInt("score", Utility.dbAdapter.getPoints(2));
+        		extras.putInt("index", 2);
         		i.putExtras(extras);
         		startActivityForResult(i, Utility.RC_ACTIVITY);
         		Log.d("friendHealthFHASA", "act3");
@@ -316,7 +321,7 @@ public class FHActivitySelector extends Activity {
 		});
         
 		*/
-        Log.d("friendHealthFHASAA", "buttons connected");       
+        Log.d("friendHealthFHASA", "buttons connected");       
         
     }
 
@@ -329,15 +334,27 @@ public class FHActivitySelector extends Activity {
         		Bundle extras = data.getExtras();
         		if (extras != null) {
         			String result = extras.getString("result");
+        			int index = extras.getInt("index");
         			if (result.equals("completed")) {
         				Toast.makeText(this,
         						"Activity completed",
         						Toast.LENGTH_SHORT).show();
         			}
         			else if (result.equals("rejected")) {
+        				Log.d("friendHealthFHASA", "index is: " + index);
         				Toast.makeText(this, 
         						"Activity rejected",
-        						Toast.LENGTH_SHORT).show();
+        						Toast.LENGTH_LONG).show();
+        				Utility.dbAdapter.declineActivity(index);
+        				Button button;
+        				if (index == 0) {
+        					button = act1_button;
+        				} else if (index == 1) {
+        					button = act2_button;
+        				} else {
+        					button = act3_button;
+        				}
+        				button.setText(Utility.dbAdapter.toString(index));
         			}
         			else if (result.equals("rejected_tooHard")) {
         				Toast.makeText(this,
@@ -372,7 +389,7 @@ public class FHActivitySelector extends Activity {
         	}
         	return;
         default:
-        	Log.d("friendHealthFHASAA", "Default Activity " + requestCode);
+        	Log.d("friendHealthFHASA", "Default Activity " + requestCode);
         	Utility.facebook.authorizeCallback(requestCode, resultCode, data);
         }
     }
