@@ -10,9 +10,9 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
-public class Camera {
+public final class Camera {
 	
-	protected static Uri getOutputMediaFileUri(Context c, int type, String name) {
+	protected static final Uri getOutputMediaFileUri(Context c, int type, String name) {
 		
 		File mediaStorageDir;
 		

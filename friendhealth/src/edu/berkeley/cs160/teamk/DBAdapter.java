@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class DBAdapter {
+	
 	public static final String URL_BASE = 
 			"https://secure.ocf.berkeley.edu/~goodfrie/";
 	public static final String URL_ACT1 = "getRandomActivity.php";
@@ -33,13 +34,11 @@ public class DBAdapter {
 	
 	public Task[] tasks;
 	
-	
 	public DBAdapter() {
 		Log.d("DBA", "Initializing empty tasks.");
 		initEmptyTasks(3);
 		setAllRandomActivities();
 	}
-	
 	
 	public DBAdapter(int id1, int id2, int id3) {
 		tasks = new Task[3];
@@ -47,7 +46,6 @@ public class DBAdapter {
 		tasks[1] = getActivityByID(id2);
 		tasks[2] = getActivityByID(id3);
 	}
-	
 	
 	public Task getActivityByID(int id) {
 		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
@@ -58,7 +56,6 @@ public class DBAdapter {
 		return task[0];
 	}	
 	
-	
 	private Task setNewRandomActivity(int index) {
 		String result = getDatabaseOutput(
 				URL_BASE + URL_ACT1, findIDsReplace());
@@ -66,7 +63,6 @@ public class DBAdapter {
 		tasks[index] = new_task[0];
 		return new_task[0];
 	}
-	
 	
 	public void setAllRandomActivities() {
 		Log.d("DBA", "setAllRandomActivities()");
@@ -78,11 +74,17 @@ public class DBAdapter {
 		}
 	}
 	
-	
 	public Task declineActivity(int index) {
+		tasks[index].timesDeclined++;
+		updateActivity(index);
 		return setNewRandomActivity(index);
 	}
 	
+	public Task acceptActivity(int index) {
+		tasks[index].timesAccepted++;
+		updateActivity(index);
+		return setNewRandomActivity(index);
+	}
 	
 	public Task rejectDifficultActivity(int index) {
 		tasks[index].timesDeclined++;
@@ -90,13 +92,11 @@ public class DBAdapter {
 		return setNewRandomActivity(index);
 	}
 	
-	
 	public Task flagActivity(int index) {
 		tasks[index].timesFlagged++;
 		updateActivity(index);
 		return setNewRandomActivity(index);
 	}
-	
 	
 	public void addActivity(Task new_task) {
 		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
@@ -110,7 +110,6 @@ public class DBAdapter {
 			Log.e("log_tag", "Error Adding: " + result);
 		}
 	}
-	
 	
 	public int getID(int index) {
 		return tasks[index].id;
@@ -128,7 +127,6 @@ public class DBAdapter {
 		return tasks[index].toString();
 	}
 	
-	
 	private ArrayList<NameValuePair> findIDsReplace() {
 		Log.d("DBA", "findIDsReplace()");
 		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
@@ -144,7 +142,6 @@ public class DBAdapter {
 		
 		return pairs;
 	}
-	
 	
 	private String getDatabaseOutput(
 			String url, ArrayList<NameValuePair> nameValuePairs) {
@@ -187,7 +184,6 @@ public class DBAdapter {
 		return result;
 	}
 	
-	
 	private String formatURL(
 			String url, ArrayList<NameValuePair> nameValuePairs) {
 		String url_comb = url + "?";
@@ -202,7 +198,6 @@ public class DBAdapter {
 		Log.d("DBA", url_comb);
 		return url_comb;
 	}
-	
 	
 	private Task[] parseJSONData(String result) {
 		Task[] new_tasks = null;
@@ -227,7 +222,6 @@ public class DBAdapter {
 		return new_tasks;
 	}
 	
-	
 	private void updateActivity(int index) {
 		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		
@@ -250,11 +244,11 @@ public class DBAdapter {
 		}	
 	}
 	
-	
 	private void initEmptyTasks(int size) {
 		tasks = new Task[size];
 		for (int i = 0 ; i < size ; ++i) {
 			tasks[i] = new Task();
 		}
 	}
+	
 }

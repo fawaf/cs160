@@ -15,7 +15,9 @@ import com.facebook.android.Facebook.DialogListener;
 
 import android.app.Activity;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -49,8 +51,12 @@ public class FHActivitySelector extends Activity {
 	ImageButton camera1;
 	ImageButton camera2;
 	ImageButton camera3;
-
-    String FILENAME = "AndroidSSO_data";
+	String img_filename = "";
+	String act_name = "";
+	int index = 0;
+	String submission_act_name = "";
+	int submission_score = 0;
+	String submission_img_filename = "";
 	
     /** Called when the activity is first created. */
     @Override
@@ -59,7 +65,6 @@ public class FHActivitySelector extends Activity {
         setContentView(R.layout.fhactivityselector);
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.click_sound);
         final MediaPlayer rj = MediaPlayer.create(this, R.raw.reject_sound);
-        
         
         Log.d("friendHealthFHASA", "Starting Activity Selector");
         
@@ -84,7 +89,7 @@ public class FHActivitySelector extends Activity {
         if(!Utility.facebook.isSessionValid()) {
         	Log.d("friendHealthFHASA", "Session Not Valid");
 
-            Utility.facebook.authorize(this, new String[] { "user_photos", "read_stream", "publish_stream", "publish_actions"}, new DialogListener() {
+            Utility.facebook.authorize(this, new String[] { "user_photos", "friend_photos", "read_stream", "publish_stream", "publish_actions", "create_event", "rsvp_event" }, new DialogListener() {
                 @Override
                 public void onComplete(Bundle values) {
                     SharedPreferences.Editor editor = Utility.mPrefs.edit();
@@ -150,13 +155,10 @@ public class FHActivitySelector extends Activity {
         
         
         //------SET BUTTONS' COLOR-------
-        act1_button = (Button) findViewById(R.id.btn_activity1);
         act1_button.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
         
-        act2_button = (Button) findViewById(R.id.btn_activity2);
         act2_button.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
         
-        act3_button = (Button) findViewById(R.id.btn_activity3);
         act3_button.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
         
         newTask = (Button) findViewById(R.id.newTask);
@@ -190,6 +192,7 @@ public class FHActivitySelector extends Activity {
         else {
         	Utility.dbAdapter = new DBAdapter(id1, id2, id3);
         }
+        
         act1_button.setText(Utility.dbAdapter.toString(0));
         act2_button.setText(Utility.dbAdapter.toString(1));
         act3_button.setText(Utility.dbAdapter.toString(2));
@@ -294,19 +297,19 @@ public class FHActivitySelector extends Activity {
         
         
 		//---btn_picture---
-		/*
         camera1 = (ImageButton) findViewById(R.id.camera1);
 		// Handle click of button.
 		camera1.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				final int MEDIA_TYPE_IMAGE = 1;
-				final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-				String img_filename = "";
 				
+				act_name = Utility.dbAdapter.getName(0);
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				//Uri fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE, name1);
-				//img_filename = fileUri.toString();
-				//intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+				Uri fileUri = Camera.getOutputMediaFileUri(getBaseContext(), Utility.MEDIA_TYPE_IMAGE, act_name);
+				img_filename = fileUri.toString();
+				submission_img_filename = img_filename;
+				submission_score = Utility.dbAdapter.getPoints(0);
+				submission_act_name = act_name;
+				intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
 				
 				SharedPreferences.Editor editor = Utility.mPrefs.edit();
 				editor.putString("act_img_filename", img_filename);
@@ -316,11 +319,64 @@ public class FHActivitySelector extends Activity {
 				
 				// start the image capture Intent.
 				startActivityForResult(intent, 
-						CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+						Utility.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+			}
+		});
+		
+		//---btn_picture---
+        camera2 = (ImageButton) findViewById(R.id.camera2);
+		// Handle click of button.
+		camera2.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				
+				act_name = Utility.dbAdapter.getName(1);
+				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				Uri fileUri = Camera.getOutputMediaFileUri(getBaseContext(), Utility.MEDIA_TYPE_IMAGE, act_name);
+				img_filename = fileUri.toString();
+				submission_img_filename = img_filename;
+				submission_score = Utility.dbAdapter.getPoints(1);
+				submission_act_name = act_name;
+				intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+				
+				SharedPreferences.Editor editor = Utility.mPrefs.edit();
+				editor.putString("act_img_filename", img_filename);
+				editor.commit();
+				
+				Log.d("friendHealthFHA", "Image name: " + img_filename);
+				
+				// start the image capture Intent.
+				startActivityForResult(intent, 
+						Utility.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+			}
+		});
+		
+		//---btn_picture---
+        camera3 = (ImageButton) findViewById(R.id.camera3);
+		// Handle click of button.
+		camera3.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				
+				act_name = Utility.dbAdapter.getName(2);
+				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				Uri fileUri = Camera.getOutputMediaFileUri(getBaseContext(), Utility.MEDIA_TYPE_IMAGE, act_name);
+				img_filename = fileUri.toString();
+				submission_img_filename = img_filename;
+				submission_score = Utility.dbAdapter.getPoints(2);
+				submission_act_name = act_name;
+				intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+				
+				SharedPreferences.Editor editor = Utility.mPrefs.edit();
+				editor.putString("act_img_filename", img_filename);
+				editor.commit();
+				
+				Log.d("friendHealthFHA", "Image name: " + img_filename);
+				
+				// start the image capture Intent.
+				startActivityForResult(intent, 
+						Utility.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 			}
 		});
         
-		*/
         Log.d("friendHealthFHASA", "buttons connected");       
         
     }
@@ -328,13 +384,34 @@ public class FHActivitySelector extends Activity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("friendHealthFHASA", "Entered onActivityResult");
         switch(requestCode) {
+        case Utility.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
+        	if (resultCode == RESULT_OK) {
+        		Log.d("friendHealthFHASA", "Entered Utility.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE");
+				Log.d("friendHealthFHA", submission_act_name + " image taken.");
+				
+				Intent intent = new Intent(
+						"edu.berkeley.cs160.teamk.ActivitySubmission");
+				Bundle extras = new Bundle();
+				extras.putString("name", submission_act_name);
+				Log.d("friendHealthFHA", "score: " + submission_score);
+				extras.putInt("score", submission_score);
+				Log.d("friendHealthFHA", "img_filename: " + img_filename);
+				extras.putString("filename", img_filename);
+				intent.putExtras(extras);
+				
+				Log.d("friendHealthFHA", "Starting submission activity");
+				startActivityForResult(intent, Utility.RC_ACTIVITYSUBMISSION);
+			}
+        	return;
         case Utility.RC_ACTIVITY:
         	if (resultCode == RESULT_OK) {
+        		Log.d("friendHealthFHASA", "Entered Utility.RC_ACTIVITY");
         		Bundle extras = data.getExtras();
         		if (extras != null) {
         			String result = extras.getString("result");
-        			int index = extras.getInt("index");
+        			index = extras.getInt("index");
         			if (result.equals("completed")) {
         				Toast.makeText(this,
         						"Activity completed",
@@ -376,6 +453,7 @@ public class FHActivitySelector extends Activity {
         	return;
         case Utility.RC_NEWTASK:
         	if (resultCode == RESULT_OK) {
+        		Log.d("friendHealthFHASA", "Entered Utility.RC_NEWTASK");
         		Bundle extras = data.getExtras();
         		if (extras != null) {
         			Task new_task = new Task();
@@ -389,7 +467,7 @@ public class FHActivitySelector extends Activity {
         	}
         	return;
         default:
-        	Log.d("friendHealthFHASA", "Default Activity " + requestCode);
+        	Log.d("friendHealthFHASA", "Entered default onActivityResult");
         	Utility.facebook.authorizeCallback(requestCode, resultCode, data);
         }
     }

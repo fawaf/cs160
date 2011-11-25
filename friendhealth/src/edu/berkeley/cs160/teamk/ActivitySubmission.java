@@ -121,10 +121,10 @@ public class ActivitySubmission extends Activity {
 	        			String response = Utility.facebook.request("me/photos", bundle, "POST");
 	        			
 	        			if (response.indexOf("OAuthException") > -1) {
-	        				Log.d("friendHealthBA", "Response: " + response);
+	        				Log.d("friendHealthAS", "Response: " + response);
 	        				response = "Submission Failed";
 	        			} else {
-	        				Log.d("friendHealthBA", "Response: " + response);
+	        				Log.d("friendHealthAS", "Response: " + response);
 	        				response = "Submission Successful";
 	        			}
 	        			
@@ -138,7 +138,7 @@ public class ActivitySubmission extends Activity {
 	            			Bundle bundle = new Bundle();
 	            			bundle.putInt("score", 1);
 	            			bundle.putString(Facebook.TOKEN, Utility.mPrefs.getString("access_token", null));
-	            			Log.d("friendHealthBA", "Access_token: " + Utility.mPrefs.getString("access_token", null));
+	            			Log.d("friendHealthAS", "Access_token: " + Utility.mPrefs.getString("access_token", null));
 	            			String score_response = Utility.facebook.request(facebookId+"/feed", bundle, "POST");
 	            			JSONObject score_obj = Util.parseJson(score_response);
 	            			String message = score_obj.optString("message");
