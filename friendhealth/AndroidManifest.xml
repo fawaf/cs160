@@ -24,21 +24,12 @@
         </activity>
         
         <activity
-        	android:label="fH Activity"
+        	android:label="Activity Screen"
         	android:name=".FHActivity">
         	<intent-filter>
         		<action android:name="edu.berkeley.cs160.teamk.FHActivity" />
         		<category android:name="android.intent.category.DEFAULT" />
         	</intent-filter>
-        </activity>
-        
-        <activity 
-            android:label="Log In"
-            android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="edu.berkeley.cs160.teamk.LoginActivity" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
         
         <activity 
