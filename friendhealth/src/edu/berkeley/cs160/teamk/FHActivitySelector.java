@@ -415,7 +415,7 @@ public class FHActivitySelector extends Activity {
         			if (result.equals("completed")) {
         				Toast.makeText(this,
         						"Activity completed",
-        						Toast.LENGTH_SHORT).show();
+        						Toast.LENGTH_LONG).show();
         			}
         			else if (result.equals("rejected")) {
         				Log.d("friendHealthFHASA", "index is: " + index);
@@ -436,17 +436,17 @@ public class FHActivitySelector extends Activity {
         			else if (result.equals("rejected_tooHard")) {
         				Toast.makeText(this,
         						"Activity rejected as too difficult",
-        						Toast.LENGTH_SHORT).show();
+        						Toast.LENGTH_LONG).show();
         			}
         			else if (result.equals("flagged")) {
         				Toast.makeText(this,
         						"Activity flagged",
-        						Toast.LENGTH_SHORT).show();
+        						Toast.LENGTH_LONG).show();
         			}
         			else {
         				Toast.makeText(this,
         						"UNKNOWN RESULT",
-        						Toast.LENGTH_SHORT).show();
+        						Toast.LENGTH_LONG).show();
         			}
         		}
         	}
@@ -462,12 +462,19 @@ public class FHActivitySelector extends Activity {
         			Utility.dbAdapter.addActivity(new_task);
         			Toast.makeText(this,
         					"Added activity: " + new_task.name,
-        					Toast.LENGTH_SHORT).show();
+        					Toast.LENGTH_LONG).show();
         		}
         	}
         	return;
         default:
         	Log.d("friendHealthFHASA", "Entered default onActivityResult");
+        	
+        	/*Bundle extras = data.getExtras();
+        	if (extras != null) {
+        		String response = extras.getString("response");
+        		Toast.makeText(this, response, Toast.LENGTH_LONG).show();
+        	}*/
+        	
         	Utility.facebook.authorizeCallback(requestCode, resultCode, data);
         }
     }

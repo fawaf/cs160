@@ -148,18 +148,18 @@ public class DBAdapter {
 		Log.d("DBA", "getDatabaseOutput(" + url + ")");
 		String result = "";
 		
-		// http post
+		// HTTP post
 		InputStream is = null;
 		try {
-			HttpClient httpclient = new DefaultHttpClient();
-			HttpGet httpget = new HttpGet(formatURL(url, nameValuePairs));
-			Log.d("DBA", "httppost: " + httpget.getURI().toString());
-			HttpResponse response = httpclient.execute(httpget);
+			HttpClient httpClient = new DefaultHttpClient();
+			HttpGet httpGet = new HttpGet(formatURL(url, nameValuePairs));
+			Log.d("DBA", "HTTP POST: " + httpGet.getURI().toString());
+			HttpResponse response = httpClient.execute(httpGet);
 			HttpEntity entity = response.getEntity();
 			is = entity.getContent();
 		}
 		catch (Exception e) {
-			Log.e("DBA", "Error in http connection " + e.toString());
+			Log.e("DBA", "Error in HTTP connection: " + e.toString());
 		}
 		
 		// convert response to string
@@ -177,7 +177,7 @@ public class DBAdapter {
 			result = sb.toString();
 		}
 		catch (Exception e) {
-			Log.e("DBA", "Error converting result " + e.toString());
+			Log.e("DBA", "Error converting result: " + e.toString());
 		}
 
 		Log.d("DBA", "gDO Output: " + result);
@@ -217,7 +217,7 @@ public class DBAdapter {
 			}
 		}
 		catch (JSONException e) {
-			Log.e("DBA", "Error parsing data " + e.toString());
+			Log.e("DBA", "Error parsing data: " + e.toString());
 		}
 		return new_tasks;
 	}
@@ -239,6 +239,7 @@ public class DBAdapter {
 				"tA", String.valueOf(tasks[index].timesAccepted)));
 		
 		String result = getDatabaseOutput(URL_BASE + URL_UPDATE, pairs);
+		Log.d("DBA", "result is: " + result);
 		if (!result.equals("SUCCESS")) {
 			Log.e("DBA", "Error Updating: " + result);
 		}	
