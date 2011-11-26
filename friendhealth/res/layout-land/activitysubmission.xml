@@ -12,18 +12,18 @@
 
     <ImageView
         android:id="@+id/img_submit"
-        android:layout_width="240dp"
-        android:layout_height="280dp"
-        android:scaleType="fitXY" android:layout_gravity="center_horizontal" android:layout_marginTop="50dp"/>
+        android:layout_width="360dp"
+        android:layout_height="240dp"
+        android:scaleType="fitXY" android:layout_gravity="center_horizontal" android:layout_marginTop="5dp"/>
 
     <EditText
         android:id="@+id/edt_Caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginRight="35dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="105dp"
+        android:layout_marginRight="105dp"
+        android:layout_marginTop="10dp"
         android:layout_weight="0.27"
         android:inputType="textMultiLine" />
 
@@ -32,6 +32,6 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/facebook_icon2"
-        android:text="@string/btn_submit" android:textSize="35dp" android:textColor="#0101ef" android:layout_gravity="center_horizontal" android:layout_marginBottom="15dp"/>
+        android:text="@string/btn_submit" android:textSize="35dp" android:textColor="#0101ef" android:layout_gravity="center_horizontal" android:layout_marginBottom="5dp"/>
 
 </LinearLayout>
