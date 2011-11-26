@@ -3,7 +3,6 @@ package edu.berkeley.cs160.teamk;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;

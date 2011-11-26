@@ -2,13 +2,11 @@ package edu.berkeley.cs160.teamk;
 
 import android.app.Activity;
 import android.os.Bundle;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-
 import android.content.SharedPreferences;
 
 public class Settings extends Activity {

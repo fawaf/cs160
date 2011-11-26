@@ -3,22 +3,18 @@ package edu.berkeley.cs160.teamk;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
 import com.facebook.android.Facebook.DialogListener;
-
 import android.app.Activity;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -28,10 +24,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import android.view.Menu;
 import android.view.MenuItem;
-
 import android.util.Log;
 
 
@@ -68,52 +62,8 @@ public class FHActivitySelector extends Activity {
         
         Log.d("friendHealthFHASA", "Starting Activity Selector");
         
-		Utility.facebook = new Facebook(Utility.APP_ID);
-		/*
-         * Get existing access_token if any
-         */
-        Utility.mPrefs = getSharedPreferences("FHActivitySelector", MODE_PRIVATE);
-        String access_token = Utility.mPrefs.getString("access_token", null);
-        Log.d("friendHealthFHASA", "AccessToken: " + access_token);
-        long expires = Utility.mPrefs.getLong("access_expires", 0);
-        if (access_token != null) {
-            Utility.facebook.setAccessToken(access_token);
-        }
-        if (expires != 0) {
-            Utility.facebook.setAccessExpires(expires);
-        }
-        
-        /*
-         * Only call authorize if the access_token has expired.
-         */
-        if(!Utility.facebook.isSessionValid()) {
-        	Log.d("friendHealthFHASA", "Session Not Valid");
-
-            Utility.facebook.authorize(this, new String[] { "user_photos", "friends_photos", "read_stream",
-            		"publish_stream", "publish_actions", "create_event", "rsvp_event", "user_events",
-            		"friends_events" }, new DialogListener() {
-                @Override
-                public void onComplete(Bundle values) {
-                    SharedPreferences.Editor editor = Utility.mPrefs.edit();
-                    editor.putString("access_token", Utility.facebook.getAccessToken());
-                    editor.putLong("access_expires", Utility.facebook.getAccessExpires());
-                    editor.commit();
-                }
-    
-                @Override
-                public void onFacebookError(FacebookError error) {}
-    
-                @Override
-                public void onError(DialogError e) {}
-    
-                @Override
-                public void onCancel() {}
-            });
-        }
-        else {
-        	Log.d("friendHealthFHASA", "Logged in");
-        }
-         //-------Getting Facebook Name, then setting text view//
+        FacebookLogin();
+		//-------Getting Facebook Name, then setting text view//
         try {
 			String jsonUser = Utility.facebook.request("me");
 			JSONObject obj;
@@ -488,6 +438,60 @@ public class FHActivitySelector extends Activity {
         	}*/
         	
         	Utility.facebook.authorizeCallback(requestCode, resultCode, data);
+        }
+    }
+    
+    @Override
+    public void onResume() {
+    	super.onResume();
+    	FacebookLogin();
+    }
+    
+    private void FacebookLogin() {
+    	Utility.facebook = new Facebook(Utility.APP_ID);
+		/*
+         * Get existing access_token if any
+         */
+        Utility.mPrefs = getSharedPreferences("FHActivitySelector", MODE_PRIVATE);
+        String access_token = Utility.mPrefs.getString("access_token", null);
+        Log.d("friendHealthFHASA", "AccessToken: " + access_token);
+        long expires = Utility.mPrefs.getLong("access_expires", 0);
+        if (access_token != null) {
+            Utility.facebook.setAccessToken(access_token);
+        }
+        if (expires != 0) {
+            Utility.facebook.setAccessExpires(expires);
+        }
+        
+        /*
+         * Only call authorize if the access_token has expired.
+         */
+        if(!Utility.facebook.isSessionValid()) {
+        	Log.d("friendHealthFHASA", "Session Not Valid");
+
+            Utility.facebook.authorize(this, new String[] { "user_photos", "friends_photos", "read_stream",
+            		"publish_stream", "publish_actions", "create_event", "rsvp_event", "user_events",
+            		"friends_events" }, new DialogListener() {
+                @Override
+                public void onComplete(Bundle values) {
+                    SharedPreferences.Editor editor = Utility.mPrefs.edit();
+                    editor.putString("access_token", Utility.facebook.getAccessToken());
+                    editor.putLong("access_expires", Utility.facebook.getAccessExpires());
+                    editor.commit();
+                }
+    
+                @Override
+                public void onFacebookError(FacebookError error) {}
+    
+                @Override
+                public void onError(DialogError e) {}
+    
+                @Override
+                public void onCancel() {}
+            });
+        }
+        else {
+        	Log.d("friendHealthFHASA", "Logged in");
         }
     }
     

@@ -1,15 +1,10 @@
 package edu.berkeley.cs160.teamk;
 
 import org.json.JSONObject;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import android.app.Activity;
 import android.os.Bundle;
-
 import android.widget.Button;
 import android.widget.TextView;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
@@ -24,7 +19,6 @@ import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import android.content.Intent;
 import android.provider.MediaStore;
 import android.net.Uri;
@@ -145,19 +139,17 @@ public class FHActivity extends Activity {
 				startActivityForResult(intent, Utility.RC_INVITE);*/
 				JSONObject event = new JSONObject();
 				Bundle bundle = new Bundle();
-				bundle.putString("method", "events.create");
-				//event.put("page_id", groupid);
 				try {
-					Date now = new Date();
-			        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 					event.put("name", act_name);
-					event.put("location", "locationtest");
-					event.put("start_time", sdf.format(now));
-					event.put("end_time", "2011-05-15T10:20:00");
+					long unixTime = System.currentTimeMillis() / 1000L;
+					long oneWeekUnixTime = unixTime + 604800;
+					event.put("start_time", unixTime);
+					event.put("end_time", oneWeekUnixTime);
 					event.put("privacy_type", "OPEN");
-					bundle.putString("access_token", Utility.mPrefs.getString("access_token", null));
+					bundle.putString("method", "events.create");
 					bundle.putString("event_info", event.toString());
-					Utility.facebook.request("me/events", bundle, "POST");
+					String response = Utility.facebook.request(bundle);
+					Log.d("friendHealthFHA", "Response: " + response);
 				} catch (Exception e) {
 					Log.e("friendHealthFHA", e.getMessage());
 				}
