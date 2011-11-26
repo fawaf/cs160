@@ -89,7 +89,7 @@ public class FHActivitySelector extends Activity {
         if(!Utility.facebook.isSessionValid()) {
         	Log.d("friendHealthFHASA", "Session Not Valid");
 
-            Utility.facebook.authorize(this, new String[] { "user_photos", "friend_photos", "read_stream",
+            Utility.facebook.authorize(this, new String[] { "user_photos", "friends_photos", "read_stream",
             		"publish_stream", "publish_actions", "create_event", "rsvp_event", "user_events",
             		"friends_events" }, new DialogListener() {
                 @Override

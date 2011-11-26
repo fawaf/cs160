@@ -126,34 +126,13 @@ public class ActivitySubmission extends Activity {
 	        				response = "Submission Successful";
 	        			}
 	        			
-	        			if (response == "Submission Successful"){
-	        				String jsonUser = Utility.facebook.request("me");
-	        				JSONObject obj;
-	        				obj = Util.parseJson(jsonUser);
-	        				String facebookId = obj.optString("id");
-	        				
-	        				Utility.mPrefs = getSharedPreferences("FHActivitySelector", MODE_PRIVATE);
-	            			Bundle bundle = new Bundle();
-	            			bundle.putInt("score", 1);
-	            			bundle.putString(Facebook.TOKEN, Utility.mPrefs.getString("access_token", null));
-	            			Log.d("friendHealthAS", "Access_token: " + Utility.mPrefs.getString("access_token", null));
-	            			String score_response = Utility.facebook.request(facebookId+"/feed", bundle, "POST");
-	            			JSONObject score_obj = Util.parseJson(score_response);
-	            			String message = score_obj.optString("message");
-	            			Log.d("friendHealthAS_Score", message);
-	            			
-	        			}
+	        			
 	        			
 	        			setResult(RESULT_OK);
 	    				finish();
 	        		} catch (MalformedURLException e) {
 	        		} catch (IOException e) {
-	        		} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (FacebookError e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+	        		
 					}
 	        	}
 	        });
