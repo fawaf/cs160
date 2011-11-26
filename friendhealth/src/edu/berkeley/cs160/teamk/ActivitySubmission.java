@@ -14,8 +14,10 @@ import com.facebook.android.Util;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Bundle;
 
 import android.view.Menu;
@@ -33,6 +35,7 @@ public class ActivitySubmission extends Activity {
 	String img_filename = "";
 	int score = 0;
 	Button submit_button;
+	Button rotate_button;
 	String origVal = "";
 	EditText edt_Caption;
 	Bundle bundle = new Bundle();
@@ -45,7 +48,7 @@ public class ActivitySubmission extends Activity {
 		Log.d("friendHealthAS", "ActivitySubmission drawn");
 		
 		//---display the image taken---
-		ImageView imageView = (ImageView) findViewById(R.id.img_submit);
+		final ImageView imageView = (ImageView) findViewById(R.id.img_submit);
 		
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
@@ -79,6 +82,19 @@ public class ActivitySubmission extends Activity {
 			Log.d("friendHealthAS", "Displaying image");
 			imageView.setImageBitmap(myBitmap);
 			Log.d("friendHealthAS", "Image displayed");
+			int orientation = getResources().getConfiguration().orientation;
+			Log.d("Orientation: ", "" + orientation);
+			if (orientation == 1)
+			{
+		        //super.onCreate(savedInstanceState);
+		        //setContentView(R.layout.activitysubmission);
+		        Matrix mtx = new Matrix();
+		        mtx.postRotate(270);
+		        Bitmap rotatedBMP = Bitmap.createBitmap(myBitmap, 0, 0, myBitmap.getWidth(), myBitmap.getHeight(), mtx, true);
+		        BitmapDrawable bmd = new BitmapDrawable(rotatedBMP);
+		        imageView.setImageDrawable(bmd);
+		        myBitmap = rotatedBMP;
+			}
 
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			myBitmap.compress(CompressFormat.JPEG, 75, bos);
@@ -104,7 +120,26 @@ public class ActivitySubmission extends Activity {
 			
 			//---get the Submit button---
 			submit_button = (Button) findViewById(R.id.btn_Submit);
-	        
+			rotate_button = (Button) findViewById(R.id.btn_Rotate);
+			
+			Log.d("check", "0");
+			
+			rotate_button.setOnClickListener(new View.OnClickListener() {
+	        	public void onClick(View view) {
+	        		Log.d("check", "1");
+	        		Matrix mtx = new Matrix();
+	        		mtx.reset();
+	        		mtx.postRotate(90);
+	        		imageView.buildDrawingCache();
+	        		Bitmap bmap = imageView.getDrawingCache();
+	        		
+			        Bitmap finalmap2 = Bitmap.createBitmap(bmap, 0, 0, bmap.getWidth(), bmap.getHeight(), mtx, true);
+			        BitmapDrawable bmd = new BitmapDrawable(finalmap2);
+			        Log.d("check", "" + finalmap2);
+			        imageView.setImageDrawable(bmd);
+	        	}
+	        	});
+
 	        //---event handler for the Submit button---
 	        submit_button.setOnClickListener(new View.OnClickListener() {
 	        	public void onClick(View view) {
