@@ -2,7 +2,6 @@ package edu.berkeley.cs160.teamk;
 
 import android.app.Activity;
 import android.os.Bundle;
-
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;

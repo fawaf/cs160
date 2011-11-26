@@ -2,10 +2,8 @@ package edu.berkeley.cs160.teamk;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -76,7 +74,7 @@ public class BallyhooActivity extends Activity {
         			bundle.putString("message", message);
         			bundle.putString(Facebook.TOKEN, Utility.mPrefs.getString("access_token", null));
         			Log.d("friendHealthBA", "Access_token: " + Utility.mPrefs.getString("access_token", null));
-        			String response = Utility.facebook.request("me/feed", bundle, "POST");
+        			String response = Utility.facebook.request("me/scores", bundle, "POST");
         			
         			if(response.indexOf("OAuthException") > -1){
         				Log.d("friendHealthBA", "Response: " + response);
@@ -102,7 +100,7 @@ public class BallyhooActivity extends Activity {
             			String score_response = Utility.facebook.request(facebookId+"/scores", score_bundle, "POST");
             			//JSONObject score_obj = Util.parseJson(score_response);
             			//String message = score_obj.optString("message");
-            			Log.d("friendHealthAS_Score", score_response);
+            			Log.d("friendHealthAS", "score is: " + score_response);
             			
         			}
         			

@@ -4,14 +4,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;

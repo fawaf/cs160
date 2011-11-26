@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">You are using friendHealth!</string>
+    <string name="hello">Welcome to the friendHealth app!</string>
     <string name="app_name">friendHealth</string>
     <string name="invite">Invite</string>
-    <string name="default_message">I\'m going to Place Holder</string>
     <string name="btn_submit">Submit</string>
 
 </resources>
