@@ -89,7 +89,7 @@ public class FHActivitySelector extends Activity {
         if(!Utility.facebook.isSessionValid()) {
         	Log.d("friendHealthFHASA", "Session Not Valid");
 
-            Utility.facebook.authorize(this, new String[] { "user_photos", "friend_photos", "read_stream", "publish_stream", "publish_actions", "create_event", "rsvp_event" }, new DialogListener() {
+            Utility.facebook.authorize(this, new String[] { "user_photos", "friends_photos", "read_stream", "publish_stream", "publish_actions", "create_event", "rsvp_event" }, new DialogListener() {
                 @Override
                 public void onComplete(Bundle values) {
                     SharedPreferences.Editor editor = Utility.mPrefs.edit();
