@@ -5,11 +5,6 @@
     android:background="@drawable/new_bg"
     android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="This text should not appear" />
-
     <ImageView
         android:id="@+id/img_submit"
         android:layout_width="240dp"

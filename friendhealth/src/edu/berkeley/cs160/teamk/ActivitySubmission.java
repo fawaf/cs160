@@ -13,7 +13,6 @@ import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -25,7 +24,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-//import android.widget.Toast;
 import android.util.Log;
 
 
@@ -121,44 +119,20 @@ public class ActivitySubmission extends Activity {
 	        			String response = Utility.facebook.request("me/photos", bundle, "POST");
 	        			
 	        			if (response.indexOf("OAuthException") > -1) {
-	        				Log.d("friendHealthBA", "Response: " + response);
+	        				Log.d("friendHealthAS", "Response: " + response);
 	        				response = "Submission Failed";
 	        			} else {
-	        				Log.d("friendHealthBA", "Response: " + response);
+	        				Log.d("friendHealthAS", "Response: " + response);
 	        				response = "Submission Successful";
 	        			}
 	        			
-	        			if (response == "Submission Successful"){
-	        				String jsonUser = Utility.facebook.request("me");
-	        				JSONObject obj;
-	        				obj = Util.parseJson(jsonUser);
-	        				String facebookId = obj.optString("id");
-	        				
-	        				Utility.mPrefs = getSharedPreferences("FHActivitySelector", MODE_PRIVATE);
-	            			Bundle bundle = new Bundle();
-	            			bundle.putInt("score", 1);
-	            			bundle.putString(Facebook.TOKEN, Utility.mPrefs.getString("access_token", null));
-	            			Log.d("friendHealthBA", "Access_token: " + Utility.mPrefs.getString("access_token", null));
-	            			String score_response = Utility.facebook.request(facebookId+"/feed", bundle, "POST");
-	            			JSONObject score_obj = Util.parseJson(score_response);
-	            			String message = score_obj.optString("message");
-	            			Log.d("friendHealthAS_Score", message);
-	            			
-	        			}
 	        			
-	        			Intent intent = new Intent("edu.berkeley.cs160.teamk.FHActivity");
-	        			Bundle extras = getIntent().getExtras();
-	        			extras.putString("response", response);
-	        			intent.putExtras(extras);
-	        			startActivity(intent);
+	        			
+	        			setResult(RESULT_OK);
+	    				finish();
 	        		} catch (MalformedURLException e) {
 	        		} catch (IOException e) {
-	        		} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (FacebookError e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+	        		
 					}
 	        	}
 	        });
