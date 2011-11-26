@@ -1,5 +1,9 @@
 package edu.berkeley.cs160.teamk;
 
+import org.json.JSONObject;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -135,10 +139,28 @@ public class FHActivity extends Activity {
 		// Handle click of button.
 		btn_invite.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				Intent intent = new Intent(
+				/*Intent intent = new Intent(
 						"edu.berkeley.cs160.teamk.BallyhooActivity");
 				intent.putExtras(getIntent().getExtras());
-				startActivityForResult(intent, Utility.RC_INVITE);
+				startActivityForResult(intent, Utility.RC_INVITE);*/
+				JSONObject event = new JSONObject();
+				Bundle bundle = new Bundle();
+				bundle.putString("method", "events.create");
+				//event.put("page_id", groupid);
+				try {
+					Date now = new Date();
+			        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+					event.put("name", act_name);
+					event.put("location", "locationtest");
+					event.put("start_time", sdf.format(now));
+					event.put("end_time", "2011-05-15T10:20:00");
+					event.put("privacy_type", "OPEN");
+					bundle.putString("access_token", Utility.mPrefs.getString("access_token", null));
+					bundle.putString("event_info", event.toString());
+					Utility.facebook.request("me/events", bundle, "POST");
+				} catch (Exception e) {
+					Log.e("friendHealthFHA", e.getMessage());
+				}
 			}
 		});
 	}

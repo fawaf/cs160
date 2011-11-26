@@ -89,7 +89,9 @@ public class FHActivitySelector extends Activity {
         if(!Utility.facebook.isSessionValid()) {
         	Log.d("friendHealthFHASA", "Session Not Valid");
 
-            Utility.facebook.authorize(this, new String[] { "user_photos", "friend_photos", "read_stream", "publish_stream", "publish_actions", "create_event", "rsvp_event" }, new DialogListener() {
+            Utility.facebook.authorize(this, new String[] { "user_photos", "friend_photos", "read_stream",
+            		"publish_stream", "publish_actions", "create_event", "rsvp_event", "user_events",
+            		"friends_events" }, new DialogListener() {
                 @Override
                 public void onComplete(Bundle values) {
                     SharedPreferences.Editor editor = Utility.mPrefs.edit();
@@ -416,6 +418,16 @@ public class FHActivitySelector extends Activity {
         				Toast.makeText(this,
         						"Activity completed",
         						Toast.LENGTH_LONG).show();
+        				Utility.dbAdapter.acceptActivity(index);
+        				Button button;
+        				if (index == 0) {
+        					button = act1_button;
+        				} else if (index == 1) {
+        					button = act2_button;
+        				} else {
+        					button = act3_button;
+        				}
+        				button.setText(Utility.dbAdapter.toString(index));
         			}
         			else if (result.equals("rejected")) {
         				Log.d("friendHealthFHASA", "index is: " + index);

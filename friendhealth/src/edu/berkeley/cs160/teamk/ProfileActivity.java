@@ -3,6 +3,7 @@ package edu.berkeley.cs160.teamk;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,6 +61,7 @@ public class ProfileActivity extends Activity {
 				JSONObject friendObj = friends.getJSONObject(i);
 				friends_array[i] = friendObj.optString("name");
 			}
+			Arrays.sort(friends_array, String.CASE_INSENSITIVE_ORDER);
 			s.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, friends_array));
 	
 		} catch (MalformedURLException e) {
