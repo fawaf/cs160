@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
 public class OptionsMenu extends Activity {	
 
 	static Context ctxt;

@@ -17,20 +17,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.facebook.android.FacebookError;
-import com.facebook.android.Util;
-
 public class DBAdapter {
 	
 	public static final String URL_BASE = 
 			"https://secure.ocf.berkeley.edu/~goodfrie/";
-	public static final String URL_ACT1 = "getRandomActivity.php";
-	public static final String URL_ACT3 = "getRandomActivities.php";
-	public static final String URL_UPDATE = "updateActivity.php";
-	public static final String URL_ADD = "addActivity.php";
-	public static final String URL_GET = "getActivityByID.php";
+	public static final String URL_ACTIVITY_GET = "getRandomActivity.php";
+	public static final String URL_ACTIVITY_GET_RANDOM = "getRandomActivities.php";
+	public static final String URL_ACTIVITY_UPDATE = "updateActivity.php";
+	public static final String URL_ACTIVITY_ADD = "addActivity.php";
+	public static final String URL_ACTIVITY_GET_ID = "getActivityByID.php";
 	public static final String URL_PHOTO_GET = "getPhotoByID.php";
-	public static final String URL_ADD_PHOTO = "addPhoto.php";
+	public static final String URL_PHOTO_ADD = "addPhoto.php";
+	public static final String URL_SCORE_GET = "getScoreByID.php";
+	public static final String URL_SCORE_ADD = "addScore.php";
 	
 	public Task[] tasks;
 	
@@ -51,7 +50,7 @@ public class DBAdapter {
 		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		pairs.add(new BasicNameValuePair("id", String.valueOf(id)));
 		
-		String result = getDatabaseOutput(URL_BASE + URL_GET, pairs);
+		String result = getDatabaseOutput(URL_BASE + URL_ACTIVITY_GET_ID, pairs);
 		Task[] task = parseJSONData(result);
 		return task[0];
 	}	
@@ -78,7 +77,7 @@ public class DBAdapter {
 	
 	private Task setNewRandomActivity(int index) {
 		String result = getDatabaseOutput(
-				URL_BASE + URL_ACT1, findIDsReplace());
+				URL_BASE + URL_ACTIVITY_GET, findIDsReplace());
 		Task[] new_task = parseJSONData(result);
 		tasks[index] = new_task[0];
 		return new_task[0];
@@ -87,9 +86,9 @@ public class DBAdapter {
 	public void setAllRandomActivities() {
 		Log.d("DBA", "setAllRandomActivities()");
 		String result = getDatabaseOutput(
-				URL_BASE + URL_ACT3, findIDsReplace());
+				URL_BASE + URL_ACTIVITY_GET_RANDOM, findIDsReplace());
 		Task[] new_tasks = parseJSONData(result);
-		for (int i = 0 ; i < tasks.length ; ++i) {
+		for (int i = 0 ; i < tasks.length ; i++) {
 			tasks[i] = new_tasks[i];
 		}
 	}
@@ -125,7 +124,7 @@ public class DBAdapter {
 		pairs.add(new BasicNameValuePair(
 				"points", String.valueOf(new_task.points)));
 		
-		String result = getDatabaseOutput(URL_BASE + URL_ADD, pairs);
+		String result = getDatabaseOutput(URL_BASE + URL_ACTIVITY_ADD, pairs);
 		if (!result.equals("SUCCESS")) {
 			Log.e("DBA", "Error Adding: " + result);
 		}
@@ -137,7 +136,7 @@ public class DBAdapter {
 				"actid", activityid));
 		pairs.add(new BasicNameValuePair(
 				"photoid", photoid));
-		String result = getDatabaseOutput(URL_BASE + URL_ADD_PHOTO, pairs);
+		String result = getDatabaseOutput(URL_BASE + URL_PHOTO_ADD, pairs);
 		if(!result.equals("SUCCESS")) {
 			Log.d("log_tag", "Error Adding: " + result);
 		}
@@ -270,7 +269,7 @@ public class DBAdapter {
 		pairs.add(new BasicNameValuePair(
 				"tA", String.valueOf(tasks[index].timesAccepted)));
 		
-		String result = getDatabaseOutput(URL_BASE + URL_UPDATE, pairs);
+		String result = getDatabaseOutput(URL_BASE + URL_ACTIVITY_UPDATE, pairs);
 		Log.d("DBA", "result is: " + result);
 		if (!result.equals("SUCCESS")) {
 			Log.e("DBA", "Error Updating: " + result);

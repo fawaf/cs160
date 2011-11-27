@@ -7,13 +7,10 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -251,15 +248,12 @@ public class FHActivity extends Activity {
 	
 	public class ImageAdapter extends BaseAdapter {
 		private Context context;
-		private int itemBackground;
 		
 		public ImageAdapter(Context c) {
 			context = c;
 			//---setting the style---
 			TypedArray a = obtainStyledAttributes(R.styleable.ActivityGallery);
-			itemBackground = a.getResourceId(
-					R.styleable.ActivityGallery_android_galleryItemBackground,
-					0);
+			a.getResourceId(R.styleable.ActivityGallery_android_galleryItemBackground, 0);
 			a.recycle();
 		}
 		
@@ -283,24 +277,23 @@ public class FHActivity extends Activity {
             ImageView i = new ImageView(this.context);
  
             try {
-                                /* Open a new URL and get the InputStream to load data from it. */
-                                URL aURL = new URL(myRemoteImages[position]);
-                                URLConnection conn = aURL.openConnection();
-                                conn.connect();
-                                InputStream is = conn.getInputStream();
-                                /* Buffered is always good for a performance plus. */
-                                BufferedInputStream bis = new BufferedInputStream(is);
-                                /* Decode url-data to a bitmap. */
-                                Bitmap bm = BitmapFactory.decodeStream(bis);
-                                bis.close();
-                                is.close();
-                                /* Apply the Bitmap to the ImageView that will be returned. */
-                                i.setImageBitmap(bm);
-                        } catch (IOException e) {
-                              
-                                Log.d("DEBUGTAG", "Remtoe Image Exception", e);
-                        }
-           
+	            /* Open a new URL and get the InputStream to load data from it. */
+	            URL aURL = new URL(myRemoteImages[position]);
+	            URLConnection conn = aURL.openConnection();
+	            conn.connect();
+	            InputStream is = conn.getInputStream();
+	            /* Buffered is always good for a performance plus. */
+	            BufferedInputStream bis = new BufferedInputStream(is);
+	            /* Decode url-data to a bitmap. */
+	            Bitmap bm = BitmapFactory.decodeStream(bis);
+	            bis.close();
+	            is.close();
+	            /* Apply the Bitmap to the ImageView that will be returned. */
+	            i.setImageBitmap(bm);
+            } catch (IOException e) {
+            	Log.d("DEBUGTAG", "Remote Image Exception: ", e);
+            }
+	   
             /* Image should be scaled as width/height are set. */
             i.setScaleType(ImageView.ScaleType.FIT_CENTER);
             /* Set the Width/Height of the ImageView. */
@@ -322,4 +315,5 @@ public class FHActivity extends Activity {
     	OptionsMenu om = new OptionsMenu();
     	return om.MenuChoice(this, item);
     }
+
 }

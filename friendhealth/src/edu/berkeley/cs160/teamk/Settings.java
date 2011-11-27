@@ -17,7 +17,7 @@ public class Settings extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.settings);
 		
-		// ToggleButton.
+		// Toggle sound
 		ToggleButton toggle_sound =
 				(ToggleButton) findViewById(R.id.toggleSound);
 		toggle_sound.setChecked(

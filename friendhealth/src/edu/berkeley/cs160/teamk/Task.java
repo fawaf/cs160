@@ -1,6 +1,7 @@
 package edu.berkeley.cs160.teamk;
 
 public class Task {
+	
 	int id;
 	String name;
 	int points;
@@ -32,4 +33,5 @@ public class Task {
 	public String toString() {
 		return (name + " (" + points + " pts)");
 	}
+	
 }
