@@ -1,5 +1,6 @@
 package edu.berkeley.cs160.teamk;
 
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -184,18 +185,15 @@ public class FHActivity extends Activity {
 						"edu.berkeley.cs160.teamk.BallyhooActivity");
 				intent.putExtras(getIntent().getExtras());
 				startActivityForResult(intent, Utility.RC_INVITE);*/
-				JSONObject event = new JSONObject();
 				Bundle bundle = new Bundle();
 				try {
-					event.put("name", act_name);
 					long unixTime = System.currentTimeMillis() / 1000L;
 					long oneWeekUnixTime = unixTime + 604800;
-					event.put("start_time", unixTime);
-					event.put("end_time", oneWeekUnixTime);
-					event.put("privacy_type", "OPEN");
-					bundle.putString("method", "events.create");
-					bundle.putString("event_info", event.toString());
-					String response = Utility.facebook.request(bundle);
+					bundle.putString("name", act_name);
+					bundle.putString("start_time", String.valueOf(unixTime));
+					bundle.putString("end_time", String.valueOf(oneWeekUnixTime));
+					bundle.putString("privacy_type", "OPEN");
+					String response = Utility.facebook.request("me/events", bundle, "POST");
 					Log.d("friendHealthFHA", "Response: " + response);
 				} catch (Exception e) {
 					Log.e("friendHealthFHA", e.getMessage());

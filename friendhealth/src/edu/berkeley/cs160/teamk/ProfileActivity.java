@@ -80,10 +80,10 @@ public class ProfileActivity extends Activity {
 			e.printStackTrace();
 		}
 
-		//---get the Invite button---
+		//---get the Log Out button---
 		logout_button = (Button) findViewById(R.id.btn_logout);
 	    
-	    //---event handler for the Invite button---
+	    //---event handler for the Log Out button---
 	    logout_button.setOnClickListener(new View.OnClickListener() {
 	    	public void onClick(View view) {
 	    		Log.d("friendHealthFHASA", "Logging out of Facebook");
