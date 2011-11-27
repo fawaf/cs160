@@ -162,6 +162,7 @@ public class FHActivitySelector extends Activity {
         		Bundle extras = new Bundle();
         		extras.putString("name", Utility.dbAdapter.getName(0));
         		extras.putInt("score", Utility.dbAdapter.getPoints(0));
+        		extras.putInt("id", Utility.dbAdapter.getID(0));
         		extras.putInt("index", 0);
         		i.putExtras(extras);
 
@@ -179,6 +180,7 @@ public class FHActivitySelector extends Activity {
         		Bundle extras = new Bundle();
         		extras.putString("name", Utility.dbAdapter.getName(1));
         		extras.putInt("score", Utility.dbAdapter.getPoints(1));
+        		extras.putInt("id", Utility.dbAdapter.getID(1));
         		extras.putInt("index", 1);
         		i.putExtras(extras);
         		startActivityForResult(i, Utility.RC_ACTIVITY);
@@ -195,6 +197,7 @@ public class FHActivitySelector extends Activity {
         		Bundle extras = new Bundle();
         		extras.putString("name", Utility.dbAdapter.getName(2));
         		extras.putInt("score", Utility.dbAdapter.getPoints(2));
+        		extras.putInt("id", Utility.dbAdapter.getID(2));
         		extras.putInt("index", 2);
         		i.putExtras(extras);
         		startActivityForResult(i, Utility.RC_ACTIVITY);
@@ -204,7 +207,6 @@ public class FHActivitySelector extends Activity {
         
         newTask.setOnClickListener(new View.OnClickListener() {
 			
-			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if (Utility.mPrefs.getBoolean("toggle_sound", true)) {
@@ -478,7 +480,6 @@ public class FHActivitySelector extends Activity {
             Utility.facebook.authorize(this, new String[] { "user_photos", "friends_photos", "read_stream",
             		"publish_stream", "publish_actions", "create_event", "rsvp_event", "user_events",
             		"friends_events" }, new DialogListener() {
-                @Override
                 public void onComplete(Bundle values) {
                     SharedPreferences.Editor editor = Utility.mPrefs.edit();
                     editor.putString("access_token", Utility.facebook.getAccessToken());
@@ -486,13 +487,10 @@ public class FHActivitySelector extends Activity {
                     editor.commit();
                 }
     
-                @Override
                 public void onFacebookError(FacebookError error) {}
     
-                @Override
                 public void onError(DialogError e) {}
     
-                @Override
                 public void onCancel() {}
             });
         }

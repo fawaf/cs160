@@ -17,6 +17,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.facebook.android.FacebookError;
+import com.facebook.android.Util;
+
 public class DBAdapter {
 	
 	public static final String URL_BASE = 
@@ -26,6 +29,8 @@ public class DBAdapter {
 	public static final String URL_UPDATE = "updateActivity.php";
 	public static final String URL_ADD = "addActivity.php";
 	public static final String URL_GET = "getActivityByID.php";
+	public static final String URL_PHOTO_GET = "getPhotoByID.php";
+	public static final String URL_ADD_PHOTO = "addPhoto.php";
 	
 	public Task[] tasks;
 	
@@ -50,6 +55,26 @@ public class DBAdapter {
 		Task[] task = parseJSONData(result);
 		return task[0];
 	}	
+	
+	public String[] getPhotoByID(int id) {
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		pairs.add(new BasicNameValuePair("actid", String.valueOf(id)));
+		
+		String result = getDatabaseOutput(URL_BASE + URL_PHOTO_GET, pairs);
+		String[] photoids = {""};
+		try {
+			JSONArray photos = new JSONArray(result);
+			photoids = new String[photos.length()];
+			for(int i = 0; i<photos.length(); i++){
+				JSONObject obj = photos.getJSONObject(i);
+				photoids[i] = obj.optString("photo_id");
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return photoids;
+	}
 	
 	private Task setNewRandomActivity(int index) {
 		String result = getDatabaseOutput(
@@ -103,6 +128,18 @@ public class DBAdapter {
 		String result = getDatabaseOutput(URL_BASE + URL_ADD, pairs);
 		if (!result.equals("SUCCESS")) {
 			Log.e("log_tag", "Error Adding: " + result);
+		}
+	}
+	
+	public void addPhoto(String activityid, String photoid){
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		pairs.add(new BasicNameValuePair(
+				"actid", activityid));
+		pairs.add(new BasicNameValuePair(
+				"photoid", photoid));
+		String result = getDatabaseOutput(URL_BASE + URL_ADD_PHOTO, pairs);
+		if(!result.equals("SUCCESS")) {
+			Log.d("log_tag", "Error Adding: " + result);
 		}
 	}
 	

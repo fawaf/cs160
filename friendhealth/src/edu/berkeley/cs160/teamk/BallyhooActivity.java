@@ -46,7 +46,6 @@ public class BallyhooActivity extends Activity {
 		edt_Message.setOnClickListener(new View.OnClickListener() {
 			String message = edt_Message.getText().toString();
 
-			@Override
 			public void onClick(View v) {
 					if(message.equals(origVal)) {
 						edt_Message.setText("");

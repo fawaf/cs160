@@ -1,6 +1,18 @@
 package edu.berkeley.cs160.teamk;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.facebook.android.FacebookError;
+import com.facebook.android.Util;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -20,6 +32,8 @@ import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.provider.MediaStore;
 import android.net.Uri;
 
@@ -31,18 +45,11 @@ public class FHActivity extends Activity {
 	String response = "";
 	int score = 0;
 	int index = 0;
+	int id = 0;
 	SharedPreferences.Editor editor = Utility.mPrefs.edit();
 	
 	//---the images to display---
-	Integer[] imageIDs = {
-			R.drawable.pic1,
-			R.drawable.pic2,
-			R.drawable.pic3,
-			R.drawable.pic4,
-			R.drawable.pic5,
-			R.drawable.pic6,
-			R.drawable.pic7
-	};
+	String[] myRemoteImages;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -56,6 +63,7 @@ public class FHActivity extends Activity {
 			act_name = extras.getString("name");
 			score = extras.getInt("score");
 			index = extras.getInt("index");
+			id = extras.getInt("id");
 			
 			editor.putString("act_name", act_name);
 			editor.putInt("act_score", score);
@@ -63,6 +71,28 @@ public class FHActivity extends Activity {
 			editor.commit();
 			
 		}
+		String[] photoids = Utility.dbAdapter.getPhotoByID(id);
+		myRemoteImages = new String[photoids.length];
+		for(int i = 0; i<photoids.length; i++){
+			try {
+				String jsonPic = Utility.facebook.request(photoids[i]);
+				JSONObject obj = Util.parseJson(jsonPic);
+				myRemoteImages[i] = obj.optString("source");
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FacebookError e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		TextView txt_ActTitle = (TextView) findViewById(R.id.txt_ActTitle);
 		TextView txt_ActPt = (TextView) findViewById(R.id.txt_ActPt);
 		txt_ActTitle.setText(act_name);
@@ -83,7 +113,24 @@ public class FHActivity extends Activity {
 				
 				//---display the images selected---
 				ImageView imageView = (ImageView) findViewById(R.id.img_fhAct);
-				imageView.setImageResource(imageIDs[position]);
+				 try {
+                     /* Open a new URL and get the InputStream to load data from it. */
+                     URL aURL = new URL(myRemoteImages[position]);
+                     URLConnection conn = aURL.openConnection();
+                     conn.connect();
+                     InputStream is = conn.getInputStream();
+                     /* Buffered is always good for a performance plus. */
+                     BufferedInputStream bis = new BufferedInputStream(is);
+                     /* Decode url-data to a bitmap. */
+                     Bitmap bm = BitmapFactory.decodeStream(bis);
+                     bis.close();
+                     is.close();
+                     /* Apply the Bitmap to the ImageView that will be returned. */
+                     imageView.setImageBitmap(bm);
+             } catch (IOException e) {
+                   
+                     Log.d("DEBUGTAG", "Remtoe Image Exception", e);
+             }
 			}
 		});
 		
@@ -220,7 +267,7 @@ public class FHActivity extends Activity {
 		
 		//---returns the number of images---
 		public int getCount() {
-			return imageIDs.length;
+			return myRemoteImages.length;
 		}
 		
 		//---returns the ID of an item---
@@ -234,15 +281,34 @@ public class FHActivity extends Activity {
 		}
 		
 		//---returns an ImageView view---
-		public View getView(
-				int position, View convertView, ViewGroup parent) {
-			ImageView imageView = new ImageView(context);
-			imageView.setImageResource(imageIDs[position]);
-			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-			imageView.setLayoutParams(new Gallery.LayoutParams(150, 120));
-			imageView.setBackgroundResource(itemBackground);
-			return imageView;
-		}
+		public View getView(int position, View convertView, ViewGroup parent) {
+            ImageView i = new ImageView(this.context);
+ 
+            try {
+                                /* Open a new URL and get the InputStream to load data from it. */
+                                URL aURL = new URL(myRemoteImages[position]);
+                                URLConnection conn = aURL.openConnection();
+                                conn.connect();
+                                InputStream is = conn.getInputStream();
+                                /* Buffered is always good for a performance plus. */
+                                BufferedInputStream bis = new BufferedInputStream(is);
+                                /* Decode url-data to a bitmap. */
+                                Bitmap bm = BitmapFactory.decodeStream(bis);
+                                bis.close();
+                                is.close();
+                                /* Apply the Bitmap to the ImageView that will be returned. */
+                                i.setImageBitmap(bm);
+                        } catch (IOException e) {
+                              
+                                Log.d("DEBUGTAG", "Remtoe Image Exception", e);
+                        }
+           
+            /* Image should be scaled as width/height are set. */
+            i.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            /* Set the Width/Height of the ImageView. */
+            i.setLayoutParams(new Gallery.LayoutParams(150, 150));
+            return i;
+        }
 	}
 
     @Override
