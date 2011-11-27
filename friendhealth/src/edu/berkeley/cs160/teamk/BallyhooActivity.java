@@ -95,9 +95,9 @@ public class BallyhooActivity extends Activity {
             			int val = 4;
             			score_bundle.putString(Facebook.TOKEN, "177765768977545|daaa19ae5921350a7d943e84d0b5c643");
             			score_bundle.putInt("score", val);
-            			Log.d("friendHealthBA_SCORE", "Bundle score is: "+ score_bundle.getInt("score"));
+            			Log.d("friendHealthBA_SCORE", "Bundle score is: " + score_bundle.getInt("score"));
             			
-            			String score_response = Utility.facebook.request(facebookId+"/scores", score_bundle, "POST");
+            			String score_response = Utility.facebook.request(facebookId + "/scores", score_bundle, "POST");
             			//JSONObject score_obj = Util.parseJson(score_response);
             			//String message = score_obj.optString("message");
             			Log.d("friendHealthAS", "score is: " + score_response);

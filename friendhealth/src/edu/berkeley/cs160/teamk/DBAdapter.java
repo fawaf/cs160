@@ -102,7 +102,7 @@ public class DBAdapter {
 		
 		String result = getDatabaseOutput(URL_BASE + URL_ADD, pairs);
 		if (!result.equals("SUCCESS")) {
-			Log.e("log_tag", "Error Adding: " + result);
+			Log.e("DBA", "Error Adding: " + result);
 		}
 	}
 	
@@ -190,7 +190,7 @@ public class DBAdapter {
 				url_comb += "&";
 			}
 		}
-		Log.d("DBA", url_comb);
+		Log.d("DBA", "URL is: " + url_comb);
 		return url_comb;
 	}
 	
