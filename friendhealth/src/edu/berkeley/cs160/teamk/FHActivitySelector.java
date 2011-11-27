@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.text.Html;
 import android.util.Log;
 
 
@@ -145,9 +146,10 @@ public class FHActivitySelector extends Activity {
         	Utility.dbAdapter = new DBAdapter(id1, id2, id3);
         }
         
-        act1_button.setText(Utility.dbAdapter.toString(0));
-        act2_button.setText(Utility.dbAdapter.toString(1));
-        act3_button.setText(Utility.dbAdapter.toString(2));
+        
+        act1_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
+        act2_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(1) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(1) + " Points" + "</font>"));
+        act3_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(2) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(2) + " Points" + "</font>"));
         
         Log.d("friendHealthFHASA", "Set up variables, and setting listeners");
         
@@ -209,9 +211,9 @@ public class FHActivitySelector extends Activity {
 					mp.start();
 				}
 				Utility.dbAdapter.setAllRandomActivities();
-		        act1_button.setText(Utility.dbAdapter.toString(0));
-		        act2_button.setText(Utility.dbAdapter.toString(1));
-		        act3_button.setText(Utility.dbAdapter.toString(2));
+				act1_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
+				act2_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(1) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(1) + " Points" + "</font>"));
+				act3_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(2) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(2) + " Points" + "</font>"));
 			}
 		});
         
@@ -221,7 +223,8 @@ public class FHActivitySelector extends Activity {
 					rj.start();
 				}
 				Utility.dbAdapter.declineActivity(0);
-				act1_button.setText(Utility.dbAdapter.toString(0));
+				//act1_button.setText(Utility.dbAdapter.toString(0));
+				act1_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
 			}
 		});
         
@@ -232,7 +235,8 @@ public class FHActivitySelector extends Activity {
 					rj.start();
 				}
 				Utility.dbAdapter.declineActivity(1);
-				act2_button.setText(Utility.dbAdapter.toString(1));
+				//act2_button.setText(Utility.dbAdapter.toString(1));
+				act2_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(1) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(1) + " Points" + "</font>"));
 			}
 		});
         
@@ -242,7 +246,8 @@ public class FHActivitySelector extends Activity {
 					rj.start();
 				}
 				Utility.dbAdapter.declineActivity(2);
-				act3_button.setText(Utility.dbAdapter.toString(2));
+				//act3_button.setText(Utility.dbAdapter.toString(2));
+				act3_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(2) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(2) + " Points" + "</font>"));
 			}
 		});
         
@@ -393,7 +398,8 @@ public class FHActivitySelector extends Activity {
         				} else {
         					button = act3_button;
         				}
-        				button.setText(Utility.dbAdapter.toString(index));
+        				//button.setText(Utility.dbAdapter.toString(index));
+        				button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
         			}
         			else if (result.equals("rejected_tooHard")) {
         				Toast.makeText(this,
