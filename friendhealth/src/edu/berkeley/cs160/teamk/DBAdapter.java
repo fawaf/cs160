@@ -31,6 +31,10 @@ public class DBAdapter {
 	public static final String URL_SCORE_GET = "getScoreByID.php";
 	public static final String URL_SCORE_ADD = "addScore.php";
 	
+	public static final String URL_ACTIVITY_ACCEPT = "acceptActivity.php";
+	public static final String URL_ACTIVITY_REJECT = "rejectActivity.php";
+	public static final String URL_ACTIVITY_FLAG = "flagActivity.php";
+	
 	public Task[] tasks;
 	
 	public DBAdapter() {
@@ -47,12 +51,38 @@ public class DBAdapter {
 	}
 	
 	public Task getActivityByID(int id) {
-		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
-		pairs.add(new BasicNameValuePair("id", String.valueOf(id)));
-		
-		String result = getDatabaseOutput(URL_BASE + URL_ACTIVITY_GET_ID, pairs);
+		String result = getDatabaseOutput(
+				URL_BASE + URL_ACTIVITY_GET_ID, getBoundPair(id));
 		Task[] task = parseJSONData(result);
 		return task[0];
+	}
+	
+	private ArrayList<NameValuePair> getBoundPair(int id) {
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		pairs.add(new BasicNameValuePair("id", String.valueOf(id)));
+		return pairs;
+	}	
+	
+	public Task declineActivity(int index) {
+		return setNewRandomActivity(index);
+	}
+	
+	public Task acceptActivity(int index) {
+		getDatabaseOutput(
+				URL_BASE + URL_ACTIVITY_ACCEPT, getBoundPair(getID(index)));
+		return setNewRandomActivity(index);
+	}
+	
+	public Task rejectDifficultActivity(int index) {
+		getDatabaseOutput(
+				URL_BASE + URL_ACTIVITY_REJECT, getBoundPair(getID(index)));
+		return setNewRandomActivity(index);
+	}
+	
+	public Task flagActivity(int index) {
+		getDatabaseOutput(
+				URL_BASE + URL_ACTIVITY_FLAG, getBoundPair(getID(index)));
+		return setNewRandomActivity(index);
 	}	
 	
 	public String[] getPhotoByID(int id) {
@@ -91,30 +121,6 @@ public class DBAdapter {
 		for (int i = 0 ; i < tasks.length ; i++) {
 			tasks[i] = new_tasks[i];
 		}
-	}
-	
-	public Task declineActivity(int index) {
-		tasks[index].timesDeclined++;
-		updateActivity(index);
-		return setNewRandomActivity(index);
-	}
-	
-	public Task acceptActivity(int index) {
-		tasks[index].timesAccepted++;
-		updateActivity(index);
-		return setNewRandomActivity(index);
-	}
-	
-	public Task rejectDifficultActivity(int index) {
-		tasks[index].timesDeclined++;
-		updateActivity(index);
-		return setNewRandomActivity(index);
-	}
-	
-	public Task flagActivity(int index) {
-		tasks[index].timesFlagged++;
-		updateActivity(index);
-		return setNewRandomActivity(index);
 	}
 	
 	public void addActivity(Task new_task) {

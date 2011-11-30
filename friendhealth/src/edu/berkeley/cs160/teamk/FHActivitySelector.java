@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View.OnClickListener;
 import android.text.Html;
 import android.util.Log;
 
@@ -218,6 +219,13 @@ public class FHActivitySelector extends Activity {
 				act3_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(2) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(2) + " Points" + "</font>"));
 			}
 		});
+        
+        scores.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View v) {
+        		Intent i = new Intent("edu.berkeley.cs160.teamk.Leaderboard");
+        		startActivity(i);
+        	}
+        });
         
         rejectT1.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -487,11 +495,18 @@ public class FHActivitySelector extends Activity {
                     editor.commit();
                 }
     
-                public void onFacebookError(FacebookError error) {}
+                public void onFacebookError(FacebookError error) {
+                	Log.d("friendHealthFHASA", "onFacebookError(): " +
+                			error.toString());
+                }
     
-                public void onError(DialogError e) {}
+                public void onError(DialogError e) {
+                	Log.d("friendHealthFHASA", "onError(): " + e.toString());
+                }
     
-                public void onCancel() {}
+                public void onCancel() {
+                	Log.d("friendHealthFHASA", "DialogListener.onCancel()");
+                }
             });
         }
         else {
