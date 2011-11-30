@@ -243,7 +243,7 @@ public class DBAdapter {
 						json_data.getString("name"),
 						json_data.getInt("points"),
 						json_data.getInt("timesFlagged"),
-						json_data.getInt("timesDeclined"),
+						json_data.getInt("timesRejected"),
 						json_data.getInt("timesAccepted"));
 			}
 		}
