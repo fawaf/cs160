@@ -19,5 +19,5 @@ public class Utility {
 	public static SharedPreferences mPrefs;
 	
 	public static DBAdapter dbAdapter;
-	
+	public static ScoresDBAdapter scoresDBAdapter;
 }

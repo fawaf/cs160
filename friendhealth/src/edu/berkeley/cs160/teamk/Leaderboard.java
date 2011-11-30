@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Leaderboard extends Activity {
-	ArrayList< HashMap<String, String> > scores;
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -21,19 +19,17 @@ public class Leaderboard extends Activity {
 		
 		ListView leaderboard = (ListView) findViewById(R.id.leaderboard);
 
-		scores = new ArrayList< HashMap<String, String> >();
+		Utility.scoresDBAdapter.getLeaderboard();
 		SimpleAdapter adapter = new SimpleAdapter(
 				this,
-				scores,
+				Utility.scoresDBAdapter.scores,
 				R.layout.leaderboard_item,
 				new String[] {"Standing", "Score", "Player"},
 				new int[] {R.id.standingText, R.id.scoreText, R.id.userText});
-		populateList();
-		
 		leaderboard.setAdapter(adapter);
 	}
 	
-	
+	/*
 	private void populateList() {
 		HashMap<String, String> temp1 = new HashMap<String, String>();
 		temp1.put("Standing", "1");
@@ -53,6 +49,7 @@ public class Leaderboard extends Activity {
 		temp3.put("Player", "Scott Goodfriend");
 		scores.add(temp3);
 	}
+	*/
 	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
