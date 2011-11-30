@@ -21,11 +21,19 @@ public class DBAdapter {
 	
 	public static final String URL_BASE = 
 			"https://secure.ocf.berkeley.edu/~goodfrie/";
-	public static final String URL_ACT1 = "getRandomActivity.php";
-	public static final String URL_ACT3 = "getRandomActivities.php";
-	public static final String URL_UPDATE = "updateActivity.php";
-	public static final String URL_ADD = "addActivity.php";
-	public static final String URL_GET = "getActivityByID.php";
+	public static final String URL_ACTIVITY_GET = "getRandomActivity.php";
+	public static final String URL_ACTIVITY_GET_RANDOM = "getRandomActivities.php";
+	public static final String URL_ACTIVITY_UPDATE = "updateActivity.php";
+	public static final String URL_ACTIVITY_ADD = "addActivity.php";
+	public static final String URL_ACTIVITY_GET_ID = "getActivityByID.php";
+	public static final String URL_PHOTO_GET = "getPhotoByID.php";
+	public static final String URL_PHOTO_ADD = "addPhoto.php";
+	public static final String URL_SCORE_GET = "getScoreByID.php";
+	public static final String URL_SCORE_ADD = "addScore.php";
+	
+	public static final String URL_ACTIVITY_ACCEPT = "acceptActivity.php";
+	public static final String URL_ACTIVITY_REJECT = "rejectActivity.php";
+	public static final String URL_ACTIVITY_FLAG = "flagActivity.php";
 	
 	public Task[] tasks;
 	
@@ -43,17 +51,63 @@ public class DBAdapter {
 	}
 	
 	public Task getActivityByID(int id) {
-		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
-		pairs.add(new BasicNameValuePair("id", String.valueOf(id)));
-		
-		String result = getDatabaseOutput(URL_BASE + URL_GET, pairs);
+		String result = getDatabaseOutput(
+				URL_BASE + URL_ACTIVITY_GET_ID, getBoundPair(id));
 		Task[] task = parseJSONData(result);
 		return task[0];
+	}
+	
+	private ArrayList<NameValuePair> getBoundPair(int id) {
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		pairs.add(new BasicNameValuePair("id", String.valueOf(id)));
+		return pairs;
 	}	
+	
+	public Task declineActivity(int index) {
+		return setNewRandomActivity(index);
+	}
+	
+	public Task acceptActivity(int index) {
+		getDatabaseOutput(
+				URL_BASE + URL_ACTIVITY_ACCEPT, getBoundPair(getID(index)));
+		return setNewRandomActivity(index);
+	}
+	
+	public Task rejectDifficultActivity(int index) {
+		getDatabaseOutput(
+				URL_BASE + URL_ACTIVITY_REJECT, getBoundPair(getID(index)));
+		return setNewRandomActivity(index);
+	}
+	
+	public Task flagActivity(int index) {
+		getDatabaseOutput(
+				URL_BASE + URL_ACTIVITY_FLAG, getBoundPair(getID(index)));
+		return setNewRandomActivity(index);
+	}	
+	
+	public String[] getPhotoByID(int id) {
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		pairs.add(new BasicNameValuePair("actid", String.valueOf(id)));
+		
+		String result = getDatabaseOutput(URL_BASE + URL_PHOTO_GET, pairs);
+		String[] photoids = {""};
+		try {
+			JSONArray photos = new JSONArray(result);
+			photoids = new String[photos.length()];
+			for(int i = 0; i<photos.length(); i++){
+				JSONObject obj = photos.getJSONObject(i);
+				photoids[i] = obj.optString("photo_id");
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return photoids;
+	}
 	
 	private Task setNewRandomActivity(int index) {
 		String result = getDatabaseOutput(
-				URL_BASE + URL_ACT1, findIDsReplace());
+				URL_BASE + URL_ACTIVITY_GET, findIDsReplace());
 		Task[] new_task = parseJSONData(result);
 		tasks[index] = new_task[0];
 		return new_task[0];
@@ -62,35 +116,11 @@ public class DBAdapter {
 	public void setAllRandomActivities() {
 		Log.d("DBA", "setAllRandomActivities()");
 		String result = getDatabaseOutput(
-				URL_BASE + URL_ACT3, findIDsReplace());
+				URL_BASE + URL_ACTIVITY_GET_RANDOM, findIDsReplace());
 		Task[] new_tasks = parseJSONData(result);
-		for (int i = 0 ; i < tasks.length ; ++i) {
+		for (int i = 0 ; i < tasks.length ; i++) {
 			tasks[i] = new_tasks[i];
 		}
-	}
-	
-	public Task declineActivity(int index) {
-		tasks[index].timesDeclined++;
-		updateActivity(index);
-		return setNewRandomActivity(index);
-	}
-	
-	public Task acceptActivity(int index) {
-		tasks[index].timesAccepted++;
-		updateActivity(index);
-		return setNewRandomActivity(index);
-	}
-	
-	public Task rejectDifficultActivity(int index) {
-		tasks[index].timesDeclined++;
-		updateActivity(index);
-		return setNewRandomActivity(index);
-	}
-	
-	public Task flagActivity(int index) {
-		tasks[index].timesFlagged++;
-		updateActivity(index);
-		return setNewRandomActivity(index);
 	}
 	
 	public void addActivity(Task new_task) {
@@ -100,9 +130,21 @@ public class DBAdapter {
 		pairs.add(new BasicNameValuePair(
 				"points", String.valueOf(new_task.points)));
 		
-		String result = getDatabaseOutput(URL_BASE + URL_ADD, pairs);
+		String result = getDatabaseOutput(URL_BASE + URL_ACTIVITY_ADD, pairs);
 		if (!result.equals("SUCCESS")) {
-			Log.e("log_tag", "Error Adding: " + result);
+			Log.e("DBA", "Error Adding: " + result);
+		}
+	}
+	
+	public void addPhoto(String activityid, String photoid){
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		pairs.add(new BasicNameValuePair(
+				"actid", activityid));
+		pairs.add(new BasicNameValuePair(
+				"photoid", photoid));
+		String result = getDatabaseOutput(URL_BASE + URL_PHOTO_ADD, pairs);
+		if(!result.equals("SUCCESS")) {
+			Log.d("log_tag", "Error Adding: " + result);
 		}
 	}
 	
@@ -190,7 +232,7 @@ public class DBAdapter {
 				url_comb += "&";
 			}
 		}
-		Log.d("DBA", url_comb);
+		Log.d("DBA", "URL is: " + url_comb);
 		return url_comb;
 	}
 	
@@ -207,7 +249,7 @@ public class DBAdapter {
 						json_data.getString("name"),
 						json_data.getInt("points"),
 						json_data.getInt("timesFlagged"),
-						json_data.getInt("timesDeclined"),
+						json_data.getInt("timesRejected"),
 						json_data.getInt("timesAccepted"));
 			}
 		}
@@ -233,7 +275,7 @@ public class DBAdapter {
 		pairs.add(new BasicNameValuePair(
 				"tA", String.valueOf(tasks[index].timesAccepted)));
 		
-		String result = getDatabaseOutput(URL_BASE + URL_UPDATE, pairs);
+		String result = getDatabaseOutput(URL_BASE + URL_ACTIVITY_UPDATE, pairs);
 		Log.d("DBA", "result is: " + result);
 		if (!result.equals("SUCCESS")) {
 			Log.e("DBA", "Error Updating: " + result);

@@ -68,6 +68,15 @@
         	</intent-filter>
         </activity>
         
+        <activity 
+        	android:label="Leaderboard"
+        	android:name=".Leaderboard">
+			<intent-filter>
+				<action android:name="edu.berkeley.cs160.teamk.Leaderboard" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>        	
+        </activity>
+        
         <activity
         	android:label="Settings"
         	android:name=".Settings">

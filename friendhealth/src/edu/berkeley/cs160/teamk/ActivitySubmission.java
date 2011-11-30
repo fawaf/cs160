@@ -4,7 +4,11 @@ package edu.berkeley.cs160.teamk;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import org.json.JSONException;
+import org.json.JSONObject;
 import com.facebook.android.Facebook;
+import com.facebook.android.FacebookError;
+import com.facebook.android.Util;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -30,6 +34,7 @@ public class ActivitySubmission extends Activity {
 	Button rotate_button;
 	String origVal = "";
 	EditText edt_Caption;
+	int act_id = 0;
 	Bundle bundle = new Bundle();
 	
 	@Override
@@ -47,6 +52,7 @@ public class ActivitySubmission extends Activity {
 			act_name = extras.getString("name");
 			img_filename = extras.getString("filename");
 			score = extras.getInt("score");
+			act_id = extras.getInt("id");
 			
 			Log.d("friendHealthAS", "Full name: " + img_filename);
 			String shortname = img_filename.substring(11);
@@ -102,7 +108,6 @@ public class ActivitySubmission extends Activity {
 			edt_Caption.setOnClickListener(new View.OnClickListener() {
 				String message = edt_Caption.getText().toString();
 
-				@Override
 				public void onClick(View v) {
 						if(message.equals(origVal)) {
 							edt_Caption.setText("");
@@ -150,6 +155,18 @@ public class ActivitySubmission extends Activity {
 	        				response = "Submission Failed";
 	        			} else {
 	        				Log.d("friendHealthAS", "Response: " + response);
+	        				String photoid = response;
+	        				try {
+								JSONObject obj = Util.parseJson(photoid);
+								String photoId = obj.optString("id");
+								Utility.dbAdapter.addPhoto(String.valueOf(act_id), photoId);
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (FacebookError e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 	        				response = "Submission Successful";
 	        			}
 	        			
