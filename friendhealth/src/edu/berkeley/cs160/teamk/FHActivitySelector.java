@@ -14,12 +14,14 @@ import android.app.Activity;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.provider.MediaStore;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.view.View;
+import android.view.Gravity;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -27,6 +29,7 @@ import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.text.Html;
+import android.text.format.Time;
 import android.util.Log;
 
 
@@ -60,6 +63,7 @@ public class FHActivitySelector extends Activity {
         setContentView(R.layout.fhactivityselector);
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.click_sound);
         final MediaPlayer rj = MediaPlayer.create(this, R.raw.reject_sound);
+        final MediaPlayer hp = MediaPlayer.create(this, R.raw.help_button);
         
         Log.d("friendHealthFHASA", "Starting Activity Selector");
         
@@ -103,6 +107,7 @@ public class FHActivitySelector extends Activity {
         rejectT1 = (ImageButton) findViewById(R.id.reject1);
         rejectT2 = (ImageButton) findViewById(R.id.reject2);
         rejectT3 = (ImageButton) findViewById(R.id.reject3);
+        help = (Button) findViewById(R.id.as_help);
         
         Log.d("friendHealthFHASA", "Initializing newTask Button");
         
@@ -200,6 +205,59 @@ public class FHActivitySelector extends Activity {
         		startActivityForResult(i, Utility.RC_ACTIVITY);
         		Log.d("friendHealthFHASA", "act3");
         	}	
+        });
+        
+        
+		final Toast toast = Toast.makeText(this, Html.fromHtml("<font color='blue'><big><bold>TASK</bold></big></font><br/><font color='white'>" +
+				"Task-Button displays the activity information.</font>"), Toast.LENGTH_SHORT);
+				
+		/*
+				If you want to perform the activity," +
+				" simply tap it. Below the name of the activity is the amount of points you can gain for completing the activity." +
+				" In this case, you can get " + "</font><font color='green'>" + Utility.dbAdapter.getPoints(0) + " points</font><font color='white'> " + "for" +
+						"completing the activity: " + Utility.dbAdapter.getName(0) + "</font>"), Toast.LENGTH_SHORT);
+						*/
+	    toast.setGravity(Gravity.TOP|Gravity.RIGHT, 30, 250);
+	    toast.setMargin(50, 0);
+	    //toast.setMargin(20, 20);
+	    
+	    
+	    
+        help.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+			
+			if (Utility.mPrefs.getBoolean("toggle_sound", true)) {
+				hp.start();
+			}
+
+		    toast.show();
+
+
+		    
+		    act1_button.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
+	        
+	        act2_button.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
+	        
+	        act3_button.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
+		    
+		    new CountDownTimer(15000, 1000)
+		    {
+
+		        public void onTick(long millisUntilFinished) {toast.show();}
+		        public void onFinish() {toast.show();}
+
+		    }.start();
+	        
+	        act1_button.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
+	        
+	        act2_button.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
+	        
+	        act3_button.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
+			
+        }
         });
         
         newTask.setOnClickListener(new View.OnClickListener() {
@@ -382,7 +440,7 @@ public class FHActivitySelector extends Activity {
         				} else {
         					button = act3_button;
         				}
-        				button.setText(Utility.dbAdapter.toString(index));
+        				button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
         			}
         			else if (result.equals("rejected")) {
         				Log.d("friendHealthFHASA", "index is: " + index);
