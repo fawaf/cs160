@@ -68,6 +68,7 @@ public class FHActivity extends Activity {
 			score = extras.getInt("score");
 			index = extras.getInt("index");
 			id = extras.getInt("id");
+			Log.d("friendHealthA", "Act id is: " + id);
 			
 			editor.putString("act_name", act_name);
 			editor.putInt("act_score", score);
@@ -132,8 +133,7 @@ public class FHActivity extends Activity {
                      /* Apply the Bitmap to the ImageView that will be returned. */
                      imageView.setImageBitmap(bm);
              } catch (IOException e) {
-                   
-                     Log.d("DEBUGTAG", "Remtoe Image Exception", e);
+            	 Log.d("friendHealthFHA", "Remote Image Exception", e);
              }
 			}
 		});
@@ -354,8 +354,22 @@ public class FHActivity extends Activity {
 					bundle.putString("start_time", String.valueOf(unixTime));
 					bundle.putString("end_time", String.valueOf(oneWeekUnixTime));
 					bundle.putString("privacy_type", "OPEN");
-					String response = Utility.facebook.request("me/events", bundle, "POST");
+					response = Utility.facebook.request("me/events", bundle, "POST");
 					Log.d("friendHealthFHA", "Response: " + response);
+					
+					if(response.indexOf("OAuthException") > -1) {
+						response = "Invitation Failed";
+						Toast.makeText(getBaseContext(),
+								"Invitation Failed",
+								Toast.LENGTH_LONG).show();
+						btn_invite.setBackgroundColor(0xFF008800);
+					} else {
+						response = "Invitation Successful";
+						Toast.makeText(getBaseContext(),
+								"Invitation Successful",
+								Toast.LENGTH_LONG).show();
+						btn_invite.setBackgroundColor(0xFF00DD00);
+					}
 				} catch (Exception e) {
 					Log.e("friendHealthFHA", e.getMessage());
 				}
@@ -379,6 +393,7 @@ public class FHActivity extends Activity {
 				extras.putInt("score", score);
 				Log.d("friendHealthFHA", "img_filename: " + img_filename);
 				extras.putString("filename", img_filename);
+				extras.putInt("id", id);
 				extras.putString("result", "completed");
 				intent.putExtras(extras);
 				

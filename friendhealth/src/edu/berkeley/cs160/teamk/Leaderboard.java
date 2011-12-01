@@ -8,8 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Leaderboard extends Activity {
 	@Override
@@ -34,7 +32,7 @@ public class Leaderboard extends Activity {
 		HashMap<String, String> temp1 = new HashMap<String, String>();
 		temp1.put("Standing", "1");
 		temp1.put("Score", "100");
-		temp1.put("Player", "Gong Chen");
+		temp1.put("Player", "Gong Cheng");
 		scores.add(temp1);
 		
 		HashMap<String, String> temp2 = new HashMap<String, String>();
