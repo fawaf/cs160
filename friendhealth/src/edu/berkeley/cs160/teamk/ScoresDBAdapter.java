@@ -21,8 +21,8 @@ public class ScoresDBAdapter extends BaseDBAdapter {
 	
 	
 	public ArrayList< HashMap<String, String> > scores;
-	int points;
-	int rank;
+	public int points;
+	public int rank;
 	
 	
 	public ScoresDBAdapter() {
@@ -37,16 +37,18 @@ public class ScoresDBAdapter extends BaseDBAdapter {
 	}
 	
 	
-	public void checkUserScore(int fb_user_id, String name) {
+	public void checkUserScore(String fb_user_id, String name) {
+		Log.d("DBA", "checkUserScore(" + fb_user_id + ", " + name + ")");
 		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		pairs.add(new BasicNameValuePair(
-				"fb_id", String.valueOf(fb_user_id)));
+				"fb_id", fb_user_id));
 		pairs.add(new BasicNameValuePair(
 				"name", name));
 		
 		String result = getDatabaseOutput(
 				URL_BASE + URL_SCORES_USERCHECK, pairs);
 		parseUserScoreJSONData(result);
+		Log.d("DBA", "Points: " + points + " Rank: " + rank);
 	}
 	
 	

@@ -18,7 +18,7 @@ public class DBAdapter extends BaseDBAdapter {
 	public static final String URL_ACTIVITY_ADD = "addActivity.php";
 	public static final String URL_ACTIVITY_GET_ID = "getActivityByID.php";
 	public static final String URL_PHOTO_GET = "getPhotoByID.php";
-	public static final String URL_PHOTO_ADD = "addPhoto.php";
+	public static final String URL_INFO_ADD = "addUserInfo.php";
 	public static final String URL_SCORE_GET = "getScoreByID.php";
 	public static final String URL_SCORE_ADD = "addScore.php";
 	public static final String URL_ACTIVITY_ACCEPT = "acceptActivity.php";
@@ -52,7 +52,7 @@ public class DBAdapter extends BaseDBAdapter {
 		pairs.add(new BasicNameValuePair("id", String.valueOf(id)));
 		return pairs;
 	}	
-	
+ 
 	public Task declineActivity(int index) {
 		return setNewRandomActivity(index);
 	}
@@ -77,7 +77,7 @@ public class DBAdapter extends BaseDBAdapter {
 	
 	public String[] getPhotoByID(int id) {
 		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
-		pairs.add(new BasicNameValuePair("actid", String.valueOf(id)));
+		pairs.add(new BasicNameValuePair("act_id", String.valueOf(id)));
 		
 		String result = getDatabaseOutput(URL_BASE + URL_PHOTO_GET, pairs);
 		String[] photoids = {""};
@@ -125,13 +125,17 @@ public class DBAdapter extends BaseDBAdapter {
 		}
 	}
 	
-	public void addPhoto(String activityid, String photoid){
+	public void addUserInfo(String activityid, String photoid, int base_score, String user_id){
 		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		pairs.add(new BasicNameValuePair(
-				"actid", activityid));
+				"act_id", activityid));
 		pairs.add(new BasicNameValuePair(
-				"photoid", photoid));
-		String result = getDatabaseOutput(URL_BASE + URL_PHOTO_ADD, pairs);
+				"photo_id", photoid));
+		pairs.add(new BasicNameValuePair(
+				"base_score", base_score+""));
+		pairs.add(new BasicNameValuePair(
+				"fb_user_id", user_id));
+		String result = getDatabaseOutput(URL_BASE + URL_INFO_ADD, pairs);
 		if(!result.equals("SUCCESS")) {
 			Log.d("log_tag", "Error Adding: " + result);
 		}
