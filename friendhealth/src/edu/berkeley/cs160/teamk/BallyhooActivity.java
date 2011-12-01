@@ -74,12 +74,11 @@ public class BallyhooActivity extends Activity {
         			bundle.putString(Facebook.TOKEN, Utility.mPrefs.getString("access_token", null));
         			Log.d("friendHealthBA", "Access_token: " + Utility.mPrefs.getString("access_token", null));
         			String response = Utility.facebook.request("me/scores", bundle, "POST");
+        			Log.d("friendHealthBA", "Response: " + response);
         			
-        			if(response.indexOf("OAuthException") > -1){
-        				Log.d("friendHealthBA", "Response: " + response);
+        			if(response.indexOf("OAuthException") > -1) {	
         				response = "Invitation Failed";
         			} else {
-        				Log.d("friendHealthBA", "Response: " + response);
         				response = "Invitation Successful";
         			}
         			

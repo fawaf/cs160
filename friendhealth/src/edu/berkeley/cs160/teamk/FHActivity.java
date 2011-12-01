@@ -126,8 +126,7 @@ public class FHActivity extends Activity {
                      /* Apply the Bitmap to the ImageView that will be returned. */
                      imageView.setImageBitmap(bm);
              } catch (IOException e) {
-                   
-                     Log.d("DEBUGTAG", "Remtoe Image Exception", e);
+            	 Log.d("friendHealthFHA", "Remote Image Exception", e);
              }
 			}
 		});
@@ -190,8 +189,22 @@ public class FHActivity extends Activity {
 					bundle.putString("start_time", String.valueOf(unixTime));
 					bundle.putString("end_time", String.valueOf(oneWeekUnixTime));
 					bundle.putString("privacy_type", "OPEN");
-					String response = Utility.facebook.request("me/events", bundle, "POST");
+					response = Utility.facebook.request("me/events", bundle, "POST");
 					Log.d("friendHealthFHA", "Response: " + response);
+					
+					if(response.indexOf("OAuthException") > -1) {
+						response = "Invitation Failed";
+						Toast.makeText(getBaseContext(),
+								"Invitation Failed",
+								Toast.LENGTH_LONG).show();
+						btn_invite.setBackgroundColor(0xFF008800);
+					} else {
+						response = "Invitation Successful";
+						Toast.makeText(getBaseContext(),
+								"Invitation Successful",
+								Toast.LENGTH_LONG).show();
+						btn_invite.setBackgroundColor(0xFF00DD00);
+					}
 				} catch (Exception e) {
 					Log.e("friendHealthFHA", e.getMessage());
 				}

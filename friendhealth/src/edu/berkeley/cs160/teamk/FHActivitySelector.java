@@ -26,7 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View.OnClickListener;
 import android.text.Html;
 import android.util.Log;
 
@@ -65,35 +64,7 @@ public class FHActivitySelector extends Activity {
         Log.d("friendHealthFHASA", "Starting Activity Selector");
         
         FacebookLogin();
-		//-------Getting Facebook Name, then setting text view//
-        try {
-			String jsonUser = Utility.facebook.request("me");
-			JSONObject obj;
-			obj = Util.parseJson(jsonUser);
-			
-			TextView user_name = (TextView) findViewById(R.id.textView1);
-			String facebookName = obj.optString("name");
-			user_name.setText(facebookName);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			Log.d("friendHealthPA", "MalformedURLException");
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Log.d("friendHealthPA", "IOException");
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			Log.d("friendHealthPA", "JSONException");
-			e.printStackTrace();
-		} catch (FacebookError e) {
-			// TODO Auto-generated catch block
-			Log.d("friendHealthFHASA", "FacebookError: " + e.toString());
-			Log.d("friendHealthFHASA", "Access Token: " + Utility.facebook.getAccessToken());
-			e.printStackTrace();
-		}
-		//----End get facebook name//
-
+        
         Log.d("friendHealthFHASA", "After Facebook Login: " + Utility.mPrefs.getString("access_token", "NO TOKEN"));
         
         //---Find Activity Buttons---
@@ -457,11 +428,11 @@ public class FHActivitySelector extends Activity {
         }
     }
     
-    @Override
+    /*@Override
     public void onResume() {
     	super.onResume();
     	FacebookLogin();
-    }
+    }*/
     
     private void FacebookLogin() {
     	Utility.facebook = new Facebook(Utility.APP_ID);
@@ -493,6 +464,35 @@ public class FHActivitySelector extends Activity {
                     editor.putString("access_token", Utility.facebook.getAccessToken());
                     editor.putLong("access_expires", Utility.facebook.getAccessExpires());
                     editor.commit();
+                    //-------Getting Facebook Name, then setting text view//
+                    try {
+            			String jsonUser = Utility.facebook.request("me");
+            			JSONObject obj;
+            			obj = Util.parseJson(jsonUser);
+            			
+            			TextView user_name = (TextView) findViewById(R.id.textView1);
+            			String facebookName = obj.optString("name");
+            			user_name.setText(facebookName);
+            		} catch (MalformedURLException e) {
+            			// TODO Auto-generated catch block
+            			Log.d("friendHealthPA", "MalformedURLException");
+            			e.printStackTrace();
+            		} catch (IOException e) {
+            			// TODO Auto-generated catch block
+            			Log.d("friendHealthPA", "IOException");
+            			e.printStackTrace();
+            		} catch (JSONException e) {
+            			// TODO Auto-generated catch block
+            			Log.d("friendHealthPA", "JSONException");
+            			e.printStackTrace();
+            		} catch (FacebookError e) {
+            			// TODO Auto-generated catch block
+            			Log.d("friendHealthFHASA", "FacebookError: " + e.toString());
+            			Log.d("friendHealthFHASA", "Access Token: " + Utility.facebook.getAccessToken());
+            			e.printStackTrace();
+            		}
+            		//----End get facebook name//
+
                 }
     
                 public void onFacebookError(FacebookError error) {

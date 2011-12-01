@@ -251,7 +251,7 @@ public class DBAdapter extends BaseDBAdapter {
 		return new_tasks;
 	}
 	
-	private void updateActivity(int index) {
+	/*private void updateActivity(int index) {
 		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		
 		pairs.add(new BasicNameValuePair(
@@ -272,7 +272,7 @@ public class DBAdapter extends BaseDBAdapter {
 		if (!result.equals("SUCCESS")) {
 			Log.e("DBA", "Error Updating: " + result);
 		}	
-	}
+	}*/
 	
 	private void initEmptyTasks(int size) {
 		tasks = new Task[size];
