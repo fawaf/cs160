@@ -24,7 +24,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.view.View;
-import android.view.Gravity;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -32,7 +31,6 @@ import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.text.Html;
-import android.text.format.Time;
 import android.util.Log;
 
 
