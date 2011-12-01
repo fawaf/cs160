@@ -536,6 +536,7 @@ public class FHActivitySelector extends Activity {
 				Utility.dbAdapter.declineActivity(0);
 				SharedPreferences.Editor editor = Utility.mPrefs.edit();
 				editor.putInt("event_created0", 0);
+				editor.putInt("taskID_1", Utility.dbAdapter.getID(0));
 				editor.commit();
 				//act1_button.setText(Utility.dbAdapter.toString(0));
 				act1_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
@@ -551,6 +552,7 @@ public class FHActivitySelector extends Activity {
 				Utility.dbAdapter.declineActivity(1);
 				SharedPreferences.Editor editor = Utility.mPrefs.edit();
 				editor.putInt("event_created1", 0);
+				editor.putInt("taskID_2", Utility.dbAdapter.getID(1));
 				editor.commit();
 				//act2_button.setText(Utility.dbAdapter.toString(1));
 				act2_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(1) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(1) + " Points" + "</font>"));
@@ -565,6 +567,7 @@ public class FHActivitySelector extends Activity {
 				Utility.dbAdapter.declineActivity(2);
 				SharedPreferences.Editor editor = Utility.mPrefs.edit();
 				editor.putInt("event_created2", 0);
+				editor.putInt("taskID_3", Utility.dbAdapter.getID(2));
 				editor.commit();
 				//act3_button.setText(Utility.dbAdapter.toString(2));
 				act3_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(2) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(2) + " Points" + "</font>"));
@@ -702,6 +705,9 @@ public class FHActivitySelector extends Activity {
         				} else {
         					button = act3_button;
         				}
+        				SharedPreferences.Editor editor = Utility.mPrefs.edit();
+        				editor.putInt("taskID_"+(index+1), Utility.dbAdapter.getID(index));
+        				editor.commit();
         				button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
         			}
         			else if (result.equals("rejected")) {
@@ -815,6 +821,8 @@ public class FHActivitySelector extends Activity {
             			
                     	String facebookId = obj.optString("id");
                     	Log.d("friendHealthFHASA", "Facebook UID is: " + facebookId);
+                    	editor.putString("facebookUID", facebookId);
+                    	editor.commit();
                     	
                     	Utility.scoresDBAdapter.checkUserScore(facebookId, facebookName);
                     	TextView score_txt = (TextView) findViewById(R.id.scoreView1);
@@ -868,6 +876,10 @@ public class FHActivitySelector extends Activity {
             	JSONObject obj = Util.parseJson(jsonUser);
             	
             	String facebookId = obj.optString("id");
+            	SharedPreferences.Editor editor = Utility.mPrefs.edit();
+            	editor.putString("facebookUID", facebookId);
+            	editor.commit();
+            	
             	Log.d("friendHealthFHASA", "Facebook UID is: " + facebookId);
             	
             	TextView user_name = (TextView) findViewById(R.id.textView1);

@@ -10,6 +10,7 @@ import com.facebook.android.Facebook;
 import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.Bitmap.CompressFormat;
@@ -35,6 +36,8 @@ public class ActivitySubmission extends Activity {
 	String origVal = "";
 	EditText edt_Caption;
 	int act_id = 0;
+	int index=-1;
+	String facebookId = "";
 	Bundle bundle = new Bundle();
 	
 	@Override
@@ -53,6 +56,9 @@ public class ActivitySubmission extends Activity {
 			img_filename = extras.getString("filename");
 			score = extras.getInt("score");
 			act_id = extras.getInt("id");
+			index = extras.getInt("index");
+			
+			facebookId = Utility.mPrefs.getString("facebookUID", "");
 			
 			Log.d("friendHealthAS", "Act id is: " + act_id);
 			
@@ -151,17 +157,21 @@ public class ActivitySubmission extends Activity {
 	        				bundle.putString("message", caption);
 	        			}
 	        			String response = Utility.facebook.request("me/photos", bundle, "POST");
+	      
 	        			
 	        			if (response.indexOf("OAuthException") > -1) {
 	        				Log.d("friendHealthAS", "Response: " + response);
 	        				response = "Submission Failed";
 	        			} else {
+	        				SharedPreferences.Editor editor = Utility.mPrefs.edit();
+	        				editor.putInt("event_created"+index, 0);
+	        				editor.commit();
 	        				Log.d("friendHealthAS", "Response: " + response);
 	        				String photoid = response;
 	        				try {
 								JSONObject obj = Util.parseJson(photoid);
 								String photoId = obj.optString("id");
-								Utility.dbAdapter.addPhoto(String.valueOf(act_id), photoId);
+								Utility.dbAdapter.addUserInfo(String.valueOf(act_id), photoId, score, facebookId);
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
