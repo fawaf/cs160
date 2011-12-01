@@ -70,6 +70,7 @@ public class FHActivitySelector extends Activity {
         
         Log.d("friendHealthFHASA", "Starting Activity Selector");
         
+        Utility.scoresDBAdapter = new ScoresDBAdapter();
         FacebookLogin();
         
         Log.d("friendHealthFHASA", "After Facebook Login: " + Utility.mPrefs.getString("access_token", "NO TOKEN"));
@@ -125,7 +126,6 @@ public class FHActivitySelector extends Activity {
         else {
         	Utility.dbAdapter = new DBAdapter(id1, id2, id3);
         }
-        Utility.scoresDBAdapter = new ScoresDBAdapter();
         
         act1_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
         act2_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(1) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(1) + " Points" + "</font>"));
@@ -800,6 +800,19 @@ public class FHActivitySelector extends Activity {
             			TextView user_name = (TextView) findViewById(R.id.textView1);
             			String facebookName = obj.optString("name");
             			user_name.setText(facebookName);
+            			
+                    	String facebookId = obj.optString("id");
+                    	Log.d("friendHealthFHASA", "Facebook UID is: " + facebookId);
+                    	
+                    	Utility.scoresDBAdapter.checkUserScore(facebookId, facebookName);
+                    	TextView score_txt = (TextView) findViewById(R.id.scoreView1);
+                    	String score_str = "Score: "
+                    			+ Utility.scoresDBAdapter.points
+                    			+ " ("
+                    			+ Utility.scoresDBAdapter.rank
+                    			+ ")";
+                    	score_txt.setText(score_str);
+                    	Log.d("friendHealthFHASA", "Score: " + score_str);
             		} catch (MalformedURLException e) {
             			// TODO Auto-generated catch block
             			Log.d("friendHealthPA", "MalformedURLException");
@@ -838,6 +851,35 @@ public class FHActivitySelector extends Activity {
         }
         else {
         	Log.d("friendHealthFHASA", "Logged in");
+            try {
+            	String jsonUser = Utility.facebook.request("me");
+            	JSONObject obj = Util.parseJson(jsonUser);
+            	
+            	String facebookId = obj.optString("id");
+            	Log.d("friendHealthFHASA", "Facebook UID is: " + facebookId);
+            	
+            	TextView user_name = (TextView) findViewById(R.id.textView1);
+    			String facebookName = obj.optString("name");
+    			user_name.setText(facebookName);
+            	
+            	Utility.scoresDBAdapter.checkUserScore(facebookId, facebookName);
+            	TextView score_txt = (TextView) findViewById(R.id.scoreView1);
+            	String score_str = "Score: "
+            			+ Utility.scoresDBAdapter.points
+            			+ " ("
+            			+ Utility.scoresDBAdapter.rank
+            			+ ")";
+            	score_txt.setText(score_str);
+            	Log.d("friendHealthFHASA", "Score: " + score_str);
+            }
+            catch (FacebookError e) {
+            	Log.e("friendHealthFHASA", "FacebookError (sDBA): " + e.toString());
+            	e.printStackTrace();
+            }
+            catch (Exception e) {
+            	Log.e("friendHealthFHASA", "Exception (sDBA): " + e.toString());
+            	e.printStackTrace();
+            }
         }
     }
     
