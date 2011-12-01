@@ -83,7 +83,7 @@ public class ActivitySubmission extends Activity {
 			imageView.setImageBitmap(myBitmap);
 			Log.d("friendHealthAS", "Image displayed");
 			int orientation = getResources().getConfiguration().orientation;
-			Log.d("Orientation: ", "" + orientation);
+			Log.d("Orientation: ", String.valueOf(orientation));
 			if (orientation == 1)
 			{
 		        //super.onCreate(savedInstanceState);
