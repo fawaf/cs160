@@ -796,24 +796,39 @@ public class FHActivitySelector extends Activity {
         				button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
         			}
         			else if (result.equals("rejected")) {
-        				Log.d("friendHealthFHASA", "index is: " + index);
-        				Toast.makeText(this, 
-        						"Activity rejected",
-        						Toast.LENGTH_LONG).show();
-        				Utility.dbAdapter.declineActivity(index);
-        				SharedPreferences.Editor editor = Utility.mPrefs.edit();
-        				editor.putInt("taskID_"+(index+1), Utility.dbAdapter.getID(index));
-        				editor.commit();
-        				Button button;
-        				if (index == 0) {
-        					button = act1_button;
-        				} else if (index == 1) {
-        					button = act2_button;
-        				} else {
-        					button = act3_button;
-        				}
-        				//button.setText(Utility.dbAdapter.toString(index));
-        				button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
+        				final CharSequence[] items = {"Too Hard", "Inappropriate", "Don't want to do it"};
+        				final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        				
+        				builder.setTitle("What is the reason you reject the task: " + Utility.dbAdapter.getName(index) + " ?");
+        				builder.setItems(items, new DialogInterface.OnClickListener() 
+        				{
+        				    public void onClick(DialogInterface dialog, int item) 
+        				    {
+        				    	if (item == 0)
+        				    		Utility.dbAdapter.rejectDifficultActivity(index);
+        				    	else if (item == 1)
+        				    		Utility.dbAdapter.flagActivity(index);
+        				    	else
+        				    		Utility.dbAdapter.declineActivity(index);
+        				    	
+        				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_SHORT);
+                				Button button;
+                				
+                				if (index == 0) {
+                					button = act1_button;
+                				} 
+                				else if (index == 1) {
+                					button = act2_button;
+                				} 
+                				else {
+                					button = act3_button;
+                				}
+        				    	button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
+        				    }
+        				    
+        				});
+        				final AlertDialog alert = builder.create();
+        				alert.show();
         			}
         			else if (result.equals("rejected_tooHard")) {
         				Toast.makeText(this,
