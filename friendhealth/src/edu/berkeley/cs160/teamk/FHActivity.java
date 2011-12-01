@@ -172,8 +172,8 @@ public class FHActivity extends Activity {
 		help6.setGravity(Gravity.BOTTOM, 0, 200);
 		
 		
-		final Toast help7 = Toast.makeText(this, Html.fromHtml("<big><font color='white'>And most importantly, Take a Picture will launch the camera." +
-		"And begin submission process after the picture is taken</font></big>"), Toast.LENGTH_LONG);
+		final Toast help7 = Toast.makeText(this, Html.fromHtml("<big><font color='white'>And most importantly, when you are ready to take a picture, launch the " +
+				"camera by tapping</font><font color = 'blue'> TAKE PICTURE</font></big>"), Toast.LENGTH_LONG);
 		help7.setGravity(Gravity.BOTTOM, 0, 200);
 		
 		final Toast help8 = Toast.makeText(this, Html.fromHtml("<big><font color='white'>Finally, Help will launch this demo again if you are still not sure" +
