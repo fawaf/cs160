@@ -16,13 +16,17 @@ public class ScoresDBAdapter extends BaseDBAdapter {
 			"https://secure.ocf.berkeley.edu/~goodfrie/";
 	private static final String URL_SCORES_LEADERBOARD = 
 			"getLeaderboard.php";
+	private static final String URL_SCORES_SORTEDLEADERBOARD =
+			"getSortedLeaderboard.php";
 	private static final String URL_SCORES_USERCHECK =
 			"checkUserScore.php";
+	private static final String URL_SCORES_USERCALCULATE =
+			"calculateUserScore.php";
 	
 	
 	public ArrayList< HashMap<String, String> > scores;
-	int points;
-	int rank;
+	public int points;
+	public int rank;
 	
 	
 	public ScoresDBAdapter() {
@@ -32,21 +36,36 @@ public class ScoresDBAdapter extends BaseDBAdapter {
 	
 	public void getLeaderboard() {
 		String result = getDatabaseOutput(
-				URL_BASE + URL_SCORES_LEADERBOARD, emptyPair());
+				URL_BASE + URL_SCORES_SORTEDLEADERBOARD, emptyPair());
 		scores = parseScoresJSONData(result);
 	}
 	
 	
-	public void checkUserScore(int fb_user_id, String name) {
+	public void checkUserScore(String fb_user_id, String name) {
+		Log.d("DBA", "checkUserScore(" + fb_user_id + ", " + name + ")");
 		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		pairs.add(new BasicNameValuePair(
-				"fb_id", String.valueOf(fb_user_id)));
+				"fb_id", fb_user_id));
 		pairs.add(new BasicNameValuePair(
 				"name", name));
 		
 		String result = getDatabaseOutput(
 				URL_BASE + URL_SCORES_USERCHECK, pairs);
 		parseUserScoreJSONData(result);
+		Log.d("DBA", "Points: " + points + " Rank: " + rank);
+	}
+	
+	
+	public void calculateUserScore(String fb_user_id) {
+		Log.d("DBA", "calculateTotalScore(" + fb_user_id + ")");
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		pairs.add(new BasicNameValuePair(
+				"fb_id", fb_user_id));
+		
+		String result = getDatabaseOutput(
+				URL_BASE + URL_SCORES_USERCALCULATE, pairs);
+		parseUserScoreJSONData(result);
+		Log.d("DBA", "Points: " + points + " Rank: " + rank);
 	}
 	
 	

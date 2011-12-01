@@ -38,6 +38,8 @@ import android.widget.Toast;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.provider.MediaStore;
 import android.net.Uri;
 
@@ -50,6 +52,7 @@ public class FHActivity extends Activity {
 	int score = 0;
 	int index = 0;
 	int id = 0;
+	int event_created = -1;
 	SharedPreferences.Editor editor = Utility.mPrefs.edit();
 	
 	//---the images to display---
@@ -62,6 +65,7 @@ public class FHActivity extends Activity {
 		setContentView(R.layout.fhactivity);
 		Bundle extras = getIntent().getExtras();
 		img_filename = Utility.mPrefs.getString("act_img_filename", "");
+		
 
 		if (extras != null) {
 			act_name = extras.getString("name");
@@ -69,7 +73,8 @@ public class FHActivity extends Activity {
 			index = extras.getInt("index");
 			id = extras.getInt("id");
 			Log.d("friendHealthA", "Act id is: " + id);
-			
+			event_created = Utility.mPrefs.getInt("event_created"+index, -1);
+			Log.d("friendHealthFHA", "Event_created is: "+event_created);
 			editor.putString("act_name", act_name);
 			editor.putInt("act_score", score);
 			editor.putInt("act_index", index);
@@ -197,6 +202,9 @@ public class FHActivity extends Activity {
 		btn_reject.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				Log.d("friendHealthFHA", "Rejecting Activity");
+				SharedPreferences.Editor editor = Utility.mPrefs.edit();
+				editor.putInt("event_created"+index, 0);
+				editor.commit();
 				
 				Intent data = new Intent();
 				Bundle extras = new Bundle();
@@ -340,6 +348,10 @@ public class FHActivity extends Activity {
 		//---btn_invite---
 		btn_invite = (Button) findViewById(R.id.btn_ActInvite);
 		// Handle click of button.
+		if(event_created == 1){
+			btn_invite.getBackground().setColorFilter(Color.rgb(198, 235, 152), PorterDuff.Mode.MULTIPLY);
+			btn_invite.setEnabled(false);
+		}
 		btn_invite.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				/*Intent intent = new Intent(
@@ -347,6 +359,8 @@ public class FHActivity extends Activity {
 				intent.putExtras(getIntent().getExtras());
 				startActivityForResult(intent, Utility.RC_INVITE);*/
 				Bundle bundle = new Bundle();
+				Log.d("friendHealthFHA", "event_created in button: "+event_created);
+				if(event_created <=0){
 				try {
 					long unixTime = System.currentTimeMillis() / 1000L;
 					long oneWeekUnixTime = unixTime + 604800;
@@ -362,16 +376,26 @@ public class FHActivity extends Activity {
 						Toast.makeText(getBaseContext(),
 								"Invitation Failed",
 								Toast.LENGTH_LONG).show();
-						btn_invite.setBackgroundColor(0xFF008800);
 					} else {
 						response = "Invitation Successful";
+						SharedPreferences.Editor editor = Utility.mPrefs.edit();
+						editor.putInt("event_created"+index, 1);
+						editor.commit();
 						Toast.makeText(getBaseContext(),
 								"Invitation Successful",
 								Toast.LENGTH_LONG).show();
-						btn_invite.setBackgroundColor(0xFF00DD00);
+						btn_invite.getBackground().setColorFilter(Color.rgb(198, 235, 152), PorterDuff.Mode.MULTIPLY);
+						btn_invite.setEnabled(false);
 					}
 				} catch (Exception e) {
 					Log.e("friendHealthFHA", e.getMessage());
+				}
+				}else{
+					Log.d("friendHealthFHA", "Inside else of invite button");
+					btn_invite.getBackground().setColorFilter(Color.rgb(198, 235, 152), PorterDuff.Mode.MULTIPLY);
+					SharedPreferences.Editor editor = Utility.mPrefs.edit();
+					editor.putInt("event_created"+index, 1);
+					editor.commit();
 				}
 			}
 		});
@@ -394,8 +418,12 @@ public class FHActivity extends Activity {
 				Log.d("friendHealthFHA", "img_filename: " + img_filename);
 				extras.putString("filename", img_filename);
 				extras.putInt("id", id);
+				extras.putInt("index", index);
 				extras.putString("result", "completed");
 				intent.putExtras(extras);
+				
+				
+				
 				
 				Log.d("friendHealthFHA", "Starting submission activity");
 				startActivityForResult(intent, Utility.RC_ACTIVITYSUBMISSION);
@@ -418,8 +446,10 @@ public class FHActivity extends Activity {
 				Intent output = new Intent();
 				Bundle extras = new Bundle();
 				extras.putString("result", "completed");
+				extras.putInt("index", index);
 				output.putExtras(extras);
 				setResult(RESULT_OK, output);
+				Log.d("friendHealthFHA", "Completing picture");
 				finish();
 			}
 		}

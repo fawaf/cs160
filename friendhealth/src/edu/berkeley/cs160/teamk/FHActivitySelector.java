@@ -3,6 +3,8 @@ package edu.berkeley.cs160.teamk;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.facebook.android.DialogError;
@@ -70,6 +72,7 @@ public class FHActivitySelector extends Activity {
         
         Log.d("friendHealthFHASA", "Starting Activity Selector");
         
+        Utility.scoresDBAdapter = new ScoresDBAdapter();
         FacebookLogin();
         
         Log.d("friendHealthFHASA", "After Facebook Login: " + Utility.mPrefs.getString("access_token", "NO TOKEN"));
@@ -125,7 +128,6 @@ public class FHActivitySelector extends Activity {
         else {
         	Utility.dbAdapter = new DBAdapter(id1, id2, id3);
         }
-        Utility.scoresDBAdapter = new ScoresDBAdapter();
         
         act1_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
         act2_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(1) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(1) + " Points" + "</font>"));
@@ -185,6 +187,43 @@ public class FHActivitySelector extends Activity {
         		startActivityForResult(i, Utility.RC_ACTIVITY);
         		Log.d("friendHealthFHASA", "act3");
         	}	
+        });
+        calendar.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View view){
+        		String link = null;
+                try {
+        			String jsonAlbums = Utility.facebook.request("me/albums");
+        			JSONObject obj = Util.parseJson(jsonAlbums);
+        			JSONArray albums = obj.getJSONArray("data");
+        			Boolean found = false;
+        			int i = 0;
+        			while (!found){
+        				JSONObject album = albums.getJSONObject(i);
+        				String name = album.optString("name");
+        				if(name.equals("friendHealth Photos")){
+        					link = album.optString("link");
+        					found = true;
+        				}
+        				i++;	
+        			}
+        			
+        		} catch (MalformedURLException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		} catch (IOException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		} catch (JSONException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		} catch (FacebookError e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+        		Intent i = new Intent(android.content.Intent.ACTION_VIEW, 
+        				Uri.parse(link));
+        		startActivity(i);
+        	}
         });
         
         final Toast help1 = Toast.makeText(this, Html.fromHtml("<font color='white'><big>+++  </big></font><font color='red'><big>Welcome </big></font>" +
@@ -512,6 +551,14 @@ public class FHActivitySelector extends Activity {
 					mp.start();
 				}
 				Utility.dbAdapter.setAllRandomActivities();
+				SharedPreferences.Editor editor = Utility.mPrefs.edit();
+				editor.putInt("event_created0", 0);
+				editor.putInt("taskID_1", Utility.dbAdapter.getID(0));
+				editor.putInt("event_created1", 0);
+				editor.putInt("taskID_2", Utility.dbAdapter.getID(1));
+				editor.putInt("event_created2", 0);
+				editor.putInt("taskID_3", Utility.dbAdapter.getID(2));
+				editor.commit();
 				act1_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
 				act2_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(1) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(1) + " Points" + "</font>"));
 				act3_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(2) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(2) + " Points" + "</font>"));
@@ -743,6 +790,9 @@ public class FHActivitySelector extends Activity {
         				} else {
         					button = act3_button;
         				}
+        				SharedPreferences.Editor editor = Utility.mPrefs.edit();
+        				editor.putInt("taskID_"+(index+1), Utility.dbAdapter.getID(index));
+        				editor.commit();
         				button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
         			}
         			else if (result.equals("rejected")) {
@@ -751,6 +801,9 @@ public class FHActivitySelector extends Activity {
         						"Activity rejected",
         						Toast.LENGTH_LONG).show();
         				Utility.dbAdapter.declineActivity(index);
+        				SharedPreferences.Editor editor = Utility.mPrefs.edit();
+        				editor.putInt("taskID_"+(index+1), Utility.dbAdapter.getID(index));
+        				editor.commit();
         				Button button;
         				if (index == 0) {
         					button = act1_button;
@@ -853,6 +906,21 @@ public class FHActivitySelector extends Activity {
             			TextView user_name = (TextView) findViewById(R.id.textView1);
             			String facebookName = obj.optString("name");
             			user_name.setText(facebookName);
+            			
+                    	String facebookId = obj.optString("id");
+                    	Log.d("friendHealthFHASA", "Facebook UID is: " + facebookId);
+                    	editor.putString("facebookUID", facebookId);
+                    	editor.commit();
+                    	
+                    	Utility.scoresDBAdapter.checkUserScore(facebookId, facebookName);
+                    	TextView score_txt = (TextView) findViewById(R.id.scoreView1);
+                    	String score_str = "Score: "
+                    			+ Utility.scoresDBAdapter.points
+                    			+ " ("
+                    			+ Utility.scoresDBAdapter.rank
+                    			+ ")";
+                    	score_txt.setText(score_str);
+                    	Log.d("friendHealthFHASA", "Score: " + score_str);
             		} catch (MalformedURLException e) {
             			// TODO Auto-generated catch block
             			Log.d("friendHealthPA", "MalformedURLException");
@@ -891,6 +959,39 @@ public class FHActivitySelector extends Activity {
         }
         else {
         	Log.d("friendHealthFHASA", "Logged in");
+            try {
+            	String jsonUser = Utility.facebook.request("me");
+            	JSONObject obj = Util.parseJson(jsonUser);
+            	
+            	String facebookId = obj.optString("id");
+            	SharedPreferences.Editor editor = Utility.mPrefs.edit();
+            	editor.putString("facebookUID", facebookId);
+            	editor.commit();
+            	
+            	Log.d("friendHealthFHASA", "Facebook UID is: " + facebookId);
+            	
+            	TextView user_name = (TextView) findViewById(R.id.textView1);
+    			String facebookName = obj.optString("name");
+    			user_name.setText(facebookName);
+            	
+            	Utility.scoresDBAdapter.checkUserScore(facebookId, facebookName);
+            	TextView score_txt = (TextView) findViewById(R.id.scoreView1);
+            	String score_str = "Score: "
+            			+ Utility.scoresDBAdapter.points
+            			+ " ("
+            			+ Utility.scoresDBAdapter.rank
+            			+ ")";
+            	score_txt.setText(score_str);
+            	Log.d("friendHealthFHASA", "Score: " + score_str);
+            }
+            catch (FacebookError e) {
+            	Log.e("friendHealthFHASA", "FacebookError (sDBA): " + e.toString());
+            	e.printStackTrace();
+            }
+            catch (Exception e) {
+            	Log.e("friendHealthFHASA", "Exception (sDBA): " + e.toString());
+            	e.printStackTrace();
+            }
         }
     }
     
