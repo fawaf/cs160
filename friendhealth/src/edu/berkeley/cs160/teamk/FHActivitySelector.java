@@ -11,6 +11,9 @@ import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
 import com.facebook.android.Facebook.DialogListener;
 import android.app.Activity;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -211,19 +214,73 @@ public class FHActivitySelector extends Activity {
         	}	
         });
         
+        final Toast help1 = Toast.makeText(this, Html.fromHtml("<font color='white'><big>+++  </big></font><font color='red'><big>Welcome </big></font>" +
+        		"<big><font color = 'yellow'>to the </font><font color = 'green'>Help </font>" +
+        		"<font color = 'blue'>Panel! </font><font color = 'purple'> +++</big></font>"), Toast.LENGTH_LONG);
+        //help1.setGravity(Gravity.CENTER, 0, 0);
         
-		final Toast toast = Toast.makeText(this, Html.fromHtml("<font color='blue'><big><bold>TASK</bold></big></font><br/><font color='white'>" +
-				"Task-Button displays the activity information.</font>"), Toast.LENGTH_SHORT);
-				
-		/*
-				If you want to perform the activity," +
-				" simply tap it. Below the name of the activity is the amount of points you can gain for completing the activity." +
-				" In this case, you can get " + "</font><font color='green'>" + Utility.dbAdapter.getPoints(0) + " points</font><font color='white'> " + "for" +
-						"completing the activity: " + Utility.dbAdapter.getName(0) + "</font>"), Toast.LENGTH_SHORT);
-						*/
-	    toast.setGravity(Gravity.TOP|Gravity.RIGHT, 30, 250);
-	    toast.setMargin(50, 0);
-	    //toast.setMargin(20, 20);
+        final Toast help2 = Toast.makeText(this, Html.fromHtml("<font color='white'><big>This is friendHealth's main page: </big></font><font color='yellow'><big>Activity Selector</big></font></big>"), Toast.LENGTH_LONG);
+        //help2.setGravity(Gravity.CENTER, 0, 0);
+        
+        final Toast help3 = Toast.makeText(this, Html.fromHtml("<font color='white'><big>Now let's go through some basic functions in this page</big></font>"), Toast.LENGTH_LONG);
+        //help3.setGravity(Gravity.CENTER, 0, 0);
+		
+        final Toast toast = Toast.makeText(this, Html.fromHtml("<font color='blue'><big>TASK</big></font><br/><font color='white'>" +
+				"<big>These three </big></font><font color = 'yellow'><big>yellow buttons </big></font><font color = 'white'><big>display the tasks' names.</big></font>"), Toast.LENGTH_LONG);
+		//toast.setGravity(Gravity.CENTER, 0, 0);
+		
+		final Toast task2 = Toast.makeText(this, Html.fromHtml("<font color='blue'><big><bold>TASK</bold></big></font><br/><font color='white'>" +
+		"<big>Simply tap one of the buttons if you want to perform a task.</big></font>"), Toast.LENGTH_LONG);
+		//task2.setGravity(Gravity.CENTER, 0, 0);
+		
+		final Toast task3 = Toast.makeText(this, Html.fromHtml("<font color='green'><big><bold>POINTS</bold></big></font><br/><font color='white'>" +
+		"<big>Each task has a point under it indicating how many points you can gain for completing it.</big></font>"), Toast.LENGTH_LONG);
+		//task3.setGravity(Gravity.CENTER, 0, 0);
+		
+		final Toast task4 = Toast.makeText(this, Html.fromHtml("<font color='green'><big>POINTS</big></font><br/><font color='white'>" +
+		"<big>For exmaple, You can gain </big></font><big><font color = 'green'>" + Utility.dbAdapter.getPoints(0) + " points </font>" + "<font color = 'white'>by completing </font>" + 
+		"</font><font color= 'red'>" + Utility.dbAdapter.getName(0) + "</font></big>"), Toast.LENGTH_LONG);
+		//task4.setGravity(Gravity.CENTER, 0, 0);
+		
+		final Toast reject = Toast.makeText(this, Html.fromHtml("<font color='red'><big>REJECT</big></font><br/><font color='white'>" +
+		"<big>Reject buttons allow you to decline a task.</big></font>"), Toast.LENGTH_LONG);
+		//reject.setGravity(Gravity.CENTER, 0, 0);
+		
+		final Toast reject2 = Toast.makeText(this, Html.fromHtml("<font color='red'><big>REJECT</big></font></br><font color='white'>" +
+		"<big>A new task will be generated to replace the rejected task</big></font>"), Toast.LENGTH_LONG);
+		//reject2.setGravity(Gravity.CENTER, 0, 0);
+	    
+		final Toast cameraT1 = Toast.makeText(this, Html.fromHtml("<big><font color='green'>CAMERA</font></br>" +
+				"<font color='white'>Take a Photo will launch the camera directly</font></big>"), Toast.LENGTH_LONG);
+		
+		final Toast cameraT2 = Toast.makeText(this, Html.fromHtml("<big><font color='green'>CAMERA</font></br><font color = 'white'>" +
+				"This is a shortcut for completing the task. However we do not encourage new users to use it</font><big>"), Toast.LENGTH_LONG);
+		
+		final Toast newTasksT = Toast.makeText(this, Html.fromHtml("<big><font color='#ffa500'>NEW TASKS </font>will clear " +
+				"<font color = 'white'>all current tasks and generate 3 new tasks</font></big>"), Toast.LENGTH_LONG);
+		
+		final Toast calendarT = Toast.makeText(this, Html.fromHtml("<big><font color='blue'>CALENDAR </font><font color = 'white'>keeps track of " +
+		"all the tasks you have completed</font></big>"), Toast.LENGTH_LONG);
+		
+		final Toast scoresT = Toast.makeText(this, Html.fromHtml("<big><font color='green'>SCORES </font><font color = 'white'>help you track " +
+		"your progress as well as your friends and other users all over the world</font></big>"), Toast.LENGTH_LONG);
+		
+		final Toast helpT = Toast.makeText(this, Html.fromHtml("<big><font color='#ffc0cb'>HELP </font><font color = 'white'>will show " +
+		"this demo again. You are welcome to watch it again if you still don't understand.</font></big>"), Toast.LENGTH_LONG);
+		
+		final Toast finishT = Toast.makeText(this, Html.fromHtml("<big><font color='white'>Otherwise " +
+		"please enjoy this innovative health app right on your hand!</font></big>"), Toast.LENGTH_LONG);
+		
+	    final Animation animation = new AlphaAnimation(1, 0);
+	    final Animation animation2 = new AlphaAnimation(1, 0);
+	    animation.setDuration(500);
+	    animation2.setDuration(200);
+	    animation.setInterpolator(new LinearInterpolator());
+	    animation2.setInterpolator(new LinearInterpolator());
+	    animation.setRepeatCount(6);
+	    animation2.setRepeatCount(6);
+	    animation.setRepeatMode(Animation.REVERSE);
+	    animation2.setRepeatMode(Animation.REVERSE);
 	    
 	    
 	    
@@ -236,31 +293,241 @@ public class FHActivitySelector extends Activity {
 			if (Utility.mPrefs.getBoolean("toggle_sound", true)) {
 				hp.start();
 			}
-
-		    toast.show();
-
-
-		    
-		    act1_button.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
-	        
-	        act2_button.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
-	        
-	        act3_button.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
-		    
-		    new CountDownTimer(15000, 1000)
+			
+			help1.show();
+			
+			new CountDownTimer(6000, 1000)
 		    {
 
-		        public void onTick(long millisUntilFinished) {toast.show();}
-		        public void onFinish() {toast.show();}
-
+		        public void onTick(long millisUntilFinished) 
+		        {
+		        	help2.show();
+		        }
+		        public void onFinish() 
+		        {
+		        	help2.show();
+		        }
 		    }.start();
-	        
-	        act1_button.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
-	        
-	        act2_button.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
-	        
-	        act3_button.getBackground().setColorFilter(Color.rgb(248, 235, 152), PorterDuff.Mode.MULTIPLY);
 			
+			new CountDownTimer(11500, 1000)
+		    {
+
+		        public void onTick(long millisUntilFinished) 
+		        {
+		        	help3.show();
+		        }
+		        public void onFinish() 
+		        {
+		        	help3.show();
+		        }
+		    }.start();
+			
+		    
+		    new CountDownTimer(18000, 1000)
+		    {
+
+		        public void onTick(long millisUntilFinished) 
+		        {
+		        	toast.show();
+		        }
+		        public void onFinish() 
+		        {
+		        	toast.show();
+		        	act1_button.startAnimation(animation);
+		        	act2_button.startAnimation(animation);
+		        	act3_button.startAnimation(animation);
+		        }
+		    }.start();
+		    
+		    
+		    new CountDownTimer(24000, 1000)
+		    {
+
+		        public void onTick(long millisUntilFinished) 
+		        {
+		        	task2.show();
+		        }
+		        public void onFinish() 
+		        {
+		        	task2.show();
+		        	act1_button.startAnimation(animation);
+		        }
+		    }.start();
+		    
+		    
+		    new CountDownTimer(30000, 1000)
+		    {
+
+		        public void onTick(long millisUntilFinished) 
+		        {
+		        	task3.show();
+		        }
+		        public void onFinish() 
+		        {
+		        	task3.show();
+		        	act1_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='red'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
+		        	act2_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(1) +"</big></font><br/><font color='red'>" + "+" + Utility.dbAdapter.getPoints(1) + " Points" + "</font>"));
+		        	act3_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(2) +"</big></font><br/><font color='red'>" + "+" + Utility.dbAdapter.getPoints(2) + " Points" + "</font>"));
+		        }
+		    }.start();
+		    
+		    
+		    new CountDownTimer(36000, 1000)
+		    {
+
+		        public void onTick(long millisUntilFinished) 
+		        {
+		        	task4.show();
+		        }
+		        public void onFinish() 
+		        {
+		        	task4.show();
+		        	act1_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
+		        	act2_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(1) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(1) + " Points" + "</font>"));
+		        	act3_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(2) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(2) + " Points" + "</font>"));
+		        	act1_button.startAnimation(animation);
+		        }
+		    }.start();
+		    
+		    new CountDownTimer(42000, 1000)
+		    {
+
+		        public void onTick(long millisUntilFinished) 
+		        {
+		        	reject.show();
+		        }
+		        public void onFinish() 
+		        {
+		        	reject.show();
+		        	rejectT1.startAnimation(animation);
+		        	rejectT2.startAnimation(animation);
+		        	rejectT3.startAnimation(animation);
+		        }
+		    }.start();
+		    
+		    new CountDownTimer(48000, 1000)
+		    {
+
+		        public void onTick(long millisUntilFinished) 
+		        {
+		        	reject2.show();
+		        }
+		        public void onFinish() 
+		        {
+		        	reject2.show();
+		        	rejectT1.startAnimation(animation2);
+		        	act1_button.startAnimation(animation);
+		        	if (Utility.mPrefs.getBoolean("toggle_sound", true)) 
+		        	{
+						rj.start();
+					}
+					Utility.dbAdapter.declineActivity(0);
+					act1_button.setText(Html.fromHtml("<font color='red'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
+
+		        }
+		    }.start();
+		    
+		    new CountDownTimer(54000, 1000)
+		    {
+
+		        public void onTick(long millisUntilFinished) 
+		        {
+		        	cameraT1.show();
+		        }
+		        public void onFinish() 
+		        {
+		        	cameraT1.show();
+		        	camera1.startAnimation(animation);
+		        	camera2.startAnimation(animation);
+		        	camera3.startAnimation(animation);
+		        }
+		    }.start();
+		    
+		    new CountDownTimer(60000, 1000)
+		    {
+
+		        public void onTick(long millisUntilFinished) 
+		        {
+		        	cameraT2.show();
+		        }
+		        public void onFinish() 
+		        {
+		        	cameraT2.show();
+		        }
+		    }.start();
+		    
+		    new CountDownTimer(66000, 1000)
+		    {
+
+		        public void onTick(long millisUntilFinished) 
+		        {
+		        	newTasksT.show();
+		        }
+		        public void onFinish() 
+		        {
+		        	newTasksT.show();
+		        	newTask.startAnimation(animation);
+		        }
+		    }.start();
+		    
+		    new CountDownTimer(72000, 1000)
+		    {
+
+		        public void onTick(long millisUntilFinished) 
+		        {
+		        	calendarT.show();
+		        }
+		        public void onFinish() 
+		        {
+		        	calendarT.show();
+		        	calendar.startAnimation(animation);
+		        }
+		    }.start();
+		    
+		    new CountDownTimer(78000, 1000)
+		    {
+
+		        public void onTick(long millisUntilFinished) 
+		        {
+		        	scoresT.show();
+		        }
+		        public void onFinish() 
+		        {
+		        	scoresT.show();
+		        	scores.startAnimation(animation);
+		        }
+		    }.start();
+		    
+		    new CountDownTimer(84000, 1000)
+		    {
+
+		        public void onTick(long millisUntilFinished) 
+		        {
+		        	helpT.show();
+		        }
+		        public void onFinish() 
+		        {
+		        	helpT.show();
+		        	help.startAnimation(animation);
+		        }
+		    }.start();
+		    
+		    new CountDownTimer(90000, 1000)
+		    {
+
+		        public void onTick(long millisUntilFinished) 
+		        {
+		        	finishT.show();
+		        }
+		        public void onFinish() 
+		        {
+		        	finishT.show();
+		        }
+		    }.start();
+		    
+		    
+		    
+		    
         }
         });
         
