@@ -21,7 +21,6 @@ public class DBAdapter extends BaseDBAdapter {
 	public static final String URL_PHOTO_ADD = "addPhoto.php";
 	public static final String URL_SCORE_GET = "getScoreByID.php";
 	public static final String URL_SCORE_ADD = "addScore.php";
-	
 	public static final String URL_ACTIVITY_ACCEPT = "acceptActivity.php";
 	public static final String URL_ACTIVITY_REJECT = "rejectActivity.php";
 	public static final String URL_ACTIVITY_FLAG = "flagActivity.php";
@@ -170,64 +169,6 @@ public class DBAdapter extends BaseDBAdapter {
 		return pairs;
 	}
 	
-	/*
-	private String getDatabaseOutput(
-			String url, ArrayList<NameValuePair> nameValuePairs) {
-		Log.d("DBA", "getDatabaseOutput(" + url + ")");
-		String result = "";
-		
-		// HTTP post
-		InputStream is = null;
-		try {
-			HttpClient httpClient = new DefaultHttpClient();
-			HttpGet httpGet = new HttpGet(formatURL(url, nameValuePairs));
-			Log.d("DBA", "HTTP POST: " + httpGet.getURI().toString());
-			HttpResponse response = httpClient.execute(httpGet);
-			HttpEntity entity = response.getEntity();
-			is = entity.getContent();
-		}
-		catch (Exception e) {
-			Log.e("DBA", "Error in HTTP connection: " + e.toString());
-		}
-		
-		// convert response to string
-		try {
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(is, "iso-8859-1"), 8);
-			StringBuilder sb = new StringBuilder();
-			sb.append(reader.readLine() + "\n");
-			String line = "0";
-			while ((line = reader.readLine()) != null) {
-				Log.d("DBA", "Convert to String: " + line);
-				sb.append(line + "\n");
-			}
-			is.close();
-			result = sb.toString();
-		}
-		catch (Exception e) {
-			Log.e("DBA", "Error converting result: " + e.toString());
-		}
-
-		Log.d("DBA", "gDO Output: " + result);
-		return result;
-	}
-	
-	private String formatURL(
-			String url, ArrayList<NameValuePair> nameValuePairs) {
-		String url_comb = url + "?";
-		for (int i = 0 ; i < nameValuePairs.size() ; ++i) {
-			String name = nameValuePairs.get(i).getName();
-			String value = nameValuePairs.get(i).getValue();
-			url_comb += name + "=" + Uri.encode(value);
-			if (i + 1 < nameValuePairs.size()) {
-				url_comb += "&";
-			}
-		}
-		Log.d("DBA", "URL is: " + url_comb);
-		return url_comb;
-	}
-	*/
-	
 	private Task[] parseJSONData(String result) {
 		Task[] new_tasks = null;
 		try {
@@ -250,29 +191,6 @@ public class DBAdapter extends BaseDBAdapter {
 		}
 		return new_tasks;
 	}
-	
-	/*private void updateActivity(int index) {
-		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
-		
-		pairs.add(new BasicNameValuePair(
-				"id", String.valueOf(tasks[index].id)));
-		pairs.add(new BasicNameValuePair(
-				"name", tasks[index].name));
-		pairs.add(new BasicNameValuePair(
-				"points", String.valueOf(tasks[index].points)));
-		pairs.add(new BasicNameValuePair(
-				"tF", String.valueOf(tasks[index].timesFlagged)));
-		pairs.add(new BasicNameValuePair(
-				"tD", String.valueOf(tasks[index].timesDeclined)));
-		pairs.add(new BasicNameValuePair(
-				"tA", String.valueOf(tasks[index].timesAccepted)));
-		
-		String result = getDatabaseOutput(URL_BASE + URL_ACTIVITY_UPDATE, pairs);
-		Log.d("DBA", "result is: " + result);
-		if (!result.equals("SUCCESS")) {
-			Log.e("DBA", "Error Updating: " + result);
-		}	
-	}*/
 	
 	private void initEmptyTasks(int size) {
 		tasks = new Task[size];

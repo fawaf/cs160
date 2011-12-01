@@ -28,6 +28,7 @@ import android.widget.TextView;
 public class ProfileActivity extends Activity {
 	
 	Button logout_button;
+	TextView total_score;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,7 +80,13 @@ public class ProfileActivity extends Activity {
 			Log.d("friendHealthPA", "Access Token: " + Utility.facebook.getAccessToken());
 			e.printStackTrace();
 		}
-
+		
+		//---get TextView for total score---
+		total_score = (TextView) findViewById(R.id.fHScore);
+		
+		//---event handler for total score TextView---
+		total_score.setText(String.valueOf(Utility.scoresDBAdapter.points));
+		
 		//---get the Log Out button---
 		logout_button = (Button) findViewById(R.id.btn_logout);
 	    
