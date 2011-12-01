@@ -90,7 +90,6 @@ public class DBAdapter extends BaseDBAdapter {
 				photoids[i] = obj.optString("photo_id");
 			}
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return photoids;
