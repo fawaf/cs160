@@ -11,6 +11,7 @@ import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
 import com.facebook.android.Facebook.DialogListener;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -19,6 +20,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.MediaStore;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -523,14 +525,37 @@ public class FHActivitySelector extends Activity {
         	}
         });
         
+        
+        
+		final CharSequence[] items = {"Too Hard", "Inappropriate", "Don't want to do it"};
+
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		
+
+        
         rejectT1.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if (Utility.mPrefs.getBoolean("toggle_sound", true)) {
 					rj.start();
 				}
-				Utility.dbAdapter.declineActivity(0);
-				//act1_button.setText(Utility.dbAdapter.toString(0));
-				act1_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
+				builder.setTitle("What is the reason you reject the task: " + Utility.dbAdapter.getName(0) + " ?");
+				builder.setItems(items, new DialogInterface.OnClickListener() 
+				{
+				    public void onClick(DialogInterface dialog, int item) 
+				    {
+				    	if (item == 0)
+				    		Utility.dbAdapter.rejectDifficultActivity(0);
+				    	else if (item == 1)
+				    		Utility.dbAdapter.flagActivity(0);
+				    	else
+				    		Utility.dbAdapter.declineActivity(0);
+				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_SHORT);
+				    	act1_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
+				    }
+				    
+				});
+				final AlertDialog alert = builder.create();
+				alert.show();
 			}
 		});
         
@@ -540,9 +565,24 @@ public class FHActivitySelector extends Activity {
 				if (Utility.mPrefs.getBoolean("toggle_sound", true)) {
 					rj.start();
 				}
-				Utility.dbAdapter.declineActivity(1);
-				//act2_button.setText(Utility.dbAdapter.toString(1));
-				act2_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(1) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(1) + " Points" + "</font>"));
+				builder.setTitle("What is the reason you reject the task: " + Utility.dbAdapter.getName(1) + " ?");
+				builder.setItems(items, new DialogInterface.OnClickListener() 
+				{
+				    public void onClick(DialogInterface dialog, int item) 
+				    {
+				    	if (item == 0)
+				    		Utility.dbAdapter.rejectDifficultActivity(1);
+				    	else if (item == 1)
+				    		Utility.dbAdapter.flagActivity(1);
+				    	else
+				    		Utility.dbAdapter.declineActivity(1);
+				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_SHORT);
+				    	act2_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(1) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(1) + " Points" + "</font>"));
+				    }
+				    
+				});
+				final AlertDialog alert = builder.create();
+				alert.show();
 			}
 		});
         
@@ -551,9 +591,24 @@ public class FHActivitySelector extends Activity {
 				if (Utility.mPrefs.getBoolean("toggle_sound", true)) {
 					rj.start();
 				}
-				Utility.dbAdapter.declineActivity(2);
-				//act3_button.setText(Utility.dbAdapter.toString(2));
-				act3_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(2) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(2) + " Points" + "</font>"));
+				builder.setTitle("What is the reason you reject the task: " + Utility.dbAdapter.getName(2) + " ?");
+				builder.setItems(items, new DialogInterface.OnClickListener() 
+				{
+				    public void onClick(DialogInterface dialog, int item) 
+				    {
+				    	if (item == 0)
+				    		Utility.dbAdapter.rejectDifficultActivity(2);
+				    	else if (item == 1)
+				    		Utility.dbAdapter.flagActivity(2);
+				    	else
+				    		Utility.dbAdapter.declineActivity(2);
+				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_SHORT);
+				    	act3_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(2) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(2) + " Points" + "</font>"));
+				    }
+				    
+				});
+				final AlertDialog alert = builder.create();
+				alert.show();
 			}
 		});
         
