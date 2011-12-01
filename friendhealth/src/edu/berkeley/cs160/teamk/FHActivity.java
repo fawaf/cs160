@@ -204,6 +204,7 @@ public class FHActivity extends Activity {
 				Log.d("friendHealthFHA", "Rejecting Activity");
 				SharedPreferences.Editor editor = Utility.mPrefs.edit();
 				editor.putInt("event_created"+index, 0);
+				editor.commit();
 				
 				Intent data = new Intent();
 				Bundle extras = new Bundle();
@@ -417,8 +418,12 @@ public class FHActivity extends Activity {
 				Log.d("friendHealthFHA", "img_filename: " + img_filename);
 				extras.putString("filename", img_filename);
 				extras.putInt("id", id);
+				extras.putInt("index", index);
 				extras.putString("result", "completed");
 				intent.putExtras(extras);
+				
+				
+				
 				
 				Log.d("friendHealthFHA", "Starting submission activity");
 				startActivityForResult(intent, Utility.RC_ACTIVITYSUBMISSION);
@@ -441,6 +446,7 @@ public class FHActivity extends Activity {
 				Intent output = new Intent();
 				Bundle extras = new Bundle();
 				extras.putString("result", "completed");
+				extras.putInt("index", index);
 				output.putExtras(extras);
 				setResult(RESULT_OK, output);
 				Log.d("friendHealthFHA", "Completing picture");
