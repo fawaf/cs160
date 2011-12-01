@@ -3,6 +3,8 @@ package edu.berkeley.cs160.teamk;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.facebook.android.DialogError;
@@ -183,6 +185,43 @@ public class FHActivitySelector extends Activity {
         		startActivityForResult(i, Utility.RC_ACTIVITY);
         		Log.d("friendHealthFHASA", "act3");
         	}	
+        });
+        calendar.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View view){
+        		String link = null;
+                try {
+        			String jsonAlbums = Utility.facebook.request("me/albums");
+        			JSONObject obj = Util.parseJson(jsonAlbums);
+        			JSONArray albums = obj.getJSONArray("data");
+        			Boolean found = false;
+        			int i = 0;
+        			while (!found){
+        				JSONObject album = albums.getJSONObject(i);
+        				String name = album.optString("name");
+        				if(name.equals("friendHealth Photos")){
+        					link = album.optString("link");
+        					found = true;
+        				}
+        				i++;	
+        			}
+        			
+        		} catch (MalformedURLException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		} catch (IOException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		} catch (JSONException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		} catch (FacebookError e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+        		Intent i = new Intent(android.content.Intent.ACTION_VIEW, 
+        				Uri.parse(link));
+        		startActivity(i);
+        	}
         });
         
         final Toast help1 = Toast.makeText(this, Html.fromHtml("<font color='white'><big>+++  </big></font><font color='red'><big>Welcome </big></font>" +
