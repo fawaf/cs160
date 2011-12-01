@@ -54,6 +54,8 @@ public class ActivitySubmission extends Activity {
 			score = extras.getInt("score");
 			act_id = extras.getInt("id");
 			
+			Log.d("friendHealthAS", "Act id is: " + act_id);
+			
 			Log.d("friendHealthAS", "Full name: " + img_filename);
 			String shortname = img_filename.substring(11);
 			Log.d("friendHealthAS", "Display name: " + shortname);

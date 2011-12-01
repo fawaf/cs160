@@ -62,6 +62,7 @@ public class FHActivity extends Activity {
 			score = extras.getInt("score");
 			index = extras.getInt("index");
 			id = extras.getInt("id");
+			Log.d("friendHealthA", "Act id is: " + id);
 			
 			editor.putString("act_name", act_name);
 			editor.putInt("act_score", score);
@@ -228,6 +229,7 @@ public class FHActivity extends Activity {
 				extras.putInt("score", score);
 				Log.d("friendHealthFHA", "img_filename: " + img_filename);
 				extras.putString("filename", img_filename);
+				extras.putInt("id", id);
 				extras.putString("result", "completed");
 				intent.putExtras(extras);
 				
