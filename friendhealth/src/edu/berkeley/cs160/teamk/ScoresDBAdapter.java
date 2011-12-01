@@ -18,6 +18,8 @@ public class ScoresDBAdapter extends BaseDBAdapter {
 			"getLeaderboard.php";
 	private static final String URL_SCORES_USERCHECK =
 			"checkUserScore.php";
+	private static final String URL_SCORES_USERCALCULATE =
+			"calculateUserScore.php";
 	
 	
 	public ArrayList< HashMap<String, String> > scores;
@@ -47,6 +49,19 @@ public class ScoresDBAdapter extends BaseDBAdapter {
 		
 		String result = getDatabaseOutput(
 				URL_BASE + URL_SCORES_USERCHECK, pairs);
+		parseUserScoreJSONData(result);
+		Log.d("DBA", "Points: " + points + " Rank: " + rank);
+	}
+	
+	
+	public void calculateUserScore(String fb_user_id) {
+		Log.d("DBA", "calculateTotalScore(" + fb_user_id + ")");
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		pairs.add(new BasicNameValuePair(
+				"fb_id", fb_user_id));
+		
+		String result = getDatabaseOutput(
+				URL_BASE + URL_SCORES_USERCALCULATE, pairs);
 		parseUserScoreJSONData(result);
 		Log.d("DBA", "Points: " + points + " Rank: " + rank);
 	}
