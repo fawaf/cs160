@@ -171,10 +171,12 @@ public class FHActivitySelector extends Activity {
         		Bundle extras = new Bundle();
         		extras.putString("name", Utility.dbAdapter.getName(0));
         		extras.putInt("score", Utility.dbAdapter.getPoints(0));
-        		extras.putInt("id", Utility.dbAdapter.getID(0));
+        		int act_id = Utility.dbAdapter.getID(0);
+        		extras.putInt("id", act_id);
         		extras.putInt("index", 0);
         		i.putExtras(extras);
 
+        		Log.d("friendHealthFHASA", "Score ID is: " + act_id);
         		startActivityForResult(i, Utility.RC_ACTIVITY);
         		Log.d("friendHealthFHASA", "act1");
         	}
