@@ -35,7 +35,7 @@
         android:layout_alignBottom="@+id/newTask"
         android:layout_below="@+id/btn_activity3"
         android:layout_toRightOf="@+id/newTask"
-        android:text="Calendar" android:textSize="20dp" android:height="40dp"/>
+        android:text="fH Album" android:textSize="20dp" android:height="40dp"/>
 
     <Button
         android:id="@+id/leaderboard"
