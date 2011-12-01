@@ -238,7 +238,7 @@ public class FHActivitySelector extends Activity {
 		//task3.setGravity(Gravity.CENTER, 0, 0);
 		
 		final Toast task4 = Toast.makeText(this, Html.fromHtml("<font color='green'><big>POINTS</big></font><br/><font color='white'>" +
-		"<big>For exmaple, You can gain </big></font><big><font color = 'green'>" + Utility.dbAdapter.getPoints(0) + " points </font>" + "<font color = 'white'>by completing </font>" + 
+		"<big>For example, You can gain </big></font><big><font color = 'green'>" + Utility.dbAdapter.getPoints(0) + " points </font>" + "<font color = 'white'>by completing </font>" + 
 		"</font><font color= 'red'>" + Utility.dbAdapter.getName(0) + "</font></big>"), Toast.LENGTH_LONG);
 		//task4.setGravity(Gravity.CENTER, 0, 0);
 		
@@ -246,14 +246,14 @@ public class FHActivitySelector extends Activity {
 		"<big>Reject buttons allow you to decline a task.</big></font>"), Toast.LENGTH_LONG);
 		//reject.setGravity(Gravity.CENTER, 0, 0);
 		
-		final Toast reject2 = Toast.makeText(this, Html.fromHtml("<font color='red'><big>REJECT</big></font></br><font color='white'>" +
+		final Toast reject2 = Toast.makeText(this, Html.fromHtml("<font color='red'><big>REJECT</big></font><br/><font color='white'>" +
 		"<big>A new task will be generated to replace the rejected task</big></font>"), Toast.LENGTH_LONG);
 		//reject2.setGravity(Gravity.CENTER, 0, 0);
 	    
-		final Toast cameraT1 = Toast.makeText(this, Html.fromHtml("<big><font color='green'>CAMERA</font></br>" +
+		final Toast cameraT1 = Toast.makeText(this, Html.fromHtml("<big><font color='green'>CAMERA </font><br/>" +
 				"<font color='white'>Take a Photo will launch the camera directly</font></big>"), Toast.LENGTH_LONG);
 		
-		final Toast cameraT2 = Toast.makeText(this, Html.fromHtml("<big><font color='green'>CAMERA</font></br><font color = 'white'>" +
+		final Toast cameraT2 = Toast.makeText(this, Html.fromHtml("<big><font color='green'>CAMERA </font><br/><font color = 'white'>" +
 				"This is a shortcut for completing the task. However we do not encourage new users to use it</font><big>"), Toast.LENGTH_LONG);
 		
 		final Toast newTasksT = Toast.makeText(this, Html.fromHtml("<big><font color='#ffa500'>NEW TASKS </font>will clear " +

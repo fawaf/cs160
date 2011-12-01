@@ -13,16 +13,22 @@ import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.widget.Button;
 import android.widget.TextView;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -134,6 +140,59 @@ public class FHActivity extends Activity {
 		
 		//---btn_picture---
 		btn_reject = (Button) findViewById(R.id.btn_ActReject);
+		btn_help = (Button) findViewById(R.id.btn_ActHelp);
+		
+		final Toast help1 = Toast.makeText(this, Html.fromHtml("<font color='white'><big>+++  </big></font><font color='red'><big>Welcome </big></font>" +
+        		"<big><font color = 'yellow'>to the </font><font color = 'green'>Activity </font>" +
+        		"<font color = 'blue'>Screen! </font><font color = 'purple'> +++</big></font>"), Toast.LENGTH_LONG);
+		help1.setGravity(Gravity.BOTTOM, 0, 200);
+		
+		final Toast help2 = Toast.makeText(this, Html.fromHtml("<font color='white'><big>Here your task is to take a picture " +
+				"of yourself performing the task and submit it to </big></font><font color='blue'><big>Facebook.</big></font>"), Toast.LENGTH_LONG);
+		help2.setGravity(Gravity.BOTTOM, 0, 200);
+		
+		
+		final Toast help3 = Toast.makeText(this, Html.fromHtml("<font color='white'><big>Before we get to that, " +
+				"let us go over some basic functions in this page</big></font>"), Toast.LENGTH_LONG);
+		help3.setGravity(Gravity.BOTTOM, 0, 200);
+		
+		
+		final Toast help4 = Toast.makeText(this, Html.fromHtml("<font color='white'><big>Before you decide to perform the " +
+				"activity, you can review all the pictures other users who performed this task have taken.</big></font>"), Toast.LENGTH_LONG);
+		help4.setGravity(Gravity.BOTTOM, 0, 200);
+		
+		
+		final Toast help5 = Toast.makeText(this, Html.fromHtml("<big><font color='white'>Also, if you are no longer " +
+				"interested in performing this task, simply tap </font><font color = 'red'>REJECT</font></big>"), Toast.LENGTH_LONG);
+		help5.setGravity(Gravity.BOTTOM, 0, 200);
+		
+		
+		final Toast help6 = Toast.makeText(this, Html.fromHtml("<big><font color='white'>In addition, you can make the activity " +
+		"a </font><font color = 'blue'>Facebook event </font><font color='white'>and invite your friends to join</font></big>"), Toast.LENGTH_LONG);
+		help6.setGravity(Gravity.BOTTOM, 0, 200);
+		
+		
+		final Toast help7 = Toast.makeText(this, Html.fromHtml("<big><font color='white'>And most importantly, Take a Picture will launch the camera." +
+		"And begin submission process after the picture is taken</font></big>"), Toast.LENGTH_LONG);
+		help7.setGravity(Gravity.BOTTOM, 0, 200);
+		
+		final Toast help8 = Toast.makeText(this, Html.fromHtml("<big><font color='white'>Finally, Help will launch this demo again if you are still not sure" +
+				" how this page operates.</font></big>"), Toast.LENGTH_LONG);
+		
+		help8.setGravity(Gravity.BOTTOM, 0, 200);
+		
+		final Animation animation = new AlphaAnimation(1, 0);
+	    final Animation animation2 = new AlphaAnimation(1, 0);
+	    animation.setDuration(500);
+	    animation2.setDuration(200);
+	    animation.setInterpolator(new LinearInterpolator());
+	    animation2.setInterpolator(new LinearInterpolator());
+	    animation.setRepeatCount(6);
+	    animation2.setRepeatCount(6);
+	    animation.setRepeatMode(Animation.REVERSE);
+	    animation2.setRepeatMode(Animation.REVERSE);
+		
+		
 		// Handle click of button.
 		btn_reject.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
@@ -146,6 +205,111 @@ public class FHActivity extends Activity {
         		data.putExtras(extras);
         		setResult(RESULT_OK, data);
         		finish();
+			}
+		});
+		
+		btn_help.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				help1.show();
+				
+				new CountDownTimer(6000, 1000)
+			    {
+
+			        public void onTick(long millisUntilFinished) 
+			        {
+			        	help2.show();
+			        }
+			        public void onFinish() 
+			        {
+			        	help2.show();
+			        }
+			    }.start();
+			    
+				new CountDownTimer(12000, 1000)
+			    {
+
+			        public void onTick(long millisUntilFinished) 
+			        {
+			        	help3.show();
+			        }
+			        public void onFinish() 
+			        {
+			        	help3.show();
+			        }
+			    }.start();
+			    
+				new CountDownTimer(18000, 1000)
+			    {
+
+			        public void onTick(long millisUntilFinished) 
+			        {
+			        	help4.show();
+			        }
+			        public void onFinish() 
+			        {
+			        	help4.show();
+			        	
+			        }
+			    }.start();
+				
+				new CountDownTimer(24000, 1000)
+			    {
+
+			        public void onTick(long millisUntilFinished) 
+			        {
+			        	help5.show();
+			        }
+			        public void onFinish() 
+			        {
+			        	help5.show();
+			        	btn_reject.startAnimation(animation);
+			        }
+			    }.start();
+			    
+				new CountDownTimer(30000, 1000)
+			    {
+
+			        public void onTick(long millisUntilFinished) 
+			        {
+			        	help6.show();
+			        }
+			        public void onFinish() 
+			        {
+			        	help6.show();
+			        	btn_invite.startAnimation(animation);
+			        }
+			    }.start();
+			    
+				new CountDownTimer(36000, 1000)
+			    {
+
+			        public void onTick(long millisUntilFinished) 
+			        {
+			        	help7.show();
+			        }
+			        public void onFinish() 
+			        {
+			        	help7.show();
+			        	btn_picture.startAnimation(animation);
+			        }
+			    }.start();
+				
+				new CountDownTimer(40000, 1000)
+			    {
+
+			        public void onTick(long millisUntilFinished) 
+			        {
+			        	help8.show();
+			        }
+			        public void onFinish() 
+			        {
+			        	help8.show();
+			        	btn_help.startAnimation(animation);
+			        }
+			    }.start();
 			}
 		});
 		

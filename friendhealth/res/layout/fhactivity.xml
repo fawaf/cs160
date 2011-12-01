@@ -77,7 +77,7 @@
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/btn_ActReject"
         android:drawableTop="@drawable/invite_icon"
-        android:text="Tell Friends" android:textSize="15dp" android:layout_marginBottom="11dp" android:layout_marginLeft="5dp"/>
+        android:text="Make Event" android:textSize="15dp" android:layout_marginBottom="11dp" android:layout_marginLeft="5dp"/>
     
     <Button
         android:id="@+id/btn_ActHelp"
