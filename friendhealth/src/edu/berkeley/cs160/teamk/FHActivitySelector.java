@@ -154,7 +154,7 @@ public class FHActivitySelector extends Activity {
         else {
         	Utility.dbAdapter = new DBAdapter(id1, id2, id3);
         }
-        
+        Utility.scoresDBAdapter = new ScoresDBAdapter();
         
         act1_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
         act2_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(1) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(1) + " Points" + "</font>"));

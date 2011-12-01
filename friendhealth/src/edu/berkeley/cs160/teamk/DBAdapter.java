@@ -2,22 +2,13 @@ package edu.berkeley.cs160.teamk;
 
 import java.util.ArrayList;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.message.BasicNameValuePair;
-import android.net.Uri;
 import android.util.Log;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class DBAdapter {
+public class DBAdapter extends BaseDBAdapter {
 	
 	public static final String URL_BASE = 
 			"https://secure.ocf.berkeley.edu/~goodfrie/";
@@ -99,7 +90,6 @@ public class DBAdapter {
 				photoids[i] = obj.optString("photo_id");
 			}
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return photoids;
@@ -180,6 +170,7 @@ public class DBAdapter {
 		return pairs;
 	}
 	
+	/*
 	private String getDatabaseOutput(
 			String url, ArrayList<NameValuePair> nameValuePairs) {
 		Log.d("DBA", "getDatabaseOutput(" + url + ")");
@@ -235,6 +226,7 @@ public class DBAdapter {
 		Log.d("DBA", "URL is: " + url_comb);
 		return url_comb;
 	}
+	*/
 	
 	private Task[] parseJSONData(String result) {
 		Task[] new_tasks = null;
