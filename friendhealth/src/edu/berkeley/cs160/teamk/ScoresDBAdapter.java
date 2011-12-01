@@ -16,6 +16,8 @@ public class ScoresDBAdapter extends BaseDBAdapter {
 			"https://secure.ocf.berkeley.edu/~goodfrie/";
 	private static final String URL_SCORES_LEADERBOARD = 
 			"getLeaderboard.php";
+	private static final String URL_SCORES_SORTEDLEADERBOARD =
+			"getSortedLeaderboard.php";
 	private static final String URL_SCORES_USERCHECK =
 			"checkUserScore.php";
 	private static final String URL_SCORES_USERCALCULATE =
@@ -34,7 +36,7 @@ public class ScoresDBAdapter extends BaseDBAdapter {
 	
 	public void getLeaderboard() {
 		String result = getDatabaseOutput(
-				URL_BASE + URL_SCORES_LEADERBOARD, emptyPair());
+				URL_BASE + URL_SCORES_SORTEDLEADERBOARD, emptyPair());
 		scores = parseScoresJSONData(result);
 	}
 	
