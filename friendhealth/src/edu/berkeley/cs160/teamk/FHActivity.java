@@ -360,7 +360,7 @@ public class FHActivity extends Activity {
 				startActivityForResult(intent, Utility.RC_INVITE);*/
 				Bundle bundle = new Bundle();
 				Log.d("friendHealthFHA", "event_created in button: "+event_created);
-				if(event_created <=0){
+				if(event_created <= 0){
 				try {
 					long unixTime = System.currentTimeMillis() / 1000L;
 					long oneWeekUnixTime = unixTime + 604800;

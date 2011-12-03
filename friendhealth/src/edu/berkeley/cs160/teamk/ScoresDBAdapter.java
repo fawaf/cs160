@@ -13,8 +13,6 @@ public class ScoresDBAdapter extends BaseDBAdapter {
 	
 	private static final String URL_BASE = 
 			"https://secure.ocf.berkeley.edu/~goodfrie/";
-	private static final String URL_SCORES_LEADERBOARD = 
-			"getLeaderboard.php";
 	private static final String URL_SCORES_SORTEDLEADERBOARD =
 			"getSortedLeaderboard.php";
 	private static final String URL_SCORES_USERCHECK =
@@ -76,7 +74,7 @@ public class ScoresDBAdapter extends BaseDBAdapter {
 		
 		String result = getDatabaseOutput(
 				URL_BASE + URL_PHOTO_ID_GET, pairs);
-		Log.d("DBA", "Base Score: " + result);
+		Log.d("DBA", "Photo ID: " + result);
 		String[] photoids = {""};
 		try {
 			JSONArray photos = new JSONArray(result);
@@ -95,7 +93,7 @@ public class ScoresDBAdapter extends BaseDBAdapter {
 		Log.d("DBA", "calculateTotalScore(" + fb_user_id + ")");
 		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		pairs.add(new BasicNameValuePair(
-				"fb_id", fb_user_id));
+				"fb_user_id", fb_user_id));
 
 		Scores.calculateFacebookScore(fb_user_id);
 		
