@@ -939,8 +939,8 @@ public class FHActivitySelector extends Activity {
         		String response = extras.getString("response");
         		Toast.makeText(this, response, Toast.LENGTH_LONG).show();
         	}*/
-        	
-        	Utility.facebook.authorizeCallback(requestCode, resultCode, data);
+        	default:
+        		Utility.facebook.authorizeCallback(requestCode, resultCode, data);
         }
     }
     
