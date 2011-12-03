@@ -34,7 +34,7 @@ public class OptionsMenu extends Activity {
     	ctxt = context;
     	switch(item.getItemId()) {
     	case 0:
-    		i = new Intent("edu.berkeley.cs160.teamk.AddTask");
+    		i = new Intent("edu.berkeley.cs160.teamk.AddTaskActivity");
     		((Activity) context).startActivityForResult(i, Utility.RC_NEWTASK);
     		return true;
     	case 1:

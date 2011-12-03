@@ -61,9 +61,9 @@
         
         <activity
             android:label="Add Activity to friendHealth"
-            android:name=".AddTask">
+            android:name=".AddTaskActivity">
         	<intent-filter>
-        	    <action android:name="edu.berkeley.cs160.teamk.AddTask" />
+        	    <action android:name="edu.berkeley.cs160.teamk.AddTaskActivity" />
         	    <category android:name="android.intent.category.DEFAULT" />
         	</intent-filter>
         </activity>
