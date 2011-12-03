@@ -20,4 +20,6 @@ public class Utility {
 	
 	public static DBAdapter dbAdapter;
 	public static ScoresDBAdapter scoresDBAdapter;
+	
+	public static final String fH_email = "team.k.friendhealth@gmail.com";
 }
