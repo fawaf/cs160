@@ -13,6 +13,11 @@ import android.widget.EditText;
 
 public class AddTaskActivity extends Activity {
 	
+	Intent data;
+	Bundle extras;
+	String taskName = "";
+	String taskTags = "";
+	
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -24,13 +29,13 @@ public class AddTaskActivity extends Activity {
 		//---event handler for the Add Task button---
 		btn_addTask.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				Intent data = new Intent();
-				Bundle extras = new Bundle();
+				data = new Intent();
+				extras = new Bundle();
 				
 				//---get the Task name---
 				EditText txt_taskName =
 						(EditText) findViewById(R.id.taskName);
-				String taskName = txt_taskName.getText().toString();
+				taskName = txt_taskName.getText().toString();
 				Log.d("friendHealthATA", "Task name: " + taskName);
 				//---set the data to pass back---
 				extras.putString("name", taskName);
@@ -38,7 +43,7 @@ public class AddTaskActivity extends Activity {
 				// Get Tags.
 				EditText txt_taskTags =
 						(EditText) findViewById(R.id.taskTags);
-				String taskTags = txt_taskTags.getText().toString(); 
+				taskTags = txt_taskTags.getText().toString(); 
 				Log.d("friendHealthATA", "Task tag: " + taskTags);
 				// Put tags into the Bundle.
 				extras.putString("tags", taskTags);
@@ -59,34 +64,16 @@ public class AddTaskActivity extends Activity {
 		//---event handler for the Add Task button---
 		btn_takePicture.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				Log.d("friendHealthATA", "WHY YOU NO WORK");
+				data = new Intent();
+				extras = new Bundle();
+				extras.putString("result", "take_photo");
+				extras.putString("name", taskName);
+				data.putExtras(extras);
+				setResult(RESULT_OK, data);
+				finish();
 			}
 		});
 	}
-	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		switch (requestCode) {
-		case Utility.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
-			onCameraActivityResult(resultCode, data);
-			return;
-		case Utility.RC_ACTIVITYSUBMISSION:
-			onActivitySubmissionResult(resultCode, data);
-			return;
-		}
-	}
-	
-	
-	private void onCameraActivityResult(int resultCode, Intent data) {
-		
-	}
-	
-	
-	private void onActivitySubmissionResult(int resultCode, Intent data) {
-		
-	}
-	
 	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
