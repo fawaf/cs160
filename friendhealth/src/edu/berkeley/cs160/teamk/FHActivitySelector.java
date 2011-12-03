@@ -55,9 +55,12 @@ public class FHActivitySelector extends Activity {
 	String img_filename = "";
 	String act_name = "";
 	int index = 0;
+	int act_id = 0;
 	String submission_act_name = "";
 	int submission_score = 0;
 	String submission_img_filename = "";
+	int submission_act_id = 0;
+	int submission_index = -1;
 	
     /** Called when the activity is first created. */
     @Override
@@ -84,6 +87,12 @@ public class FHActivitySelector extends Activity {
         rejectT2 = (ImageButton) findViewById(R.id.reject2);
         rejectT3 = (ImageButton) findViewById(R.id.reject3);
         help = (Button) findViewById(R.id.as_help);
+        img_filename = Utility.mPrefs.getString("act_img_filename", "");
+        submission_act_name = Utility.mPrefs.getString("activity_name", "");
+        submission_score = Utility.mPrefs.getInt("activity_score", -1);
+        submission_act_id = Utility.mPrefs.getInt("activity_id", 0);
+        submission_index = Utility.mPrefs.getInt("activity_index", -1);
+       
         
         Log.d("friendHealthFHASA", "Initializing newTask Button");
         
@@ -678,6 +687,7 @@ public class FHActivitySelector extends Activity {
 			public void onClick(View view) {
 				
 				act_name = Utility.dbAdapter.getName(0);
+				act_id = Utility.dbAdapter.getID(0);
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 				Uri fileUri = Camera.getOutputMediaFileUri(getBaseContext(), Utility.MEDIA_TYPE_IMAGE, act_name);
 				img_filename = fileUri.toString();
@@ -688,6 +698,10 @@ public class FHActivitySelector extends Activity {
 				
 				SharedPreferences.Editor editor = Utility.mPrefs.edit();
 				editor.putString("act_img_filename", img_filename);
+				editor.putString("activity_name", act_name);
+				editor.putInt("activity_id", act_id);
+				editor.putInt("activity_score", submission_score);
+				editor.putInt("activity_index", 0);
 				editor.commit();
 				
 				Log.d("friendHealthFHA", "Image name: " + img_filename);
@@ -705,6 +719,7 @@ public class FHActivitySelector extends Activity {
 			public void onClick(View view) {
 				
 				act_name = Utility.dbAdapter.getName(1);
+				act_id = Utility.dbAdapter.getID(1);
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 				Uri fileUri = Camera.getOutputMediaFileUri(getBaseContext(), Utility.MEDIA_TYPE_IMAGE, act_name);
 				img_filename = fileUri.toString();
@@ -715,6 +730,10 @@ public class FHActivitySelector extends Activity {
 				
 				SharedPreferences.Editor editor = Utility.mPrefs.edit();
 				editor.putString("act_img_filename", img_filename);
+				editor.putString("activity_name", act_name);
+				editor.putInt("activity_id", act_id);
+				editor.putInt("activity_score", submission_score);
+				editor.putInt("activity_index", 1);
 				editor.commit();
 				
 				Log.d("friendHealthFHA", "Image name: " + img_filename);
@@ -732,9 +751,13 @@ public class FHActivitySelector extends Activity {
 			public void onClick(View view) {
 				
 				act_name = Utility.dbAdapter.getName(2);
+				act_id = Utility.dbAdapter.getID(2);
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				Log.d("friendHealthFHA", "Before calling camera on button3");
 				Uri fileUri = Camera.getOutputMediaFileUri(getBaseContext(), Utility.MEDIA_TYPE_IMAGE, act_name);
 				img_filename = fileUri.toString();
+				Log.d("friendHealthFHA", "Inside camera3 button");
+				Log.d("friendHealthFHA", "img_filename is: "+img_filename);
 				submission_img_filename = img_filename;
 				submission_score = Utility.dbAdapter.getPoints(2);
 				submission_act_name = act_name;
@@ -742,9 +765,12 @@ public class FHActivitySelector extends Activity {
 				
 				SharedPreferences.Editor editor = Utility.mPrefs.edit();
 				editor.putString("act_img_filename", img_filename);
+				editor.putString("activity_name", act_name);
+				editor.putInt("activity_id", act_id);
+				editor.putInt("activity_score", submission_score);
+				editor.putInt("activity_index", 2);
 				editor.commit();
 				
-				Log.d("friendHealthFHA", "Image name: " + img_filename);
 				
 				// start the image capture Intent.
 				startActivityForResult(intent, 
@@ -765,6 +791,7 @@ public class FHActivitySelector extends Activity {
         	if (resultCode == RESULT_OK) {
         		Log.d("friendHealthFHASA", "Entered Utility.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE");
 				Log.d("friendHealthFHA", submission_act_name + " image taken.");
+				Log.d("friendHealthAS", "img_filename in onactivityresult: " + img_filename);
 				
 				Intent intent = new Intent(
 						"edu.berkeley.cs160.teamk.ActivitySubmission");
@@ -774,6 +801,9 @@ public class FHActivitySelector extends Activity {
 				extras.putInt("score", submission_score);
 				Log.d("friendHealthFHA", "img_filename: " + img_filename);
 				extras.putString("filename", img_filename);
+				extras.putInt("index", submission_index);
+				extras.putInt("id", submission_act_id);
+				extras.putString("result", "completed");
 				intent.putExtras(extras);
 				
 				Log.d("friendHealthFHA", "Starting submission activity");
@@ -876,16 +906,41 @@ public class FHActivitySelector extends Activity {
         		}
         	}
         	return;
-        default:
+        case Utility.RC_ACTIVITYSUBMISSION:
         	Log.d("friendHealthFHASA", "Entered default onActivityResult");
+        
+        	if (Utility.mPrefs.getBoolean("pic_submit", false)) {
+        		
+        			int cool_index = Utility.mPrefs.getInt("From_AS_Index", -2);
+        			Log.d("friendHealthFHASA", "index is now: "+cool_index);
+        			
+        				Toast.makeText(this,
+        						"Activity completed",
+        						Toast.LENGTH_LONG).show();
+        				Utility.dbAdapter.acceptActivity(cool_index);
+        				Button button;
+        				if (cool_index == 0) {
+        					button = act1_button;
+        				} else if (index == 1) {
+        					button = act2_button;
+        				} else {
+        					button = act3_button;
+        				}
+        				SharedPreferences.Editor editor = Utility.mPrefs.edit();
+        				editor.putInt("taskID_"+(cool_index+1), Utility.dbAdapter.getID(cool_index));
+        				editor.commit();
+        				button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(cool_index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
+        			
+        		
+        	}
         	
         	/*Bundle extras = data.getExtras();
         	if (extras != null) {
         		String response = extras.getString("response");
         		Toast.makeText(this, response, Toast.LENGTH_LONG).show();
         	}*/
-        	
-        	Utility.facebook.authorizeCallback(requestCode, resultCode, data);
+        	default:
+        		Utility.facebook.authorizeCallback(requestCode, resultCode, data);
         }
     }
     

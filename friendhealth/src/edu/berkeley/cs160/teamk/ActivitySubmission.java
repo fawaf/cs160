@@ -156,7 +156,6 @@ public class ActivitySubmission extends Activity {
 	        				bundle.putString("message", caption);
 	        			}
 	        			String response = Utility.facebook.request("me/photos", bundle, "POST");
-	      
 	        			
 	        			if (response.indexOf("OAuthException") > -1) {
 	        				Log.d("friendHealthAS", "Response: " + response);
@@ -164,6 +163,8 @@ public class ActivitySubmission extends Activity {
 	        			} else {
 	        				SharedPreferences.Editor editor = Utility.mPrefs.edit();
 	        				editor.putInt("event_created"+index, 0);
+	        				editor.putBoolean("pic_submit", true);
+	        				editor.putInt("From_AS_Index", index);
 	        				editor.commit();
 	        				Log.d("friendHealthAS", "Response: " + response);
 	        				String photoid = response;

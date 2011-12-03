@@ -102,6 +102,8 @@ public class ScoresDBAdapter extends BaseDBAdapter {
 		String result = getDatabaseOutput(
 				URL_BASE + URL_CALCULATED_SCORE_ADD, pairs);
 		Log.d("DBA", "Calculated Score: " + result);
+		
+		getLeaderboard();
 	}
 	
 	public void calculateUserScore(String fb_user_id) {
