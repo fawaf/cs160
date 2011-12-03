@@ -20,10 +20,12 @@ public class OptionsMenu extends Activity {
     	MenuItem mnu2 = menu.add(0, 1, 1, "Profile");
     	MenuItem mnu3 = menu.add(0, 2, 2, "Settings");
     	MenuItem mnu4 = menu.add(0, 3, 3, "Tutorials");
+    	MenuItem mnu5 = menu.add(0, 4, 4, "Feedback");
     	mnu1.setAlphabeticShortcut('a');
     	mnu2.setAlphabeticShortcut('b');
     	mnu3.setAlphabeticShortcut('c');
     	mnu4.setAlphabeticShortcut('d');
+    	mnu5.setAlphabeticShortcut('e');
     }
     
     protected boolean FHASMenuChoice(Context context, MenuItem item) {
@@ -47,6 +49,17 @@ public class OptionsMenu extends Activity {
     		showDialog(0);
     		Log.d("friendHealthOM", "Finished showDialog");
     		return true;
+    	case 4:
+    		Log.d("friendHealthOM", 
+    				"Sending email to " + Utility.fH_email);
+    		Intent emailIntent = new Intent(Intent.ACTION_SEND);
+    		emailIntent.setData(Uri.parse("mailto:"));
+    		String[] to = {Utility.fH_email};
+    		emailIntent.putExtra(Intent.EXTRA_EMAIL, to);
+    		emailIntent.setType("message/rfc822");
+    		((Activity) context).startActivity(
+    				Intent.createChooser(emailIntent,  "Email"));
+    		return true;
     	}
     	return false;
     }
@@ -56,10 +69,12 @@ public class OptionsMenu extends Activity {
     	MenuItem mnu2 = menu.add(0, 1, 1, "Profile");
     	MenuItem mnu3 = menu.add(0, 2, 2, "Settings");
     	MenuItem mnu4 = menu.add(0, 3, 3, "Tutorials");
+    	MenuItem mnu5 = menu.add(0, 4, 4, "Feedback");
     	mnu1.setAlphabeticShortcut('a');
     	mnu2.setAlphabeticShortcut('b');
     	mnu3.setAlphabeticShortcut('c');
     	mnu4.setAlphabeticShortcut('d');
+    	mnu5.setAlphabeticShortcut('e');
     }
     
 
@@ -82,7 +97,17 @@ public class OptionsMenu extends Activity {
     	case 3:
     		showDialog(0);
     		return true;
-    	
+    	case 4:
+    		Log.d("friendHealthOM", 
+    				"Sending email to " + Utility.fH_email);
+    		Intent emailIntent = new Intent(Intent.ACTION_SEND);
+    		emailIntent.setData(Uri.parse("mailto:"));
+    		String[] to = {Utility.fH_email};
+    		emailIntent.putExtra(Intent.EXTRA_EMAIL, to);
+    		emailIntent.setType("message/rfc822");
+    		((Activity) context).startActivity(
+    				Intent.createChooser(emailIntent,  "Email"));
+    		return true;
     	}
     	return false;
     }
