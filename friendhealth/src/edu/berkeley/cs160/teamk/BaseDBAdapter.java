@@ -61,7 +61,6 @@ public class BaseDBAdapter {
 			Log.e("DBA", "Error converting result: " + e.toString());
 		}
 		
-		Log.d("DBA", "gDO Output: " + result);
 		return result;
 	}
 	
