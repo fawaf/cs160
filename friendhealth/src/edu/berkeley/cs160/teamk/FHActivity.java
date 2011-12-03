@@ -1,6 +1,5 @@
 package edu.berkeley.cs160.teamk;
 
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,6 +42,7 @@ import android.graphics.PorterDuff;
 import android.provider.MediaStore;
 import android.net.Uri;
 
+
 public class FHActivity extends Activity {
 	
 	Button btn_picture, btn_reject, btn_invite, btn_help;
@@ -83,7 +83,7 @@ public class FHActivity extends Activity {
 		}
 		String[] photoids = Utility.dbAdapter.getPhotoByID(id);
 		myRemoteImages = new String[photoids.length];
-		for(int i = 0; i<photoids.length; i++){
+		for(int i = 0; i < photoids.length; i++){
 			try {
 				String jsonPic = Utility.facebook.request(photoids[i]);
 				JSONObject obj = Util.parseJson(jsonPic);

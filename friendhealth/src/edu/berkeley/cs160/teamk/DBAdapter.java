@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 public class DBAdapter extends BaseDBAdapter {
 	
 	public static final String URL_BASE = 
@@ -130,7 +131,7 @@ public class DBAdapter extends BaseDBAdapter {
 		pairs.add(new BasicNameValuePair(
 				"photo_id", photoid));
 		pairs.add(new BasicNameValuePair(
-				"base_score", base_score+""));
+				"base_score", String.valueOf(base_score)));
 		pairs.add(new BasicNameValuePair(
 				"fb_user_id", user_id));
 		String result = getDatabaseOutput(URL_BASE + URL_INFO_ADD, pairs);

@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+
 public class Leaderboard extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

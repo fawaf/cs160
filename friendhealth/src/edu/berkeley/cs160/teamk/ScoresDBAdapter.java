@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 public class ScoresDBAdapter extends BaseDBAdapter {
 	
 	private static final String URL_BASE = 
@@ -20,7 +21,8 @@ public class ScoresDBAdapter extends BaseDBAdapter {
 	private static final String URL_SCORES_USERCALCULATE =
 			"calculateUserScore.php";
 	public static final String URL_SCORES_BASE_GET = "getBaseScore.php";
-	public static final String URL_PHOTO_ID_GET = "getPhotoByFBID.php";
+	public static final String URL_PHOTO_FB_ID_GET = "getPhotoByFBID.php";
+	public static final String URL_CALCULATED_SCORE_ADD = "updateCalculatedScore.php";
 	
 	
 	public ArrayList< HashMap<String, String> > scores;
@@ -66,14 +68,14 @@ public class ScoresDBAdapter extends BaseDBAdapter {
 		return result;
 	}
 	
-	public String[] getPhotoID(String fb_user_id) {
+	public String[] getPhotoByFBID(String fb_user_id) {
 		Log.d("DBA", "getPhotoID(" + fb_user_id + ")");
 		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		pairs.add(new BasicNameValuePair(
 				"fb_user_id", fb_user_id));
 		
 		String result = getDatabaseOutput(
-				URL_BASE + URL_PHOTO_ID_GET, pairs);
+				URL_BASE + URL_PHOTO_FB_ID_GET, pairs);
 		Log.d("DBA", "Photo ID: " + result);
 		String[] photoids = {""};
 		try {
@@ -87,6 +89,19 @@ public class ScoresDBAdapter extends BaseDBAdapter {
 			e.printStackTrace();
 		}
 		return photoids;
+	}
+	
+	public void updateCalculatedScore(String calculated_score, String photo_id) {
+		Log.d("DBA", "updateCalculatedScore(" + calculated_score + ")");
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		pairs.add(new BasicNameValuePair(
+				"calculated_score", calculated_score));
+		pairs.add(new BasicNameValuePair(
+				"photo_id", photo_id));
+		
+		String result = getDatabaseOutput(
+				URL_BASE + URL_CALCULATED_SCORE_ADD, pairs);
+		Log.d("DBA", "Calculated Score: " + result);
 	}
 	
 	public void calculateUserScore(String fb_user_id) {

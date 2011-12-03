@@ -1,6 +1,5 @@
 package edu.berkeley.cs160.teamk;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;

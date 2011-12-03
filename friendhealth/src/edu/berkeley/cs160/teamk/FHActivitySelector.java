@@ -1,9 +1,7 @@
 package edu.berkeley.cs160.teamk;
 
-
 import java.io.IOException;
 import java.net.MalformedURLException;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
