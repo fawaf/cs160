@@ -833,6 +833,7 @@ public class FHActivitySelector extends Activity {
         				SharedPreferences.Editor editor = Utility.mPrefs.edit();
         				editor.putInt("taskID_"+(index+1), Utility.dbAdapter.getID(index));
         				editor.commit();
+                    	setScoreTxt();
         				button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
         			}
         			else if (result.equals("rejected")) {
@@ -930,8 +931,8 @@ public class FHActivitySelector extends Activity {
         				editor.putInt("taskID_"+(cool_index+1), Utility.dbAdapter.getID(cool_index));
         				editor.commit();
         				button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(cool_index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
-        			
-        		
+
+                    	setScoreTxt();
         	}
         	
         	/*Bundle extras = data.getExtras();
@@ -996,14 +997,7 @@ public class FHActivitySelector extends Activity {
                     	editor.commit();
                     	
                     	Utility.scoresDBAdapter.checkUserScore(facebookId, facebookName);
-                    	TextView score_txt = (TextView) findViewById(R.id.scoreView1);
-                    	String score_str = "Score: "
-                    			+ Utility.scoresDBAdapter.points
-                    			+ " ("
-                    			+ Utility.scoresDBAdapter.rank
-                    			+ ")";
-                    	score_txt.setText(score_str);
-                    	Log.d("friendHealthFHASA", "Score: " + score_str);
+                    	setScoreTxt();
             		} catch (MalformedURLException e) {
             			// TODO Auto-generated catch block
             			Log.d("friendHealthPA", "MalformedURLException");
@@ -1058,14 +1052,7 @@ public class FHActivitySelector extends Activity {
     			user_name.setText(facebookName);
             	
             	Utility.scoresDBAdapter.checkUserScore(facebookId, facebookName);
-            	TextView score_txt = (TextView) findViewById(R.id.scoreView1);
-            	String score_str = "Score: "
-            			+ Utility.scoresDBAdapter.points
-            			+ " ("
-            			+ Utility.scoresDBAdapter.rank
-            			+ ")";
-            	score_txt.setText(score_str);
-            	Log.d("friendHealthFHASA", "Score: " + score_str);
+            	setScoreTxt();
             }
             catch (FacebookError e) {
             	Log.e("friendHealthFHASA", "FacebookError (sDBA): " + e.toString());
@@ -1091,5 +1078,15 @@ public class FHActivitySelector extends Activity {
     	OptionsMenu om = new OptionsMenu();
     	return om.FHASMenuChoice(this, item);
     }
-
+    
+    private void setScoreTxt() {
+    	TextView score_txt = (TextView) findViewById(R.id.scoreView1);
+    	String score_str = "Score: "
+    			+ Utility.scoresDBAdapter.points
+    			+ " ("
+    			+ Utility.scoresDBAdapter.rank
+    			+ ")";
+    	score_txt.setText(score_str);
+    	Log.d("friendHealthFHASA", "Score: " + score_str);
+    }
 }
