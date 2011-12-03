@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
-public class AddTask extends Activity {
+public class AddTaskActivity extends Activity {
 	
 	@Override
 	public void onCreate (Bundle savedInstanceState) {
@@ -45,6 +45,16 @@ public class AddTask extends Activity {
 				
 				// Close the activity.
 				finish();
+			}
+		});
+		
+		//---get the Add Task button---
+		Button btn_takePicture= (Button) findViewById(R.id.btn_addTask);
+		
+		//---event handler for the Add Task button---
+		btn_takePicture.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				
 			}
 		});
 	}
