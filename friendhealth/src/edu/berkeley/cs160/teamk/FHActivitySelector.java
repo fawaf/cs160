@@ -896,22 +896,36 @@ public class FHActivitySelector extends Activity {
         	if (resultCode == RESULT_OK) {
         		Log.d("friendHealthFHASA", "Entered Utility.RC_NEWTASK");
         		Bundle extras = data.getExtras();
-        		if (extras != null) {
-        			if (extras.get("result").equals("only_add")) {
-        				Task new_task = new Task();
-        				new_task.name = extras.getString("name");
-        				new_task.points = 1;
-        				Utility.dbAdapter.addActivity(new_task);
-        				Toast.makeText(this,
-        						"Added activity: " + new_task.name,
-        						Toast.LENGTH_LONG).show();
-        			}
-        			else {
-        				Toast.makeText(this,
-        						"Submitted activity: " 
-        							+ extras.getString("name"),
-        						Toast.LENGTH_SHORT).show();
-        			}
+        		
+        		act_name = extras.getString("name");
+        		Task new_task = new Task();
+        		new_task.name = act_name;
+        		new_task.points = 1;
+        		act_id = Integer.valueOf(
+        				Utility.dbAdapter.addActivity(new_task).trim());
+        		
+        		if (extras.getString("result").equals("take_photo")) {
+        			Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        			Uri fileUri = Camera.getOutputMediaFileUri(getBaseContext(), Utility.MEDIA_TYPE_IMAGE, act_name);
+        			img_filename = fileUri.toString();
+        			submission_img_filename = img_filename;
+        			submission_score = 1;
+        			submission_act_name = act_name;
+        			intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+				
+        			SharedPreferences.Editor editor = Utility.mPrefs.edit();
+        			editor.putString("act_img_filename", img_filename);
+        			editor.putString("activity_name", act_name);
+        			editor.putInt("activity_id", act_id);
+					editor.putInt("activity_score", submission_score);
+					editor.putInt("activity_index", -1);
+					editor.commit();
+				
+					Log.d("friendHealthFHA", "Image name: " + img_filename);
+				
+					// start the image capture Intent.
+					startActivityForResult(intent, 
+							Utility.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         		}
         	}
         	return;
@@ -926,19 +940,23 @@ public class FHActivitySelector extends Activity {
         				Toast.makeText(this,
         						"Activity completed, Submission Successful",
         						Toast.LENGTH_LONG).show();
-        				Utility.dbAdapter.acceptActivity(cool_index);
-        				Button button;
-        				if (cool_index == 0) {
-        					button = act1_button;
-        				} else if (cool_index == 1) {
-        					button = act2_button;
-        				} else {
-        					button = act3_button;
+
+        				if (cool_index >= 0) {
+            				Utility.dbAdapter.acceptActivity(cool_index);
+        					Button button;
+        					if (cool_index == 0) {
+        						button = act1_button;
+        					} else if (cool_index == 1) {
+        						button = act2_button;
+        					} else {
+        						button = act3_button;
+        					}
+        					SharedPreferences.Editor editor = Utility.mPrefs.edit();
+        					editor.putInt("taskID_"+(cool_index+1), Utility.dbAdapter.getID(cool_index));
+        					editor.commit();
+        					button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(cool_index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
+
         				}
-        				SharedPreferences.Editor editor = Utility.mPrefs.edit();
-        				editor.putInt("taskID_"+(cool_index+1), Utility.dbAdapter.getID(cool_index));
-        				editor.commit();
-        				button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(cool_index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
 
                     	setScoreTxt();
         	}
