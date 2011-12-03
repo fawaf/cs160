@@ -16,7 +16,9 @@ public class Leaderboard extends Activity {
 		setContentView(R.layout.leaderboard);
 		
 		ListView leaderboard = (ListView) findViewById(R.id.leaderboard);
-
+		
+		String fb_user_id = Utility.mPrefs.getString("facebookUID", "");
+		Utility.scoresDBAdapter.calculateUserScore(fb_user_id);
 		Utility.scoresDBAdapter.getLeaderboard();
 		SimpleAdapter adapter = new SimpleAdapter(
 				this,
@@ -24,6 +26,8 @@ public class Leaderboard extends Activity {
 				R.layout.leaderboard_item,
 				new String[] {"Standing", "Score", "Player"},
 				new int[] {R.id.standingText, R.id.scoreText, R.id.userText});
+		leaderboard.setItemChecked(0, false);
+		leaderboard.setItemChecked(1, true);
 		leaderboard.setAdapter(adapter);
 	}
 	
