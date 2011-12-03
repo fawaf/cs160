@@ -40,7 +40,6 @@ public class ProfileActivity extends Activity {
 			JSONObject obj = Util.parseJson(jsonUser);
 			String facebookId = Utility.mPrefs.getString("facebookUID", "");
 			Log.d("friendHealthPA", "Facebook UID is: " + facebookId);
-			Utility.scoresDBAdapter.calculateUserTotalScore(facebookId);
 			ImageView user_picture = (ImageView) findViewById(R.id.profilePic);
 		    URL img_value = new URL("http://graph.facebook.com/" + facebookId + "/picture?type=large");
 		    Bitmap mIcon1 = BitmapFactory.decodeStream(img_value.openConnection().getInputStream());
