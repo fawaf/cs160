@@ -13,9 +13,12 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+
 public class BaseDBAdapter {
-	public BaseDBAdapter() {}
 	
+	public BaseDBAdapter() {
+		
+	}
 	
 	protected ArrayList<NameValuePair> emptyPair() {
 		return new ArrayList<NameValuePair>();
@@ -77,4 +80,5 @@ public class BaseDBAdapter {
 		Log.d("DBA", "URL is: " + url_cat);
 		return url_cat;
 	}
+	
 }

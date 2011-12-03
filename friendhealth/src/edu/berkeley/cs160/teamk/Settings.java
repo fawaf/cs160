@@ -9,6 +9,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.content.SharedPreferences;
 
+
 public class Settings extends Activity {
 	
 	ToggleButton toggle_sound;

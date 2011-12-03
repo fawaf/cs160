@@ -23,8 +23,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
+
 
 public class ProfileActivity extends Activity {
 	
@@ -37,10 +37,10 @@ public class ProfileActivity extends Activity {
 		
 		try {
 			String jsonUser = Utility.facebook.request("me");
-			JSONObject obj;
-			obj = Util.parseJson(jsonUser);
-			String facebookId = obj.optString("id");
+			JSONObject obj = Util.parseJson(jsonUser);
+			String facebookId = Utility.mPrefs.getString("facebookUID", "");
 			Log.d("friendHealthPA", "Facebook UID is: " + facebookId);
+			Utility.scoresDBAdapter.calculateUserScore(facebookId);
 			ImageView user_picture = (ImageView) findViewById(R.id.profilePic);
 		    URL img_value = new URL("http://graph.facebook.com/" + facebookId + "/picture?type=large");
 		    Bitmap mIcon1 = BitmapFactory.decodeStream(img_value.openConnection().getInputStream());

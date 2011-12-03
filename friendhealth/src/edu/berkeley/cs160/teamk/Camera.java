@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+
 public final class Camera {
 	
 	protected static final Uri getOutputMediaFileUri(Context c, int type, String name) {
