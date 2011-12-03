@@ -3,6 +3,8 @@ package edu.berkeley.cs160.teamk;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.facebook.android.DialogError;
@@ -11,6 +13,7 @@ import com.facebook.android.FacebookError;
 import com.facebook.android.Util;
 import com.facebook.android.Facebook.DialogListener;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -19,6 +22,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.MediaStore;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -183,6 +187,43 @@ public class FHActivitySelector extends Activity {
         		startActivityForResult(i, Utility.RC_ACTIVITY);
         		Log.d("friendHealthFHASA", "act3");
         	}	
+        });
+        calendar.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View view){
+        		String link = null;
+                try {
+        			String jsonAlbums = Utility.facebook.request("me/albums");
+        			JSONObject obj = Util.parseJson(jsonAlbums);
+        			JSONArray albums = obj.getJSONArray("data");
+        			Boolean found = false;
+        			int i = 0;
+        			while (!found){
+        				JSONObject album = albums.getJSONObject(i);
+        				String name = album.optString("name");
+        				if(name.equals("friendHealth Photos")){
+        					link = album.optString("link");
+        					found = true;
+        				}
+        				i++;	
+        			}
+        			
+        		} catch (MalformedURLException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		} catch (IOException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		} catch (JSONException e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		} catch (FacebookError e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+        		Intent i = new Intent(android.content.Intent.ACTION_VIEW, 
+        				Uri.parse(link));
+        		startActivity(i);
+        	}
         });
         
         final Toast help1 = Toast.makeText(this, Html.fromHtml("<font color='white'><big>+++  </big></font><font color='red'><big>Welcome </big></font>" +
@@ -531,18 +572,41 @@ public class FHActivitySelector extends Activity {
         	}
         });
         
+        
+        
+		final CharSequence[] items = {"Too Hard", "Inappropriate", "Don't want to do it"};
+
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		
+
+        
         rejectT1.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if (Utility.mPrefs.getBoolean("toggle_sound", true)) {
 					rj.start();
 				}
-				Utility.dbAdapter.declineActivity(0);
-				SharedPreferences.Editor editor = Utility.mPrefs.edit();
-				editor.putInt("event_created0", 0);
-				editor.putInt("taskID_1", Utility.dbAdapter.getID(0));
-				editor.commit();
-				//act1_button.setText(Utility.dbAdapter.toString(0));
-				act1_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
+				builder.setTitle("What is the reason you reject the task: " + Utility.dbAdapter.getName(0) + " ?");
+				builder.setItems(items, new DialogInterface.OnClickListener() 
+				{
+				    public void onClick(DialogInterface dialog, int item) 
+				    {
+				    	if (item == 0)
+				    		Utility.dbAdapter.rejectDifficultActivity(0);
+				    	else if (item == 1)
+				    		Utility.dbAdapter.flagActivity(0);
+				    	else
+				    		Utility.dbAdapter.declineActivity(0);
+				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_SHORT);
+				    	SharedPreferences.Editor editor = Utility.mPrefs.edit();
+						editor.putInt("event_created0", 0);
+						editor.putInt("taskID_1", Utility.dbAdapter.getID(0));
+						editor.commit();
+				    	act1_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
+				    }
+				    
+				});
+				final AlertDialog alert = builder.create();
+				alert.show();
 			}
 		});
         
@@ -552,13 +616,28 @@ public class FHActivitySelector extends Activity {
 				if (Utility.mPrefs.getBoolean("toggle_sound", true)) {
 					rj.start();
 				}
-				Utility.dbAdapter.declineActivity(1);
-				SharedPreferences.Editor editor = Utility.mPrefs.edit();
-				editor.putInt("event_created1", 0);
-				editor.putInt("taskID_2", Utility.dbAdapter.getID(1));
-				editor.commit();
-				//act2_button.setText(Utility.dbAdapter.toString(1));
-				act2_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(1) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(1) + " Points" + "</font>"));
+				builder.setTitle("What is the reason you reject the task: " + Utility.dbAdapter.getName(1) + " ?");
+				builder.setItems(items, new DialogInterface.OnClickListener() 
+				{
+				    public void onClick(DialogInterface dialog, int item) 
+				    {
+				    	if (item == 0)
+				    		Utility.dbAdapter.rejectDifficultActivity(1);
+				    	else if (item == 1)
+				    		Utility.dbAdapter.flagActivity(1);
+				    	else
+				    		Utility.dbAdapter.declineActivity(1);
+				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_SHORT);
+				    	SharedPreferences.Editor editor = Utility.mPrefs.edit();
+						editor.putInt("event_created1", 0);
+						editor.putInt("taskID_2", Utility.dbAdapter.getID(1));
+						editor.commit();
+				    	act2_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(1) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(1) + " Points" + "</font>"));
+				    }
+				    
+				});
+				final AlertDialog alert = builder.create();
+				alert.show();
 			}
 		});
         
@@ -567,13 +646,28 @@ public class FHActivitySelector extends Activity {
 				if (Utility.mPrefs.getBoolean("toggle_sound", true)) {
 					rj.start();
 				}
-				Utility.dbAdapter.declineActivity(2);
-				SharedPreferences.Editor editor = Utility.mPrefs.edit();
-				editor.putInt("event_created2", 0);
-				editor.putInt("taskID_3", Utility.dbAdapter.getID(2));
-				editor.commit();
-				//act3_button.setText(Utility.dbAdapter.toString(2));
-				act3_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(2) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(2) + " Points" + "</font>"));
+				builder.setTitle("What is the reason you reject the task: " + Utility.dbAdapter.getName(2) + " ?");
+				builder.setItems(items, new DialogInterface.OnClickListener() 
+				{
+				    public void onClick(DialogInterface dialog, int item) 
+				    {
+				    	if (item == 0)
+				    		Utility.dbAdapter.rejectDifficultActivity(2);
+				    	else if (item == 1)
+				    		Utility.dbAdapter.flagActivity(2);
+				    	else
+				    		Utility.dbAdapter.declineActivity(2);
+				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_SHORT);
+				    	SharedPreferences.Editor editor = Utility.mPrefs.edit();
+						editor.putInt("event_created2", 0);
+						editor.putInt("taskID_3", Utility.dbAdapter.getID(2));
+						editor.commit();
+				    	act3_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(2) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(2) + " Points" + "</font>"));
+				    }
+				    
+				});
+				final AlertDialog alert = builder.create();
+				alert.show();
 			}
 		});
         
@@ -714,24 +808,42 @@ public class FHActivitySelector extends Activity {
         				button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
         			}
         			else if (result.equals("rejected")) {
-        				Log.d("friendHealthFHASA", "index is: " + index);
-        				Toast.makeText(this, 
-        						"Activity rejected",
-        						Toast.LENGTH_LONG).show();
-        				Utility.dbAdapter.declineActivity(index);
-        				SharedPreferences.Editor editor = Utility.mPrefs.edit();
-        				editor.putInt("taskID_"+(index+1), Utility.dbAdapter.getID(index));
-        				editor.commit();
-        				Button button;
-        				if (index == 0) {
-        					button = act1_button;
-        				} else if (index == 1) {
-        					button = act2_button;
-        				} else {
-        					button = act3_button;
-        				}
-        				//button.setText(Utility.dbAdapter.toString(index));
-        				button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
+        				final CharSequence[] items = {"Too Hard", "Inappropriate", "Don't want to do it"};
+        				final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        				
+        				builder.setTitle("What is the reason you reject the task: " + Utility.dbAdapter.getName(index) + " ?");
+        				builder.setItems(items, new DialogInterface.OnClickListener() 
+        				{
+        				    public void onClick(DialogInterface dialog, int item) 
+        				    {
+        				    	if (item == 0)
+        				    		Utility.dbAdapter.rejectDifficultActivity(index);
+        				    	else if (item == 1)
+        				    		Utility.dbAdapter.flagActivity(index);
+        				    	else
+        				    		Utility.dbAdapter.declineActivity(index);
+        				    	
+        				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_SHORT);
+                				Button button;
+                				
+                				if (index == 0) {
+                					button = act1_button;
+                				} 
+                				else if (index == 1) {
+                					button = act2_button;
+                				} 
+                				else {
+                					button = act3_button;
+                				}
+                				SharedPreferences.Editor editor = Utility.mPrefs.edit();
+                				editor.putInt("taskID_"+(index+1), Utility.dbAdapter.getID(index));
+                				editor.commit();
+        				    	button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
+        				    }
+        				    
+        				});
+        				final AlertDialog alert = builder.create();
+        				alert.show();
         			}
         			else if (result.equals("rejected_tooHard")) {
         				Toast.makeText(this,

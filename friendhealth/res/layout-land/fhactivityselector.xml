@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/newTask"
         android:layout_toRightOf="@+id/newTask"
-        android:text="Calendar"
+        android:text="fh Album"
         android:textSize="15pt" />
 
     <Button
