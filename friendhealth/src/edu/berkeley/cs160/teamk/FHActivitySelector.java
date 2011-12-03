@@ -819,7 +819,7 @@ public class FHActivitySelector extends Activity {
         			index = extras.getInt("index");
         			if (result.equals("completed")) {
         				Toast.makeText(this,
-        						"Activity completed",
+        						"Activity completed, Submission Successful",
         						Toast.LENGTH_LONG).show();
         				Utility.dbAdapter.acceptActivity(index);
         				Button button;
@@ -921,16 +921,16 @@ public class FHActivitySelector extends Activity {
         	if (Utility.mPrefs.getBoolean("pic_submit", false)) {
         		
         			int cool_index = Utility.mPrefs.getInt("From_AS_Index", -2);
-        			Log.d("friendHealthFHASA", "index is now: "+cool_index);
+        			Log.d("friendHealthFHASA", "index is now: " + cool_index);
         			
         				Toast.makeText(this,
-        						"Activity completed",
+        						"Activity completed, Submission Successful",
         						Toast.LENGTH_LONG).show();
         				Utility.dbAdapter.acceptActivity(cool_index);
         				Button button;
         				if (cool_index == 0) {
         					button = act1_button;
-        				} else if (index == 1) {
+        				} else if (cool_index == 1) {
         					button = act2_button;
         				} else {
         					button = act3_button;
