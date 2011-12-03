@@ -37,14 +37,15 @@ public class AddTaskActivity extends Activity {
 						(EditText) findViewById(R.id.taskName);
 				taskName = txt_taskName.getText().toString();
 				Log.d("friendHealthATA", "Task name: " + taskName);
-				//---set the data to pass back---
-				extras.putString("name", taskName);
-				
 				// Get Tags.
 				EditText txt_taskTags =
 						(EditText) findViewById(R.id.taskTags);
 				taskTags = txt_taskTags.getText().toString(); 
 				Log.d("friendHealthATA", "Task tag: " + taskTags);
+						
+				
+				//---set the data to pass back---
+				extras.putString("name", taskName);
 				// Put tags into the Bundle.
 				extras.putString("tags", taskTags);
 				// Only adding task rather taking picture.
@@ -66,6 +67,18 @@ public class AddTaskActivity extends Activity {
 			public void onClick(View view) {
 				data = new Intent();
 				extras = new Bundle();
+				
+				//---get the Task name---
+				EditText txt_taskName =
+						(EditText) findViewById(R.id.taskName);
+				taskName = txt_taskName.getText().toString();
+				Log.d("friendHealthATA", "Task name: " + taskName);
+				// Get Tags.
+				EditText txt_taskTags =
+						(EditText) findViewById(R.id.taskTags);
+				taskTags = txt_taskTags.getText().toString(); 
+				Log.d("friendHealthATA", "Task tag: " + taskTags);
+				
 				extras.putString("result", "take_photo");
 				extras.putString("name", taskName);
 				data.putExtras(extras);
