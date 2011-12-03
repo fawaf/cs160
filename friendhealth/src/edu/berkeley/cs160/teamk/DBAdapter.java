@@ -12,15 +12,13 @@ public class DBAdapter extends BaseDBAdapter {
 	
 	public static final String URL_BASE = 
 			"https://secure.ocf.berkeley.edu/~goodfrie/";
-	public static final String URL_ACTIVITY_GET = "getRandomActivity.php";
-	public static final String URL_ACTIVITY_GET_RANDOM = "getRandomActivities.php";
-	public static final String URL_ACTIVITY_UPDATE = "updateActivity.php";
-	public static final String URL_ACTIVITY_ADD = "addActivity.php";
-	public static final String URL_ACTIVITY_GET_ID = "getActivityByID.php";
 	public static final String URL_PHOTO_GET = "getPhotoByID.php";
 	public static final String URL_INFO_ADD = "addUserInfo.php";
-	public static final String URL_SCORE_GET = "getScoreByID.php";
-	public static final String URL_SCORE_ADD = "addScore.php";
+	public static final String URL_ACTIVITY_ADD = "addActivity.php";
+	public static final String URL_ACTIVITY_UPDATE = "updateActivity.php";
+	public static final String URL_ACTIVITY_GET = "getRandomActivity.php";
+	public static final String URL_ACTIVITY_GET_ID = "getActivityByID.php";
+	public static final String URL_ACTIVITY_GET_RANDOM = "getRandomActivities.php";
 	public static final String URL_ACTIVITY_ACCEPT = "acceptActivity.php";
 	public static final String URL_ACTIVITY_REJECT = "rejectActivity.php";
 	public static final String URL_ACTIVITY_FLAG = "flagActivity.php";
