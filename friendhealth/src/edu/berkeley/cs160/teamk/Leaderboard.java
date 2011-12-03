@@ -2,13 +2,11 @@ package edu.berkeley.cs160.teamk;
 
 // Copied from https://gist.github.com/1256137
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 
 public class Leaderboard extends Activity {

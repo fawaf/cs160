@@ -19,10 +19,14 @@ public class Task {
 		this(-1, name, 1, 0, 0, 0);
 	}
 	
-	public Task (int id, String name, int points, int tF, int tD, int tA) {
+	public Task(String name, int pts) {
+		this(-1, name, pts, 0, 0, 0);
+	}
+	
+	public Task (int id, String name, int pts, int tF, int tD, int tA) {
 		this.id = id;
 		this.name = name;
-		this.points = points;
+		points = pts;
 		timesFlagged = tF;
 		timesDeclined = tD;
 		timesAccepted = tA;
