@@ -32,7 +32,7 @@ public class Settings extends Activity {
 						((ToggleButton) v).isChecked()
 						? "Sound Toggled ON"
 						: "Sound Toggled OFF",
-						Toast.LENGTH_SHORT).show();
+						Toast.LENGTH_LONG).show();
 				editor.commit();
 			}
 		});

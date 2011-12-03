@@ -111,7 +111,7 @@ public class DBAdapter extends BaseDBAdapter {
 		}
 	}
 	
-	public void addActivity(Task new_task) {
+	public String addActivity(Task new_task) {
 		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		pairs.add(new BasicNameValuePair(
 				"name", new_task.name));
@@ -119,9 +119,8 @@ public class DBAdapter extends BaseDBAdapter {
 				"points", String.valueOf(new_task.points)));
 		
 		String result = getDatabaseOutput(URL_BASE + URL_ACTIVITY_ADD, pairs);
-		if (!result.equals("SUCCESS")) {
-			Log.e("DBA", "Error Adding: " + result);
-		}
+		Log.d("DBA", "addActivity result: " + result);
+		return result;
 	}
 	
 	public void addUserInfo(String activityid, String photoid, int base_score, String user_id){
@@ -135,9 +134,7 @@ public class DBAdapter extends BaseDBAdapter {
 		pairs.add(new BasicNameValuePair(
 				"fb_user_id", user_id));
 		String result = getDatabaseOutput(URL_BASE + URL_INFO_ADD, pairs);
-		if(!result.equals("SUCCESS")) {
-			Log.d("log_tag", "Error Adding: " + result);
-		}
+		Log.d("DBA", "addUserInfo result: " + result);
 	}
 	
 	public int getID(int index) {

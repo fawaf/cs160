@@ -12,14 +12,12 @@ public class Task {
 	
 	
 	public Task() {
-		id = -1;
-		name = "";
-		points = 0;
-		timesFlagged = 0;
-		timesDeclined = 0;
-		timesAccepted = 0;
+		this(-1, "", 0, 0, 0, 0);
 	}
 	
+	public Task(String name) {
+		this(-1, name, 1, 0, 0, 0);
+	}
 	
 	public Task (int id, String name, int points, int tF, int tD, int tA) {
 		this.id = id;
@@ -29,7 +27,6 @@ public class Task {
 		timesDeclined = tD;
 		timesAccepted = tA;
 	}
-	
 	
 	public String toString() {
 		return (name + " (" + points + " pts)");

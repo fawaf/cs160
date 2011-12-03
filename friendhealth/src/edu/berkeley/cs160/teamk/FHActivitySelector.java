@@ -603,12 +603,12 @@ public class FHActivitySelector extends Activity {
 				    		Utility.dbAdapter.flagActivity(0);
 				    	else
 				    		Utility.dbAdapter.declineActivity(0);
-				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_SHORT);
-				    	SharedPreferences.Editor editor = Utility.mPrefs.edit();
-						editor.putInt("event_created0", 0);
-						editor.putInt("taskID_1", Utility.dbAdapter.getID(0));
-						editor.commit();
-				    	act1_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
+					    	Toast.makeText(getBaseContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_LONG);
+					    	SharedPreferences.Editor editor = Utility.mPrefs.edit();
+							editor.putInt("event_created0", 0);
+							editor.putInt("taskID_1", Utility.dbAdapter.getID(0));
+							editor.commit();
+					    	act1_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
 				    }
 				    
 				});
@@ -634,7 +634,7 @@ public class FHActivitySelector extends Activity {
 				    		Utility.dbAdapter.flagActivity(1);
 				    	else
 				    		Utility.dbAdapter.declineActivity(1);
-				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_SHORT);
+				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_LONG);
 				    	SharedPreferences.Editor editor = Utility.mPrefs.edit();
 						editor.putInt("event_created1", 0);
 						editor.putInt("taskID_2", Utility.dbAdapter.getID(1));
@@ -664,7 +664,7 @@ public class FHActivitySelector extends Activity {
 				    		Utility.dbAdapter.flagActivity(2);
 				    	else
 				    		Utility.dbAdapter.declineActivity(2);
-				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_SHORT);
+				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_LONG);
 				    	SharedPreferences.Editor editor = Utility.mPrefs.edit();
 						editor.putInt("event_created2", 0);
 						editor.putInt("taskID_3", Utility.dbAdapter.getID(2));
@@ -851,7 +851,7 @@ public class FHActivitySelector extends Activity {
         				    	else
         				    		Utility.dbAdapter.declineActivity(index);
         				    	
-        				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_SHORT);
+        				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_LONG);
                 				Button button;
                 				
                 				if (index == 0) {
