@@ -906,8 +906,33 @@ public class FHActivitySelector extends Activity {
         		}
         	}
         	return;
-        default:
+        case Utility.RC_ACTIVITYSUBMISSION:
         	Log.d("friendHealthFHASA", "Entered default onActivityResult");
+        
+        	if (Utility.mPrefs.getBoolean("pic_submit", false)) {
+        		
+        			int cool_index = Utility.mPrefs.getInt("From_AS_Index", -2);
+        			Log.d("friendHealthFHASA", "index is now: "+cool_index);
+        			
+        				Toast.makeText(this,
+        						"Activity completed",
+        						Toast.LENGTH_LONG).show();
+        				Utility.dbAdapter.acceptActivity(cool_index);
+        				Button button;
+        				if (cool_index == 0) {
+        					button = act1_button;
+        				} else if (index == 1) {
+        					button = act2_button;
+        				} else {
+        					button = act3_button;
+        				}
+        				SharedPreferences.Editor editor = Utility.mPrefs.edit();
+        				editor.putInt("taskID_"+(cool_index+1), Utility.dbAdapter.getID(cool_index));
+        				editor.commit();
+        				button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(cool_index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
+        			
+        		
+        	}
         	
         	/*Bundle extras = data.getExtras();
         	if (extras != null) {
