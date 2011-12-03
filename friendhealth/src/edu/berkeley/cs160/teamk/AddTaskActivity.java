@@ -42,6 +42,8 @@ public class AddTaskActivity extends Activity {
 				Log.d("friendHealthATA", "Task tag: " + taskTags);
 				// Put tags into the Bundle.
 				extras.putString("tags", taskTags);
+				// Only adding task rather taking picture.
+				extras.putString("result", "only_add");
 				
 				data.putExtras(extras);
 				setResult(RESULT_OK, data);
@@ -61,6 +63,30 @@ public class AddTaskActivity extends Activity {
 			}
 		});
 	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
+		case Utility.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
+			onCameraActivityResult(resultCode, data);
+			return;
+		case Utility.RC_ACTIVITYSUBMISSION:
+			onActivitySubmissionResult(resultCode, data);
+			return;
+		}
+	}
+	
+	
+	private void onCameraActivityResult(int resultCode, Intent data) {
+		
+	}
+	
+	
+	private void onActivitySubmissionResult(int resultCode, Intent data) {
+		
+	}
+	
 	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

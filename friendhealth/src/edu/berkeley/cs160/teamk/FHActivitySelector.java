@@ -897,13 +897,21 @@ public class FHActivitySelector extends Activity {
         		Log.d("friendHealthFHASA", "Entered Utility.RC_NEWTASK");
         		Bundle extras = data.getExtras();
         		if (extras != null) {
-        			Task new_task = new Task();
-        			new_task.name = extras.getString("name");
-        			new_task.points = 1;
-        			Utility.dbAdapter.addActivity(new_task);
-        			Toast.makeText(this,
-        					"Added activity: " + new_task.name,
-        					Toast.LENGTH_LONG).show();
+        			if (extras.get("result").equals("only_add")) {
+        				Task new_task = new Task();
+        				new_task.name = extras.getString("name");
+        				new_task.points = 1;
+        				Utility.dbAdapter.addActivity(new_task);
+        				Toast.makeText(this,
+        						"Added activity: " + new_task.name,
+        						Toast.LENGTH_LONG).show();
+        			}
+        			else {
+        				Toast.makeText(this,
+        						"Submitted activity: " 
+        							+ extras.getString("name"),
+        						Toast.LENGTH_SHORT).show();
+        			}
         		}
         	}
         	return;
