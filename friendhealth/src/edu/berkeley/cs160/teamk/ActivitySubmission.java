@@ -181,7 +181,7 @@ public class ActivitySubmission extends Activity {
 								JSONObject obj = Util.parseJson(photoid);
 								String photoId = obj.optString("id");
 								Utility.dbAdapter.addUserInfo(String.valueOf(act_id), photoId, score, facebookId);
-								Utility.scoresDBAdapter.calculateUserScore(facebookId);
+								Utility.scoresDBAdapter.calculateUserTotalScore(facebookId);
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
