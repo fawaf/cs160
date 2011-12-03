@@ -3,6 +3,7 @@ package edu.berkeley.cs160.teamk;
 import android.app.Activity;
 import android.os.Bundle;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,16 +30,18 @@ public class AddTaskActivity extends Activity {
 				//---get the Task name---
 				EditText txt_taskName =
 						(EditText) findViewById(R.id.taskName);
+				String taskName = txt_taskName.getText().toString();
+				Log.d("friendHealthATA", "Task name: " + taskName);
 				//---set the data to pass back---
-				extras.putString("name",
-						txt_taskName.getText().toString());
+				extras.putString("name", taskName);
 				
 				// Get Tags.
 				EditText txt_taskTags =
 						(EditText) findViewById(R.id.taskTags);
+				String taskTags = txt_taskTags.getText().toString(); 
+				Log.d("friendHealthATA", "Task tag: " + taskTags);
 				// Put tags into the Bundle.
-				extras.putString("tags",
-						txt_taskTags.getText().toString());
+				extras.putString("tags", taskTags);
 				
 				data.putExtras(extras);
 				setResult(RESULT_OK, data);
@@ -49,12 +52,12 @@ public class AddTaskActivity extends Activity {
 		});
 		
 		//---get the Add Task button---
-		Button btn_takePicture= (Button) findViewById(R.id.btn_addTask);
+		Button btn_takePicture= (Button) findViewById(R.id.btn_takePicture);
 		
 		//---event handler for the Add Task button---
 		btn_takePicture.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
-				
+				Log.d("friendHealthATA", "WHY YOU NO WORK");
 			}
 		});
 	}

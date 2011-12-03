@@ -12,24 +12,25 @@ public class Task {
 	
 	
 	public Task() {
-		id = -1;
-		name = "";
-		points = 0;
-		timesFlagged = 0;
-		timesDeclined = 0;
-		timesAccepted = 0;
+		this(-1, "", 0, 0, 0, 0);
 	}
 	
+	public Task(String name) {
+		this(-1, name, 1, 0, 0, 0);
+	}
 	
-	public Task (int id, String name, int points, int tF, int tD, int tA) {
+	public Task(String name, int pts) {
+		this(-1, name, pts, 0, 0, 0);
+	}
+	
+	public Task (int id, String name, int pts, int tF, int tD, int tA) {
 		this.id = id;
 		this.name = name;
-		this.points = points;
+		points = pts;
 		timesFlagged = tF;
 		timesDeclined = tD;
 		timesAccepted = tA;
 	}
-	
 	
 	public String toString() {
 		return (name + " (" + points + " pts)");

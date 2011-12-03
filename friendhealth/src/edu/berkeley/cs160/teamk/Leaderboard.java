@@ -2,13 +2,11 @@ package edu.berkeley.cs160.teamk;
 
 // Copied from https://gist.github.com/1256137
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 
 public class Leaderboard extends Activity {
@@ -20,7 +18,7 @@ public class Leaderboard extends Activity {
 		ListView leaderboard = (ListView) findViewById(R.id.leaderboard);
 		
 		String fb_user_id = Utility.mPrefs.getString("facebookUID", "");
-		Utility.scoresDBAdapter.calculateUserScore(fb_user_id);
+		Utility.scoresDBAdapter.calculateUserTotalScore(fb_user_id);
 		Log.d("friendHealthL", "FB User: " + fb_user_id + 
 				" (" + Utility.scoresDBAdapter.rank + ")");
 		HighlightAdapter adapter = new HighlightAdapter(
@@ -32,28 +30,6 @@ public class Leaderboard extends Activity {
 				Utility.scoresDBAdapter.rank - 1);
 		leaderboard.setAdapter(adapter);
 	}
-	
-	/*
-	private void populateList() {
-		HashMap<String, String> temp1 = new HashMap<String, String>();
-		temp1.put("Standing", "1");
-		temp1.put("Score", "100");
-		temp1.put("Player", "Gong Cheng");
-		scores.add(temp1);
-		
-		HashMap<String, String> temp2 = new HashMap<String, String>();
-		temp2.put("Standing", "2");
-		temp2.put("Score", "85");
-		temp2.put("Player", "Manduo Dong");
-		scores.add(temp2);
-		
-		HashMap<String, String> temp3 = new HashMap<String, String>();
-		temp3.put("Standing", "3");
-		temp3.put("Score", "45");
-		temp3.put("Player", "Scott Goodfriend");
-		scores.add(temp3);
-	}
-	*/
 	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

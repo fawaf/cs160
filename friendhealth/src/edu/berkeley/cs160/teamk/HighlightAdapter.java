@@ -2,12 +2,12 @@ package edu.berkeley.cs160.teamk;
 
 import java.util.HashMap;
 import java.util.List;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SimpleAdapter;
+
 
 public class HighlightAdapter extends SimpleAdapter {
 	private int[] colors = new int[] {Color.BLACK, 0xff003300};
