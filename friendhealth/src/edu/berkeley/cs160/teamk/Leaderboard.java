@@ -23,17 +23,14 @@ public class Leaderboard extends Activity {
 		Utility.scoresDBAdapter.calculateUserTotalScore(fb_user_id);
 		Log.d("friendHealthL", "FB User: " + fb_user_id + 
 				" (" + Utility.scoresDBAdapter.rank + ")");
-		SimpleAdapter adapter = new SimpleAdapter(
+		HighlightAdapter adapter = new HighlightAdapter(
 				this,
 				Utility.scoresDBAdapter.scores,
 				R.layout.leaderboard_item,
 				new String[] {"Standing", "Score", "Player"},
-				new int[] {R.id.standingText, R.id.scoreText, R.id.userText});
-		adapter.getView(0, null, null).setBackgroundColor(Color.GREEN);
+				new int[] {R.id.standingText, R.id.scoreText, R.id.userText},
+				Utility.scoresDBAdapter.rank - 1);
 		leaderboard.setAdapter(adapter);
-		
-		Log.d("friendHealthL", "leaderboard: " + leaderboard.getChildCount() +
-				" out of " + adapter.getCount());
 	}
 	
     @Override
