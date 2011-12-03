@@ -118,7 +118,7 @@ public class FHActivity extends Activity {
 					int position, long id) {
 				/*Toast.makeText(getBaseContext(),
 						"pic" + (position + 1) +  " selected",
-						Toast.LENGTH_SHORT).show();*/
+						LENGTH_LONG).show();*/
 				
 				//---display the images selected---
 				ImageView imageView = (ImageView) findViewById(R.id.img_fhAct);
@@ -436,7 +436,7 @@ public class FHActivity extends Activity {
 					response = extras.getString("response");
 					editor.putString("act_response", response);
 					Toast.makeText(this, response,
-							Toast.LENGTH_SHORT).show();
+							Toast.LENGTH_LONG).show();
 				}
 				
 				btn_invite.setBackgroundColor(0xFF00FF00);
