@@ -30,10 +30,10 @@
         android:id="@+id/edt_Caption"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_below="@+id/img_submit"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="375dp"
         android:layout_weight="0.27"
+        
         android:inputType="textMultiLine" android:layout_marginRight="50dp" android:layout_marginLeft="50dp"/>
 
     <Button
@@ -41,7 +41,7 @@
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="35dp"
+        android:layout_marginLeft="50dp"
         android:layout_marginTop="270dp"
         android:layout_toRightOf="@+id/btn_Submit"
         android:drawableTop="@drawable/rotate"

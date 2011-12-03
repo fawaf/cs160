@@ -149,6 +149,9 @@ public class ActivitySubmission extends Activity {
 			        Bitmap finalmap2 = Bitmap.createBitmap(bmap, 0, 0, bmap.getWidth(), bmap.getHeight(), mtx, true);
 			        BitmapDrawable bmd = new BitmapDrawable(finalmap2);
 			        Log.d("check", "" + finalmap2);
+			        imageView.getLayoutParams().height = bmap.getWidth();
+			        imageView.getLayoutParams().width = bmap.getHeight();
+			     
 			        imageView.setImageDrawable(bmd);
 	        	}
 	        	});

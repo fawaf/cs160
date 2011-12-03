@@ -10,8 +10,8 @@
         android:layout_width="320dp"
         android:layout_height="230dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
         android:scaleType="fitXY" />
     
     <Button
@@ -19,7 +19,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/edt_Caption"
-        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="410dp"
         android:layout_marginTop="12dp"
         android:drawableLeft="@drawable/facebook_icon2"
         android:text="@string/btn_submit"
@@ -28,21 +28,18 @@
 
     <EditText
         android:id="@+id/edt_Caption"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="100dp"
-        android:layout_below="@+id/img_submit"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="30dp"
         android:layout_weight="0.27"
-        android:inputType="textMultiLine" android:layout_marginRight="100dp" android:layout_marginLeft="100dp"/>
+        android:inputType="textMultiLine" android:layout_marginRight="30dp" android:layout_marginLeft="360dp"/>
 
     <Button
         android:id="@+id/btn_Rotate"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:layout_alignBottom="@+id/img_submit"
         android:layout_marginLeft="75dp"
-        android:layout_toRightOf="@+id/img_submit"
+        android:layout_marginTop="380dp"
         android:drawableTop="@drawable/rotate"
         android:text="Rotate"/>
 
