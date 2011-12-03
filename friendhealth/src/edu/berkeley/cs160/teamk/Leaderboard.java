@@ -29,7 +29,6 @@ public class Leaderboard extends Activity {
 				R.layout.leaderboard_item,
 				new String[] {"Standing", "Score", "Player"},
 				new int[] {R.id.standingText, R.id.scoreText, R.id.userText});
-		adapter.getView(0, null, null).setBackgroundColor(Color.GREEN);
 		leaderboard.setAdapter(adapter);
 		
 		Log.d("friendHealthL", "leaderboard: " + leaderboard.getChildCount() +
