@@ -108,7 +108,6 @@ public class FHActivity extends Activity {
 		txt_ActTitle.setText(act_name);
 		txt_ActPt.setText("(+ "+ score + " points)");
 			
-		
 		Gallery gallery = (Gallery) findViewById(R.id.activityGallery);
 		
 		
