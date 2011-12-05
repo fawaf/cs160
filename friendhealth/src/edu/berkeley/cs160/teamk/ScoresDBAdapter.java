@@ -2,26 +2,27 @@ package edu.berkeley.cs160.teamk;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import android.util.Log;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 public class ScoresDBAdapter extends BaseDBAdapter {
+	
 	private static final String URL_BASE = 
 			"https://secure.ocf.berkeley.edu/~goodfrie/";
-	private static final String URL_SCORES_LEADERBOARD = 
-			"getLeaderboard.php";
 	private static final String URL_SCORES_SORTEDLEADERBOARD =
 			"getSortedLeaderboard.php";
 	private static final String URL_SCORES_USERCHECK =
 			"checkUserScore.php";
 	private static final String URL_SCORES_USERCALCULATE =
-			"calculateUserScore.php";
+			"calculateUserTotalScore.php";
+	public static final String URL_SCORES_BASE_GET = "getBaseScore.php";
+	public static final String URL_PHOTO_FB_ID_GET = "getPhotoByFBID.php";
+	public static final String URL_CALCULATED_SCORE_ADD = "updateCalculatedScore.php";
 	
 	
 	public ArrayList< HashMap<String, String> > scores;
@@ -55,17 +56,67 @@ public class ScoresDBAdapter extends BaseDBAdapter {
 		Log.d("DBA", "Points: " + points + " Rank: " + rank);
 	}
 	
+	public String getBaseScore(String photo_id) {
+		Log.d("DBA", "getBaseScore(" + photo_id + ")");
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		pairs.add(new BasicNameValuePair(
+				"photo_id", photo_id));
+		
+		String result = getDatabaseOutput(
+				URL_BASE + URL_SCORES_BASE_GET, pairs);
+		Log.d("DBA", "Base Score: " + result);
+		return result;
+	}
 	
-	public void calculateUserScore(String fb_user_id) {
+	public String[] getPhotoByFBID(String fb_user_id) {
+		Log.d("DBA", "getPhotoID(" + fb_user_id + ")");
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		pairs.add(new BasicNameValuePair(
+				"fb_user_id", fb_user_id));
+		
+		String result = getDatabaseOutput(
+				URL_BASE + URL_PHOTO_FB_ID_GET, pairs);
+		Log.d("DBA", "Photo ID: " + result);
+		String[] photoids = {""};
+		try {
+			JSONArray photos = new JSONArray(result);
+			photoids = new String[photos.length()];
+			for(int i = 0; i<photos.length(); i++){
+				JSONObject obj = photos.getJSONObject(i);
+				photoids[i] = obj.optString("photo_id");
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return photoids;
+	}
+	
+	public void updateCalculatedScore(String calculated_score, String photo_id) {
+		Log.d("DBA", "updateCalculatedScore(" + calculated_score + ")");
+		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		pairs.add(new BasicNameValuePair(
+				"calculated_score", calculated_score));
+		pairs.add(new BasicNameValuePair(
+				"photo_id", photo_id));
+		
+		String result = getDatabaseOutput(
+				URL_BASE + URL_CALCULATED_SCORE_ADD, pairs);
+		Log.d("DBA", "Calculated Score: " + result);
+	}
+	
+	public void calculateUserTotalScore(String fb_user_id) {
 		Log.d("DBA", "calculateTotalScore(" + fb_user_id + ")");
 		ArrayList<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		pairs.add(new BasicNameValuePair(
-				"fb_id", fb_user_id));
+				"fb_user_id", fb_user_id));
+
+		Scores.calculateFacebookScore(fb_user_id);
 		
 		String result = getDatabaseOutput(
 				URL_BASE + URL_SCORES_USERCALCULATE, pairs);
 		parseUserScoreJSONData(result);
 		Log.d("DBA", "Points: " + points + " Rank: " + rank);
+		getLeaderboard();
 	}
 	
 	
@@ -106,5 +157,6 @@ public class ScoresDBAdapter extends BaseDBAdapter {
 		catch (JSONException e) {
 			Log.e("DBA", "Error parsing data (pUSJD): " + e.toString());
 		}
-	}		
+	}
+	
 }

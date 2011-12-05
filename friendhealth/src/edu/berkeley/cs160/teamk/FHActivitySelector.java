@@ -1,9 +1,7 @@
 package edu.berkeley.cs160.teamk;
 
-
 import java.io.IOException;
 import java.net.MalformedURLException;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,9 +55,12 @@ public class FHActivitySelector extends Activity {
 	String img_filename = "";
 	String act_name = "";
 	int index = 0;
+	int act_id = 0;
 	String submission_act_name = "";
 	int submission_score = 0;
 	String submission_img_filename = "";
+	int submission_act_id = 0;
+	int submission_index = -1;
 	
     /** Called when the activity is first created. */
     @Override
@@ -86,6 +87,12 @@ public class FHActivitySelector extends Activity {
         rejectT2 = (ImageButton) findViewById(R.id.reject2);
         rejectT3 = (ImageButton) findViewById(R.id.reject3);
         help = (Button) findViewById(R.id.as_help);
+        img_filename = Utility.mPrefs.getString("act_img_filename", "");
+        submission_act_name = Utility.mPrefs.getString("activity_name", "");
+        submission_score = Utility.mPrefs.getInt("activity_score", -1);
+        submission_act_id = Utility.mPrefs.getInt("activity_id", 0);
+        submission_index = Utility.mPrefs.getInt("activity_index", -1);
+       
         
         Log.d("friendHealthFHASA", "Initializing newTask Button");
         
@@ -596,8 +603,12 @@ public class FHActivitySelector extends Activity {
 				    		Utility.dbAdapter.flagActivity(0);
 				    	else
 				    		Utility.dbAdapter.declineActivity(0);
-				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_SHORT);
-				    	act1_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
+					    	Toast.makeText(getBaseContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_LONG);
+					    	SharedPreferences.Editor editor = Utility.mPrefs.edit();
+							editor.putInt("event_created0", 0);
+							editor.putInt("taskID_1", Utility.dbAdapter.getID(0));
+							editor.commit();
+					    	act1_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(0) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(0) + " Points" + "</font>"));
 				    }
 				    
 				});
@@ -623,7 +634,11 @@ public class FHActivitySelector extends Activity {
 				    		Utility.dbAdapter.flagActivity(1);
 				    	else
 				    		Utility.dbAdapter.declineActivity(1);
-				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_SHORT);
+				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_LONG);
+				    	SharedPreferences.Editor editor = Utility.mPrefs.edit();
+						editor.putInt("event_created1", 0);
+						editor.putInt("taskID_2", Utility.dbAdapter.getID(1));
+						editor.commit();
 				    	act2_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(1) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(1) + " Points" + "</font>"));
 				    }
 				    
@@ -649,7 +664,11 @@ public class FHActivitySelector extends Activity {
 				    		Utility.dbAdapter.flagActivity(2);
 				    	else
 				    		Utility.dbAdapter.declineActivity(2);
-				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_SHORT);
+				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_LONG);
+				    	SharedPreferences.Editor editor = Utility.mPrefs.edit();
+						editor.putInt("event_created2", 0);
+						editor.putInt("taskID_3", Utility.dbAdapter.getID(2));
+						editor.commit();
 				    	act3_button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(2) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(2) + " Points" + "</font>"));
 				    }
 				    
@@ -668,6 +687,7 @@ public class FHActivitySelector extends Activity {
 			public void onClick(View view) {
 				
 				act_name = Utility.dbAdapter.getName(0);
+				act_id = Utility.dbAdapter.getID(0);
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 				Uri fileUri = Camera.getOutputMediaFileUri(getBaseContext(), Utility.MEDIA_TYPE_IMAGE, act_name);
 				img_filename = fileUri.toString();
@@ -678,6 +698,10 @@ public class FHActivitySelector extends Activity {
 				
 				SharedPreferences.Editor editor = Utility.mPrefs.edit();
 				editor.putString("act_img_filename", img_filename);
+				editor.putString("activity_name", act_name);
+				editor.putInt("activity_id", act_id);
+				editor.putInt("activity_score", submission_score);
+				editor.putInt("activity_index", 0);
 				editor.commit();
 				
 				Log.d("friendHealthFHA", "Image name: " + img_filename);
@@ -695,6 +719,7 @@ public class FHActivitySelector extends Activity {
 			public void onClick(View view) {
 				
 				act_name = Utility.dbAdapter.getName(1);
+				act_id = Utility.dbAdapter.getID(1);
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 				Uri fileUri = Camera.getOutputMediaFileUri(getBaseContext(), Utility.MEDIA_TYPE_IMAGE, act_name);
 				img_filename = fileUri.toString();
@@ -705,6 +730,10 @@ public class FHActivitySelector extends Activity {
 				
 				SharedPreferences.Editor editor = Utility.mPrefs.edit();
 				editor.putString("act_img_filename", img_filename);
+				editor.putString("activity_name", act_name);
+				editor.putInt("activity_id", act_id);
+				editor.putInt("activity_score", submission_score);
+				editor.putInt("activity_index", 1);
 				editor.commit();
 				
 				Log.d("friendHealthFHA", "Image name: " + img_filename);
@@ -722,9 +751,13 @@ public class FHActivitySelector extends Activity {
 			public void onClick(View view) {
 				
 				act_name = Utility.dbAdapter.getName(2);
+				act_id = Utility.dbAdapter.getID(2);
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				Log.d("friendHealthFHA", "Before calling camera on button3");
 				Uri fileUri = Camera.getOutputMediaFileUri(getBaseContext(), Utility.MEDIA_TYPE_IMAGE, act_name);
 				img_filename = fileUri.toString();
+				Log.d("friendHealthFHA", "Inside camera3 button");
+				Log.d("friendHealthFHA", "img_filename is: "+img_filename);
 				submission_img_filename = img_filename;
 				submission_score = Utility.dbAdapter.getPoints(2);
 				submission_act_name = act_name;
@@ -732,9 +765,12 @@ public class FHActivitySelector extends Activity {
 				
 				SharedPreferences.Editor editor = Utility.mPrefs.edit();
 				editor.putString("act_img_filename", img_filename);
+				editor.putString("activity_name", act_name);
+				editor.putInt("activity_id", act_id);
+				editor.putInt("activity_score", submission_score);
+				editor.putInt("activity_index", 2);
 				editor.commit();
 				
-				Log.d("friendHealthFHA", "Image name: " + img_filename);
 				
 				// start the image capture Intent.
 				startActivityForResult(intent, 
@@ -755,6 +791,7 @@ public class FHActivitySelector extends Activity {
         	if (resultCode == RESULT_OK) {
         		Log.d("friendHealthFHASA", "Entered Utility.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE");
 				Log.d("friendHealthFHA", submission_act_name + " image taken.");
+				Log.d("friendHealthAS", "img_filename in onactivityresult: " + img_filename);
 				
 				Intent intent = new Intent(
 						"edu.berkeley.cs160.teamk.ActivitySubmission");
@@ -764,6 +801,9 @@ public class FHActivitySelector extends Activity {
 				extras.putInt("score", submission_score);
 				Log.d("friendHealthFHA", "img_filename: " + img_filename);
 				extras.putString("filename", img_filename);
+				extras.putInt("index", submission_index);
+				extras.putInt("id", submission_act_id);
+				extras.putString("result", "completed");
 				intent.putExtras(extras);
 				
 				Log.d("friendHealthFHA", "Starting submission activity");
@@ -779,7 +819,7 @@ public class FHActivitySelector extends Activity {
         			index = extras.getInt("index");
         			if (result.equals("completed")) {
         				Toast.makeText(this,
-        						"Activity completed",
+        						"Activity completed, Submission Successful",
         						Toast.LENGTH_LONG).show();
         				Utility.dbAdapter.acceptActivity(index);
         				Button button;
@@ -793,6 +833,7 @@ public class FHActivitySelector extends Activity {
         				SharedPreferences.Editor editor = Utility.mPrefs.edit();
         				editor.putInt("taskID_"+(index+1), Utility.dbAdapter.getID(index));
         				editor.commit();
+                    	setScoreTxt();
         				button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
         			}
         			else if (result.equals("rejected")) {
@@ -811,7 +852,7 @@ public class FHActivitySelector extends Activity {
         				    	else
         				    		Utility.dbAdapter.declineActivity(index);
         				    	
-        				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_SHORT);
+        				    	Toast.makeText(getApplicationContext(), "Task rejected. Thanks for your feedback.", Toast.LENGTH_LONG);
                 				Button button;
                 				
                 				if (index == 0) {
@@ -823,6 +864,9 @@ public class FHActivitySelector extends Activity {
                 				else {
                 					button = act3_button;
                 				}
+                				SharedPreferences.Editor editor = Utility.mPrefs.edit();
+                				editor.putInt("taskID_"+(index+1), Utility.dbAdapter.getID(index));
+                				editor.commit();
         				    	button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
         				    }
         				    
@@ -852,27 +896,78 @@ public class FHActivitySelector extends Activity {
         	if (resultCode == RESULT_OK) {
         		Log.d("friendHealthFHASA", "Entered Utility.RC_NEWTASK");
         		Bundle extras = data.getExtras();
-        		if (extras != null) {
-        			Task new_task = new Task();
-        			new_task.name = extras.getString("name");
-        			new_task.points = 1;
-        			Utility.dbAdapter.addActivity(new_task);
-        			Toast.makeText(this,
-        					"Added activity: " + new_task.name,
-        					Toast.LENGTH_LONG).show();
+        		
+        		act_name = extras.getString("name");
+        		Task new_task = new Task();
+        		new_task.name = act_name;
+        		new_task.points = 1;
+        		act_id = Integer.valueOf(
+        				Utility.dbAdapter.addActivity(new_task).trim());
+        		
+        		if (extras.getString("result").equals("take_photo")) {
+        			Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        			Uri fileUri = Camera.getOutputMediaFileUri(getBaseContext(), Utility.MEDIA_TYPE_IMAGE, act_name);
+        			img_filename = fileUri.toString();
+        			submission_img_filename = img_filename;
+        			submission_score = 1;
+        			submission_act_name = act_name;
+        			intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+				
+        			SharedPreferences.Editor editor = Utility.mPrefs.edit();
+        			editor.putString("act_img_filename", img_filename);
+        			editor.putString("activity_name", act_name);
+        			editor.putInt("activity_id", act_id);
+					editor.putInt("activity_score", submission_score);
+					editor.putInt("activity_index", -1);
+					editor.commit();
+				
+					Log.d("friendHealthFHA", "Image name: " + img_filename);
+				
+					// start the image capture Intent.
+					startActivityForResult(intent, 
+							Utility.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         		}
         	}
         	return;
-        default:
+        case Utility.RC_ACTIVITYSUBMISSION:
         	Log.d("friendHealthFHASA", "Entered default onActivityResult");
+        
+        	if (Utility.mPrefs.getBoolean("pic_submit", false)) {
+        		
+        			int cool_index = Utility.mPrefs.getInt("From_AS_Index", -2);
+        			Log.d("friendHealthFHASA", "index is now: " + cool_index);
+        			
+        				Toast.makeText(this,
+        						"Activity completed, Submission Successful",
+        						Toast.LENGTH_LONG).show();
+
+        				if (cool_index >= 0) {
+            				Utility.dbAdapter.acceptActivity(cool_index);
+        					Button button;
+        					if (cool_index == 0) {
+        						button = act1_button;
+        					} else if (cool_index == 1) {
+        						button = act2_button;
+        					} else {
+        						button = act3_button;
+        					}
+        					SharedPreferences.Editor editor = Utility.mPrefs.edit();
+        					editor.putInt("taskID_"+(cool_index+1), Utility.dbAdapter.getID(cool_index));
+        					editor.commit();
+        					button.setText(Html.fromHtml("<font color='black'><big>"+ Utility.dbAdapter.getName(cool_index) +"</big></font><br/><font color='green'>" + "+" + Utility.dbAdapter.getPoints(index) + " Points" + "</font>"));
+
+        				}
+
+                    	setScoreTxt();
+        	}
         	
         	/*Bundle extras = data.getExtras();
         	if (extras != null) {
         		String response = extras.getString("response");
         		Toast.makeText(this, response, Toast.LENGTH_LONG).show();
         	}*/
-        	
-        	Utility.facebook.authorizeCallback(requestCode, resultCode, data);
+        	default:
+        		Utility.facebook.authorizeCallback(requestCode, resultCode, data);
         }
     }
     
@@ -928,14 +1023,7 @@ public class FHActivitySelector extends Activity {
                     	editor.commit();
                     	
                     	Utility.scoresDBAdapter.checkUserScore(facebookId, facebookName);
-                    	TextView score_txt = (TextView) findViewById(R.id.scoreView1);
-                    	String score_str = "Score: "
-                    			+ Utility.scoresDBAdapter.points
-                    			+ " ("
-                    			+ Utility.scoresDBAdapter.rank
-                    			+ ")";
-                    	score_txt.setText(score_str);
-                    	Log.d("friendHealthFHASA", "Score: " + score_str);
+                    	setScoreTxt();
             		} catch (MalformedURLException e) {
             			// TODO Auto-generated catch block
             			Log.d("friendHealthPA", "MalformedURLException");
@@ -990,14 +1078,7 @@ public class FHActivitySelector extends Activity {
     			user_name.setText(facebookName);
             	
             	Utility.scoresDBAdapter.checkUserScore(facebookId, facebookName);
-            	TextView score_txt = (TextView) findViewById(R.id.scoreView1);
-            	String score_str = "Score: "
-            			+ Utility.scoresDBAdapter.points
-            			+ " ("
-            			+ Utility.scoresDBAdapter.rank
-            			+ ")";
-            	score_txt.setText(score_str);
-            	Log.d("friendHealthFHASA", "Score: " + score_str);
+            	setScoreTxt();
             }
             catch (FacebookError e) {
             	Log.e("friendHealthFHASA", "FacebookError (sDBA): " + e.toString());
@@ -1023,5 +1104,15 @@ public class FHActivitySelector extends Activity {
     	OptionsMenu om = new OptionsMenu();
     	return om.FHASMenuChoice(this, item);
     }
-
+    
+    private void setScoreTxt() {
+    	TextView score_txt = (TextView) findViewById(R.id.scoreView1);
+    	String score_str = "Score: "
+    			+ Utility.scoresDBAdapter.points
+    			+ " ("
+    			+ Utility.scoresDBAdapter.rank
+    			+ ")";
+    	score_txt.setText(score_str);
+    	Log.d("friendHealthFHASA", "Score: " + score_str);
+    }
 }

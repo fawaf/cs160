@@ -9,6 +9,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.content.SharedPreferences;
 
+
 public class Settings extends Activity {
 	
 	ToggleButton toggle_sound;
@@ -31,7 +32,7 @@ public class Settings extends Activity {
 						((ToggleButton) v).isChecked()
 						? "Sound Toggled ON"
 						: "Sound Toggled OFF",
-						Toast.LENGTH_SHORT).show();
+						Toast.LENGTH_LONG).show();
 				editor.commit();
 			}
 		});

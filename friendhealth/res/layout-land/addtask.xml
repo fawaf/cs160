@@ -4,13 +4,32 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
+    <EditText
+        android:id="@+id/taskName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="56dp" />
+
+    <EditText
+        android:id="@+id/taskTags"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/taskName"
+        android:layout_marginTop="105dp" >
+
+        <requestFocus />
+    </EditText>
+
     <Button
         android:id="@+id/btn_takePicture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="135dp"
+        android:layout_below="@+id/taskTags"
+        android:layout_marginLeft="118dp"
+        android:layout_marginTop="63dp"
         android:drawableLeft="@drawable/camera_icon"
         android:text="  Take Picture"
         android:textColor="#0505dd"
@@ -22,48 +41,30 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/btn_takePicture"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/taskTags"
+        android:layout_alignTop="@+id/btn_takePicture"
+        android:layout_marginRight="107dp"
         android:drawableLeft="@drawable/add_icon"
         android:text="  Add Task"
         android:textColor="#0505dd"
         android:textSize="25dp" />
 
-    <EditText
-        android:id="@+id/taskTags"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_takePicture"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="163dp" >
-
-        <requestFocus />
-    </EditText>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/taskTags"
-        android:layout_alignParentLeft="true"
-        android:text="Tags (optional): i.e. food, exercise, morning"
-        android:textSize="20dp" />
-
-    <EditText
-        android:id="@+id/taskName"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="110dp" />
-
     <TextView
         android:id="@+id/textView1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/taskName"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="52dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="33dp"
         android:text="Activity Prompt: i.e. &apos;Eat an Apple&apos;"
+        android:textSize="20dp" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/taskTags"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="51dp"
+        android:text="Tags (optional): i.e. food, exercise, morning"
         android:textSize="20dp" />
 
 </RelativeLayout>

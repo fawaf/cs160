@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+
 public final class Camera {
 	
 	protected static final Uri getOutputMediaFileUri(Context c, int type, String name) {
@@ -19,7 +20,7 @@ public final class Camera {
 		// If no external memory, this is bad.
 		if (!Environment.MEDIA_MOUNTED.equals(ext_state)) {
 			Toast.makeText(c, "No External Memory!",
-					Toast.LENGTH_SHORT).show();
+					Toast.LENGTH_LONG).show();
 			Log.d("friendHealthFHA", "No External Memory");
 			mediaStorageDir = new File(
 					Environment.getExternalStoragePublicDirectory(

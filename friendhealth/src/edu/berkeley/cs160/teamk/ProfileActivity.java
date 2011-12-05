@@ -22,8 +22,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.ListView;
 import android.widget.TextView;
+
 
 public class ProfileActivity extends Activity {
 	
@@ -36,9 +37,8 @@ public class ProfileActivity extends Activity {
 		
 		try {
 			String jsonUser = Utility.facebook.request("me");
-			JSONObject obj;
-			obj = Util.parseJson(jsonUser);
-			String facebookId = obj.optString("id");
+			JSONObject obj = Util.parseJson(jsonUser);
+			String facebookId = Utility.mPrefs.getString("facebookUID", "");
 			Log.d("friendHealthPA", "Facebook UID is: " + facebookId);
 			ImageView user_picture = (ImageView) findViewById(R.id.profilePic);
 		    URL img_value = new URL("http://graph.facebook.com/" + facebookId + "/picture?type=large");
@@ -53,14 +53,15 @@ public class ProfileActivity extends Activity {
 			obj = Util.parseJson(jsonUser);
 			JSONArray friends = obj.getJSONArray("data");
 			
-			Spinner s = (Spinner) findViewById(R.id.spinner);
+			ListView s = (ListView) findViewById(R.id.spinner);
 			String[] friends_array = new String[friends.length()];
 			for (int i = 0; i < friends.length(); i++) {
 				JSONObject friendObj = friends.getJSONObject(i);
 				friends_array[i] = friendObj.optString("name");
 			}
 			Arrays.sort(friends_array, String.CASE_INSENSITIVE_ORDER);
-			s.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, friends_array));
+			s.setAdapter(new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, friends_array));
 	
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block

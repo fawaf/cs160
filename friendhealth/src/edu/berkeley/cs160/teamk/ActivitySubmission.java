@@ -1,6 +1,5 @@
 package edu.berkeley.cs160.teamk;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -23,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.util.Log;
 
 
@@ -68,28 +68,36 @@ public class ActivitySubmission extends Activity {
 			
 
 			Bitmap myBitmap = null;
-			myBitmap = BitmapFactory.decodeFile(shortname);
-			/*try {
+			// myBitmap = BitmapFactory.decodeFile(shortname);
+			try {
 				BitmapFactory.Options options = new BitmapFactory.Options();
-				options.inDither = false;
-				options.inPurgeable = true;
-				options.inInputShareable = true;
-				options.inTempStorage = new byte[32 * 1024];
-				myBitmap = BitmapFactory.decodeFile(shortname, options);
+				options.inJustDecodeBounds = true;
+				BitmapFactory.decodeFile(shortname, options);
+				
+				int max_dim = Math.max(options.outWidth, options.outHeight);
+				int scale = 1;
+				while (max_dim > 1600) {
+					scale *= 2;
+					max_dim /= 2;
+				}
+				
+				BitmapFactory.Options opt2 = new BitmapFactory.Options();
+				opt2.inSampleSize = scale;
+				myBitmap = BitmapFactory.decodeFile(shortname, opt2);
 			}
 			catch (OutOfMemoryError e) {
-				Log.d("friendHealthAS", e.toString());
+				Log.e("friendHealthAS", e.toString());
 				Toast.makeText(getBaseContext(),
 						"OutOfMemoryError: " + e.toString(),
 						Toast.LENGTH_LONG).show();
 				return;
-			}*/
+			}
 			
 			Log.d("friendHealthAS", "Displaying image");
 			imageView.setImageBitmap(myBitmap);
 			Log.d("friendHealthAS", "Image displayed");
 			int orientation = getResources().getConfiguration().orientation;
-			Log.d("Orientation: ", "" + orientation);
+			Log.d("Orientation: ", String.valueOf(orientation));
 			if (orientation == 1)
 			{
 		        //super.onCreate(savedInstanceState);
@@ -141,6 +149,9 @@ public class ActivitySubmission extends Activity {
 			        Bitmap finalmap2 = Bitmap.createBitmap(bmap, 0, 0, bmap.getWidth(), bmap.getHeight(), mtx, true);
 			        BitmapDrawable bmd = new BitmapDrawable(finalmap2);
 			        Log.d("check", "" + finalmap2);
+			        imageView.getLayoutParams().height = bmap.getWidth();
+			        imageView.getLayoutParams().width = bmap.getHeight();
+			     
 			        imageView.setImageDrawable(bmd);
 	        	}
 	        	});
@@ -157,7 +168,6 @@ public class ActivitySubmission extends Activity {
 	        				bundle.putString("message", caption);
 	        			}
 	        			String response = Utility.facebook.request("me/photos", bundle, "POST");
-	      
 	        			
 	        			if (response.indexOf("OAuthException") > -1) {
 	        				Log.d("friendHealthAS", "Response: " + response);
@@ -165,6 +175,8 @@ public class ActivitySubmission extends Activity {
 	        			} else {
 	        				SharedPreferences.Editor editor = Utility.mPrefs.edit();
 	        				editor.putInt("event_created"+index, 0);
+	        				editor.putBoolean("pic_submit", true);
+	        				editor.putInt("From_AS_Index", index);
 	        				editor.commit();
 	        				Log.d("friendHealthAS", "Response: " + response);
 	        				String photoid = response;
@@ -172,6 +184,7 @@ public class ActivitySubmission extends Activity {
 								JSONObject obj = Util.parseJson(photoid);
 								String photoId = obj.optString("id");
 								Utility.dbAdapter.addUserInfo(String.valueOf(act_id), photoId, score, facebookId);
+								Utility.scoresDBAdapter.calculateUserTotalScore(facebookId);
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -181,8 +194,6 @@ public class ActivitySubmission extends Activity {
 							}
 	        				response = "Submission Successful";
 	        			}
-	        			
-	        			
 	        			
 	        			setResult(RESULT_OK);
 	    				finish();

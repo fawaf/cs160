@@ -3,6 +3,7 @@ package edu.berkeley.cs160.teamk;
 import android.content.SharedPreferences;
 import com.facebook.android.Facebook;
 
+
 public class Utility {
 	
 	public static final String app_name = "friendHealth";
@@ -20,4 +21,6 @@ public class Utility {
 	
 	public static DBAdapter dbAdapter;
 	public static ScoresDBAdapter scoresDBAdapter;
+	
+	public static final String fH_email = "team.k.friendhealth@gmail.com";
 }

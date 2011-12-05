@@ -1,6 +1,5 @@
 package edu.berkeley.cs160.teamk;
 
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,6 +42,7 @@ import android.graphics.PorterDuff;
 import android.provider.MediaStore;
 import android.net.Uri;
 
+
 public class FHActivity extends Activity {
 	
 	Button btn_picture, btn_reject, btn_invite, btn_help;
@@ -83,7 +83,7 @@ public class FHActivity extends Activity {
 		}
 		String[] photoids = Utility.dbAdapter.getPhotoByID(id);
 		myRemoteImages = new String[photoids.length];
-		for(int i = 0; i<photoids.length; i++){
+		for(int i = 0; i < photoids.length; i++){
 			try {
 				String jsonPic = Utility.facebook.request(photoids[i]);
 				JSONObject obj = Util.parseJson(jsonPic);
@@ -108,7 +108,6 @@ public class FHActivity extends Activity {
 		txt_ActTitle.setText(act_name);
 		txt_ActPt.setText("(+ "+ score + " points)");
 			
-		
 		Gallery gallery = (Gallery) findViewById(R.id.activityGallery);
 		
 		
@@ -119,7 +118,7 @@ public class FHActivity extends Activity {
 					int position, long id) {
 				/*Toast.makeText(getBaseContext(),
 						"pic" + (position + 1) +  " selected",
-						Toast.LENGTH_SHORT).show();*/
+						LENGTH_LONG).show();*/
 				
 				//---display the images selected---
 				ImageView imageView = (ImageView) findViewById(R.id.img_fhAct);
@@ -360,7 +359,7 @@ public class FHActivity extends Activity {
 				startActivityForResult(intent, Utility.RC_INVITE);*/
 				Bundle bundle = new Bundle();
 				Log.d("friendHealthFHA", "event_created in button: "+event_created);
-				if(event_created <=0){
+				if(event_created <= 0){
 				try {
 					long unixTime = System.currentTimeMillis() / 1000L;
 					long oneWeekUnixTime = unixTime + 604800;
@@ -437,7 +436,7 @@ public class FHActivity extends Activity {
 					response = extras.getString("response");
 					editor.putString("act_response", response);
 					Toast.makeText(this, response,
-							Toast.LENGTH_SHORT).show();
+							Toast.LENGTH_LONG).show();
 				}
 				
 				btn_invite.setBackgroundColor(0xFF00FF00);
