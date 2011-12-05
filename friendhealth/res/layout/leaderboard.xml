@@ -1,16 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:background="#ff000000" >
-  
-	<ListView 
-		android:id="@+id/leaderboard"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_weight="1"
-  		android:background="#ff000000" />
+
+    <ListView
+        android:id="@+id/leaderboard"
+        android:layout_width="544dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:background="#ff000000" android:layout_marginTop="50dp">
+
+    </ListView>
+
+    <ImageView
+        android:id="@+id/crown1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/crown" android:layout_alignParentTop="true" android:layout_marginTop="51.5dp" android:layout_marginLeft="20dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="72dp"
+        android:layout_toRightOf="@+id/crown1"
+        android:src="@drawable/crown2" android:id="@+id/crown2" android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/crown3" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" android:layout_marginTop="92dp"/>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="friendHealth Leaderboard"
+        android:textSize="25dp" android:textColor="#90f0ff"/>
 		
-</LinearLayout>
+</RelativeLayout>
