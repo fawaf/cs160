@@ -88,7 +88,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_ActHelp"
         android:layout_alignParentLeft="true"
-        android:text="Tell Friends"
+        android:text="Make Event"
         android:textSize="15dp" android:layout_marginLeft="15dp"/>
 
 </RelativeLayout>
