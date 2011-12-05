@@ -423,7 +423,6 @@ public class FHActivity extends Activity {
 				
 				
 				
-				
 				Log.d("friendHealthFHA", "Starting submission activity");
 				startActivityForResult(intent, Utility.RC_ACTIVITYSUBMISSION);
 			} else if (requestCode == Utility.RC_INVITE) {
