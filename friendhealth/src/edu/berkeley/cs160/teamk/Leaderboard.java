@@ -18,7 +18,7 @@ public class Leaderboard extends Activity {
 		ListView leaderboard = (ListView) findViewById(R.id.leaderboard);
 		
 		String fb_user_id = Utility.mPrefs.getString("facebookUID", "");
-		Utility.scoresDBAdapter.calculateUserTotalScore(fb_user_id);
+		Utility.scoresDBAdapter.getLeaderboard();
 		Log.d("friendHealthL", "FB User: " + fb_user_id + 
 				" (" + Utility.scoresDBAdapter.rank + ")");
 		HighlightAdapter adapter = new HighlightAdapter(
